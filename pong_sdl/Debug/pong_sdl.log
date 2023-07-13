@@ -1,1 +1,4 @@
-﻿  pong_sdl.vcxproj -> C:\GameDev\pong_sdl\pong_sdl\Debug\pong_sdl.exe
+﻿  main.cpp
+C:\Users\Admin\GameDev\pong_sdl\pong_sdl\main.cpp(174,57): warning C4244: '-=': conversion from 'float' to 'int', possible loss of data
+C:\Users\Admin\GameDev\pong_sdl\pong_sdl\main.cpp(179,57): warning C4244: '+=': conversion from 'float' to 'int', possible loss of data
+  pong_sdl.vcxproj -> C:\Users\Admin\GameDev\pong_sdl\pong_sdl\Debug\pong_sdl.exe
