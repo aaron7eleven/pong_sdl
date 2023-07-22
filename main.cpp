@@ -50,7 +50,6 @@ SDL_Texture* LoadTexture(SDL_Renderer* renderer, std::string path) {
 struct Entity {
 	SDL_FRect position;
 	SDL_Color color;
-	
 };
 
 
@@ -58,11 +57,14 @@ int main(int argc, char* argv[])
 {
 	const int SCREEN_WIDTH = 1280;
 	const int SCREEN_HEIGHT = 720;
+	const int SCREEN_FPS = 60;
+	const int SCREEN_TICKS_PER_FRAME = 1000 / SCREEN_FPS; // 1000 ms / X frames
+
 	const int PADDLE_INIT_WIDTH = SCREEN_WIDTH / 8;
 	const int PADDLE_INIT_HEIGHT = SCREEN_HEIGHT / 2;
 	const int PADDLE_WIDTH = SCREEN_WIDTH / 64;
 	const int PADDLE_HEIGHT = SCREEN_HEIGHT / 8;
-	const int PADDLE_SPEED = 2000;
+	const int PADDLE_SPEED = 200;
 
 	
 	SDL_Window* window = NULL;
@@ -138,19 +140,22 @@ int main(int argc, char* argv[])
 		};
 
 		leftPaddle.color = { 0xFF, 0xFF, 0xFF, 0xFF };
+		bool leftPaddleUpHeld = false;
+		bool leftPaddleDownHeld = false;
+
 
 		float deltaTime = 0.0f;
-		Uint32 startTime = SDL_GetTicks();
-		Uint32 lastTime = 0;
+		Uint32 startTicks = SDL_GetTicks();
+		Uint32 lastTicks = 0;
 
 		while (!quit) {
 			/*startTime = SDL_GetTicks();
 			deltaTime = (lastTime - startTime) / 1000.0f;
 			lastTime = startTime;*/
 			//startTime = SDL_GetTicks();
-			deltaTime = (SDL_GetTicks() - startTime) / 1000.0f;
+			deltaTime = (SDL_GetTicks() - startTicks) / 1000.0f;
 			//lastTime = startTime;
-			startTime = SDL_GetTicks();
+			startTicks = SDL_GetTicks();
 
 			//printf("deltaTime = %f\n", deltaTime);
 
@@ -166,6 +171,17 @@ int main(int argc, char* argv[])
 					//Select surfaces based on key press
 					switch (e.key.keysym.sym)
 					{
+
+						// Left Paddle
+						case SDLK_w:							
+							leftPaddleUpHeld = true;
+							break;
+
+						case SDLK_s:
+							leftPaddleDownHeld = true;
+							break;
+
+						// Right Paddle
 						case SDLK_UP:
 							printf("Up");
 							break;
@@ -174,59 +190,66 @@ int main(int argc, char* argv[])
 							printf("Down");
 							break;
 
-						case SDLK_w:
-							printf("Left Paddle: Up\n");
-							leftPaddle.position.y -= PADDLE_SPEED * deltaTime;
-							break;
-
-						case SDLK_s:
-							printf("Left Paddle: Down\n");
-							leftPaddle.position.y += PADDLE_SPEED * deltaTime;
-							break;
-
-						case SDLK_RIGHT:
-							printf("Right");
-							break;
-
 						default:
 							printf("Default");
 							break;
 					}
 				}
+				else if (e.type == SDL_KEYUP) {
+					//Select surfaces based on key press
+					switch (e.key.keysym.sym)
+					{
+
+						// Left Paddle
+					case SDLK_w:
+						leftPaddleUpHeld = false;
+						break;
+
+					case SDLK_s:
+						leftPaddleDownHeld = false;
+						break;
+
+						// Right Paddle
+					case SDLK_UP:
+						printf("Up");
+						break;
+
+					case SDLK_DOWN:
+						printf("Down");
+						break;
+
+					default:
+						printf("Default");
+						break;
+					}
+				}
 			}
 
-			//printf("leftPaddle = (%d, %d)\n", leftPaddle.position.x, leftPaddle.position.y);
+			if (leftPaddleUpHeld) {
+				leftPaddle.position.y -= PADDLE_SPEED * deltaTime;
+			}
+
+			if (leftPaddleDownHeld) {
+				leftPaddle.position.y += PADDLE_SPEED * deltaTime;
+			}
 
 			//Clear screen to Black
 			SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, 0x00);
 			SDL_RenderClear(renderer);
 
-			//Render red filled quad
-			//SDL_Rect fillRect = { SCREEN_WIDTH / 4, SCREEN_HEIGHT / 4, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 };
-			//SDL_SetRenderDrawColor(renderer, 0xFF, 0x00, 0x00, 0xFF);
-			//SDL_RenderFillRect(renderer, &fillRect);
-
-			//Render green outlined quad
-			//SDL_Rect outlineRect = { SCREEN_WIDTH / 6, SCREEN_HEIGHT / 6, SCREEN_WIDTH * 2 / 3, SCREEN_HEIGHT * 2 / 3 };
-			//SDL_SetRenderDrawColor(renderer, 0x00, 0xFF, 0x00, 0xFF);
-			//SDL_RenderDrawRect(renderer, &outlineRect);
-
-			//Draw blue horizontal line
-			//SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0xFF, 0xFF);
-			//SDL_RenderDrawLine(renderer, 0, SCREEN_HEIGHT / 2, SCREEN_WIDTH, SCREEN_HEIGHT / 2);
-
-			//SDL_RenderCopy(renderer, texture, NULL, NULL);
-
-			//Draw vertical line of yellow dots
-			//SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0x00, 0xFF);
-			//for (int i = 0; i < SCREEN_HEIGHT; i += 4)
-			//{
-			//	SDL_RenderDrawPoint(renderer, SCREEN_WIDTH / 2, i);
-			//}
-
+			// Draw Entities
 			SDL_SetRenderDrawColor(renderer, leftPaddle.color.r, leftPaddle.color.g, leftPaddle.color.b, leftPaddle.color.a);
 			SDL_RenderFillRectF(renderer, &leftPaddle.position);
+
+
 			SDL_RenderPresent(renderer);
+
+			int frameTicks = SDL_GetTicks() - startTicks;
+			if (frameTicks < SCREEN_TICKS_PER_FRAME)
+			{
+				//Wait remaining time
+				SDL_Delay(SCREEN_TICKS_PER_FRAME - frameTicks);
+			}
 
 		}
 	}
