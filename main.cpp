@@ -60,11 +60,25 @@ int main(int argc, char* argv[])
 	const int SCREEN_FPS = 60;
 	const int SCREEN_TICKS_PER_FRAME = 1000 / SCREEN_FPS; // 1000 ms / X frames
 
-	const int PADDLE_INIT_WIDTH = SCREEN_WIDTH / 8;
-	const int PADDLE_INIT_HEIGHT = SCREEN_HEIGHT / 2;
+	const int PADDLE_INIT_X = SCREEN_WIDTH / 8;
+	const int PADDLE_INIT_Y = SCREEN_HEIGHT / 2;
 	const int PADDLE_WIDTH = SCREEN_WIDTH / 64;
 	const int PADDLE_HEIGHT = SCREEN_HEIGHT / 8;
 	const int PADDLE_SPEED = 200;
+
+	const int LEFT_WALL_X = SCREEN_WIDTH / 16;
+	const int LEFT_WALL_Y = 0; // Starts at top left corner not center (0 not SCREEN_HEIGHT / 2)
+	const int RIGHT_WALL_X = SCREEN_WIDTH * 15 / 16;
+	const int RIGHT_WALL_Y = 0; // Starts at top left corner not center (0 not SCREEN_HEIGHT / 2)
+	const int HORZ_WALL_WIDTH = SCREEN_WIDTH / 128;
+	const int HORZ_WALL_HEIGHT = SCREEN_HEIGHT;
+
+	const int TOP_WALL_X = 0; // Starts at top left corner not center (0 not SCREEN_WIDTH / 2)
+	const int TOP_WALL_Y = 0;
+	const int BOTTOM_WALL_X = 0; // Starts at top left corner not center (0 not SCREEN_WIDTH / 2)
+	const int BOTTOM_WALL_Y = SCREEN_HEIGHT;
+	const int VERT_WALL_WIDTH = SCREEN_WIDTH;
+	const int VERT_WALL_HEIGHT = SCREEN_WIDTH / 128;
 
 	
 	SDL_Window* window = NULL;
@@ -126,15 +140,9 @@ int main(int argc, char* argv[])
 		SDL_Event e;
 
 		Entity leftPaddle;
-		//leftPaddle.position = {
-		//	SCREEN_WIDTH / 8,
-		//	SCREEN_HEIGHT / 2,
-		//	SCREEN_WIDTH / 64,
-		//	SCREEN_HEIGHT / 8
-		//};
 		leftPaddle.position = {
-			PADDLE_INIT_WIDTH,
-			PADDLE_INIT_HEIGHT,
+			PADDLE_INIT_X,
+			PADDLE_INIT_Y,
 			PADDLE_WIDTH,
 			PADDLE_HEIGHT
 		};
@@ -142,6 +150,43 @@ int main(int argc, char* argv[])
 		leftPaddle.color = { 0xFF, 0xFF, 0xFF, 0xFF };
 		bool leftPaddleUpHeld = false;
 		bool leftPaddleDownHeld = false;
+
+		Entity leftWall;
+		leftWall.position = {
+			LEFT_WALL_X,
+			LEFT_WALL_Y,
+			HORZ_WALL_WIDTH,
+			HORZ_WALL_HEIGHT
+		};
+		leftWall.color = { 0xFF, 0xFF, 0xFF, 0xFF };
+
+		Entity rightWall;
+		rightWall.position = {
+			RIGHT_WALL_X,
+			RIGHT_WALL_Y,
+			HORZ_WALL_WIDTH,
+			HORZ_WALL_HEIGHT
+		};
+		rightWall.color = { 0xFF, 0xFF, 0xFF, 0xFF };
+
+		Entity topWall;
+		topWall.position = {
+			TOP_WALL_X,
+			TOP_WALL_Y,
+			VERT_WALL_WIDTH,
+			VERT_WALL_HEIGHT
+		};
+		topWall.color = { 0xFF, 0xFF, 0xFF, 0xFF };
+
+		Entity bottomWall;
+		bottomWall.position = {
+			BOTTOM_WALL_X,
+			BOTTOM_WALL_Y,
+			VERT_WALL_WIDTH,
+			VERT_WALL_HEIGHT
+		};
+		bottomWall.color = { 0xFF, 0xFF, 0xFF, 0xFF };
+
 
 
 		float deltaTime = 0.0f;
@@ -240,6 +285,18 @@ int main(int argc, char* argv[])
 			// Draw Entities
 			SDL_SetRenderDrawColor(renderer, leftPaddle.color.r, leftPaddle.color.g, leftPaddle.color.b, leftPaddle.color.a);
 			SDL_RenderFillRectF(renderer, &leftPaddle.position);
+
+			SDL_SetRenderDrawColor(renderer, leftWall.color.r, leftWall.color.g, leftWall.color.b, leftWall.color.a);
+			SDL_RenderFillRectF(renderer, &leftWall.position);
+
+			SDL_SetRenderDrawColor(renderer, rightWall.color.r, rightWall.color.g, rightWall.color.b, rightWall.color.a);
+			SDL_RenderFillRectF(renderer, &rightWall.position);
+
+			SDL_SetRenderDrawColor(renderer, topWall.color.r, topWall.color.g, topWall.color.b, topWall.color.a);
+			SDL_RenderFillRectF(renderer, &topWall.position);
+
+			SDL_SetRenderDrawColor(renderer, bottomWall.color.r, bottomWall.color.g, bottomWall.color.b, bottomWall.color.a);
+			SDL_RenderFillRectF(renderer, &bottomWall.position);
 
 
 			SDL_RenderPresent(renderer);
