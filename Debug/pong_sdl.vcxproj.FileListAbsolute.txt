@@ -1,3 +1,0 @@
-C:\GameDev\pong_sdl\pong_sdl\Debug\pong_sdl.exe
-C:\Users\Admin\GameDev\pong_sdl\pong_sdl\Debug\pong_sdl.exe
-C:\Users\Admin\GameDev\pong_sdl\Debug\pong_sdl.exe
