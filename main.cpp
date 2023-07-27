@@ -47,6 +47,54 @@ SDL_Texture* LoadTexture(SDL_Renderer* renderer, std::string path) {
 	return outputTexture;
 }
 
+bool CheckCollision(SDL_FRect a, SDL_FRect b) 
+{
+	float leftA;
+	float rightA;
+	float leftB;
+	float rightB;
+
+	float topA;
+	float bottomA;
+	float topB;
+	float bottomB;
+
+	leftA = a.x;
+	rightA = a.x + a.w;
+	topA = a.y;
+	bottomA = a.y + a.h;
+
+	leftB = b.x;
+	rightB = b.x + b.w;
+	topB = b.y;
+	bottomB = b.y + b.h;
+
+	//If any of the sides from A are outside of B
+	if (bottomA <= topB)
+	{
+		return false;
+	}
+
+	if (topA >= bottomB)
+	{
+		return false;
+	}
+
+	if (rightA <= leftB)
+	{
+		return false;
+	}
+
+	if (leftA >= rightB)
+	{
+		return false;
+	}
+
+	//If none of the sides from A are outside B
+	return true;
+
+}
+
 struct Entity {
 	SDL_FRect position;
 	SDL_Color color;
@@ -76,11 +124,10 @@ int main(int argc, char* argv[])
 	const int TOP_WALL_X = 0; // Starts at top left corner not center (0 not SCREEN_WIDTH / 2)
 	const int TOP_WALL_Y = 0;
 	const int BOTTOM_WALL_X = 0; // Starts at top left corner not center (0 not SCREEN_WIDTH / 2)
-	const int BOTTOM_WALL_Y = SCREEN_HEIGHT;
+	const int BOTTOM_WALL_Y = SCREEN_HEIGHT - SCREEN_WIDTH / 128; // Move above the bottom edge of window
 	const int VERT_WALL_WIDTH = SCREEN_WIDTH;
 	const int VERT_WALL_HEIGHT = SCREEN_WIDTH / 128;
 
-	
 	SDL_Window* window = NULL;
 	SDL_Surface* windowSurface = NULL;
 	SDL_Renderer* renderer = NULL;
@@ -272,11 +319,21 @@ int main(int argc, char* argv[])
 
 			if (leftPaddleUpHeld) {
 				leftPaddle.position.y -= PADDLE_SPEED * deltaTime;
+				if (CheckCollision(leftPaddle.position, topWall.position)) {
+					// Undo Move
+					leftPaddle.position.y += PADDLE_SPEED * deltaTime;
+				}
 			}
 
 			if (leftPaddleDownHeld) {
 				leftPaddle.position.y += PADDLE_SPEED * deltaTime;
+				if (CheckCollision(leftPaddle.position, bottomWall.position)) {
+					// Undo Move
+					leftPaddle.position.y -= PADDLE_SPEED * deltaTime;
+				}
 			}
+
+
 
 			//Clear screen to Black
 			SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, 0x00);
