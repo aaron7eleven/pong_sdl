@@ -4,6 +4,19 @@
 #include <SDL_image.h>
 #include <string>
 
+//bool CheckCollision(SDL_FRect a, SDL_FRect b);
+//bool CheckCollision(CircleEntity& circle, SDL_FRect& b);
+
+struct Entity {
+	SDL_FRect position;
+	SDL_Color color;
+};
+
+struct CircleEntity {
+	SDL_FRect position;
+	SDL_Color color;
+	float radius;
+};
 
 SDL_Surface* LoadSurface(SDL_Surface* window, std::string path) {
 	
@@ -47,7 +60,7 @@ SDL_Texture* LoadTexture(SDL_Renderer* renderer, std::string path) {
 	return outputTexture;
 }
 
-bool CheckCollision(SDL_FRect a, SDL_FRect b) 
+bool CheckCollision(SDL_FRect a, SDL_FRect b)
 {
 	float leftA;
 	float rightA;
@@ -93,12 +106,81 @@ bool CheckCollision(SDL_FRect a, SDL_FRect b)
 	//If none of the sides from A are outside B
 	return true;
 
-}
-
-struct Entity {
-	SDL_FRect position;
-	SDL_Color color;
 };
+
+float DistanceSquared(float x1, float y1, float x2, float y2) {
+	float deltaX = x2 - x1;
+	float deltaY = y2 - y1;
+	return deltaX * deltaX + deltaY * deltaY;
+};
+
+bool CheckCollision(CircleEntity& circle, SDL_FRect& b)
+{
+
+	int circleX;
+	int circleY;
+
+	// Find closest X position to Rect b from Circle's position
+	// Circle is to the left of b
+	if (circle.position.x < b.x) {
+		circleX = b.x;
+	}
+	// Circle is to the right of b
+	else if (circle.position.x > (b.x + b.w)) {
+		circleX = b.x;
+	}
+	// Circle is inside of b
+	else {
+		circleX = circle.position.x;
+	}
+
+	// Same for Y (Same code as above)
+	// Circle is to the above of b 
+	if (circle.position.y < b.y) {
+		circleY = b.y;
+	}
+	// Circle is to the below of b
+	else if (circle.position.y > (b.y + b.h)) {
+		circleY = b.y;
+	}
+	// Circle is inside of b
+	else {
+		circleY = circle.position.y;
+	}
+
+	if (DistanceSquared(circle.position.x, circle.position.y, circleX, circleY) < circle.radius * circle.radius) {
+		// Colliding
+		return true;
+	}
+
+	// Not colliding
+	return false;
+
+};
+
+// SDL_RenderFillCircle.c
+// https://gist.github.com/henkman/1b6f4492b82dc76adad1dc110c923baa
+void SDL_RenderFillCircle(SDL_Renderer* rend, float x0, float y0, float radius)
+{
+	// Uses the midpoint circle algorithm to draw a filled circle
+	// https://en.wikipedia.org/wiki/Midpoint_circle_algorithm
+	int x = radius;
+	int y = 0;
+	int radiusError = 1 - x;
+	while (x >= y) {
+		SDL_RenderDrawLine(rend, x + x0, y + y0, -x + x0, y + y0);
+		SDL_RenderDrawLine(rend, y + x0, x + y0, -y + x0, x + y0);
+		SDL_RenderDrawLine(rend, -x + x0, -y + y0, x + x0, -y + y0);
+		SDL_RenderDrawLine(rend, -y + x0, -x + y0, y + x0, -x + y0);
+		y++;
+		if (radiusError < 0)
+			radiusError += 2 * y + 1;
+		else {
+			x--;
+			radiusError += 2 * (y - x + 1);
+		}
+	}
+}
 
 
 int main(int argc, char* argv[]) 
@@ -114,19 +196,25 @@ int main(int argc, char* argv[])
 	const int PADDLE_HEIGHT = SCREEN_HEIGHT / 8;
 	const int PADDLE_SPEED = 200;
 
+	const int HORZ_WALL_WIDTH = SCREEN_WIDTH / 128;
+	const int HORZ_WALL_HEIGHT = SCREEN_HEIGHT;
 	const int LEFT_WALL_X = SCREEN_WIDTH / 16;
 	const int LEFT_WALL_Y = 0; // Starts at top left corner not center (0 not SCREEN_HEIGHT / 2)
 	const int RIGHT_WALL_X = SCREEN_WIDTH * 15 / 16;
 	const int RIGHT_WALL_Y = 0; // Starts at top left corner not center (0 not SCREEN_HEIGHT / 2)
-	const int HORZ_WALL_WIDTH = SCREEN_WIDTH / 128;
-	const int HORZ_WALL_HEIGHT = SCREEN_HEIGHT;
 
+	const int VERT_WALL_WIDTH = SCREEN_WIDTH;
+	const int VERT_WALL_HEIGHT = SCREEN_WIDTH / 128;
 	const int TOP_WALL_X = 0; // Starts at top left corner not center (0 not SCREEN_WIDTH / 2)
 	const int TOP_WALL_Y = 0;
 	const int BOTTOM_WALL_X = 0; // Starts at top left corner not center (0 not SCREEN_WIDTH / 2)
-	const int BOTTOM_WALL_Y = SCREEN_HEIGHT - SCREEN_WIDTH / 128; // Move above the bottom edge of window
-	const int VERT_WALL_WIDTH = SCREEN_WIDTH;
-	const int VERT_WALL_HEIGHT = SCREEN_WIDTH / 128;
+	const int BOTTOM_WALL_Y = SCREEN_HEIGHT - VERT_WALL_HEIGHT; // Move above the bottom edge of window
+	
+	const int BALL_RADIUS = SCREEN_WIDTH / 64; // Same width as paddle
+	const int BALL_INIT_X = SCREEN_WIDTH / 2;
+	const int BALL_INIT_Y = SCREEN_HEIGHT / 2;
+
+
 
 	SDL_Window* window = NULL;
 	SDL_Surface* windowSurface = NULL;
@@ -233,6 +321,18 @@ int main(int argc, char* argv[])
 			VERT_WALL_HEIGHT
 		};
 		bottomWall.color = { 0xFF, 0xFF, 0xFF, 0xFF };
+
+
+		CircleEntity ball;
+		ball.position = {
+			BALL_INIT_X,
+			BALL_INIT_Y,
+			BALL_RADIUS,
+			BALL_RADIUS
+		};
+		ball.color = { 0xFF, 0xFF, 0xFF, 0xFF };
+		ball.radius = BALL_RADIUS;
+
 
 
 
@@ -354,6 +454,9 @@ int main(int argc, char* argv[])
 
 			SDL_SetRenderDrawColor(renderer, bottomWall.color.r, bottomWall.color.g, bottomWall.color.b, bottomWall.color.a);
 			SDL_RenderFillRectF(renderer, &bottomWall.position);
+
+			SDL_SetRenderDrawColor(renderer, ball.color.r, ball.color.g, ball.color.b, ball.color.a);
+			SDL_RenderFillCircle(renderer, ball.position.x, ball.position.y, ball.radius );
 
 
 			SDL_RenderPresent(renderer);
