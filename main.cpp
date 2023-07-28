@@ -18,6 +18,11 @@ struct CircleEntity {
 	float radius;
 };
 
+struct Vector2 {
+	float x;
+	float y;
+};
+
 SDL_Surface* LoadSurface(SDL_Surface* window, std::string path) {
 	
 	SDL_Surface* optimizedSurface = NULL;
@@ -114,7 +119,7 @@ float DistanceSquared(float x1, float y1, float x2, float y2) {
 	return deltaX * deltaX + deltaY * deltaY;
 };
 
-bool CheckCollision(CircleEntity& circle, SDL_FRect& b)
+bool CheckCollision(CircleEntity& circle, SDL_FRect b)
 {
 
 	int circleX;
@@ -127,7 +132,7 @@ bool CheckCollision(CircleEntity& circle, SDL_FRect& b)
 	}
 	// Circle is to the right of b
 	else if (circle.position.x > (b.x + b.w)) {
-		circleX = b.x;
+		circleX = b.x + b.w;
 	}
 	// Circle is inside of b
 	else {
@@ -141,14 +146,14 @@ bool CheckCollision(CircleEntity& circle, SDL_FRect& b)
 	}
 	// Circle is to the below of b
 	else if (circle.position.y > (b.y + b.h)) {
-		circleY = b.y;
+		circleY = b.y + b.h;
 	}
 	// Circle is inside of b
 	else {
 		circleY = circle.position.y;
 	}
 
-	if (DistanceSquared(circle.position.x, circle.position.y, circleX, circleY) < circle.radius * circle.radius) {
+	if (DistanceSquared(circle.position.x, circle.position.y, circleX, circleY) < (circle.radius * circle.radius)) {
 		// Colliding
 		return true;
 	}
@@ -206,13 +211,14 @@ int main(int argc, char* argv[])
 	const int VERT_WALL_WIDTH = SCREEN_WIDTH;
 	const int VERT_WALL_HEIGHT = SCREEN_WIDTH / 128;
 	const int TOP_WALL_X = 0; // Starts at top left corner not center (0 not SCREEN_WIDTH / 2)
-	const int TOP_WALL_Y = 0;
+	const int TOP_WALL_Y = VERT_WALL_HEIGHT;
 	const int BOTTOM_WALL_X = 0; // Starts at top left corner not center (0 not SCREEN_WIDTH / 2)
-	const int BOTTOM_WALL_Y = SCREEN_HEIGHT - VERT_WALL_HEIGHT; // Move above the bottom edge of window
+	const int BOTTOM_WALL_Y = SCREEN_HEIGHT - VERT_WALL_HEIGHT * 2.0f; // Move above the bottom edge of window
 	
 	const int BALL_RADIUS = SCREEN_WIDTH / 64; // Same width as paddle
 	const int BALL_INIT_X = SCREEN_WIDTH / 2;
 	const int BALL_INIT_Y = SCREEN_HEIGHT / 2;
+	const int BALL_SPEED = 50;
 
 
 
@@ -332,7 +338,7 @@ int main(int argc, char* argv[])
 		};
 		ball.color = { 0xFF, 0xFF, 0xFF, 0xFF };
 		ball.radius = BALL_RADIUS;
-
+		Vector2 ballVelocity = { 0.0f, 1.0f };
 
 
 
@@ -417,6 +423,34 @@ int main(int argc, char* argv[])
 				}
 			}
 
+			// Move ball
+
+
+			// Vertical Movement
+			ball.position.y += ballVelocity.y * BALL_SPEED * deltaTime; // Moving down
+
+			if (CheckCollision(ball, topWall.position)) {
+				ballVelocity.y = -ballVelocity.y;
+				ball.position.y += ballVelocity.y * BALL_SPEED * deltaTime; // Moving down
+			}
+			else if (CheckCollision(ball, bottomWall.position)) {
+				ballVelocity.y = -ballVelocity.y;
+				ball.position.y += ballVelocity.y * BALL_SPEED * deltaTime; // Moving down
+			}
+
+			ball.position.x += ballVelocity.x * BALL_SPEED * deltaTime; // Moving down
+
+			if (CheckCollision(ball, leftWall.position)) {
+				ballVelocity.x = -ballVelocity.x;
+				ball.position.x += ballVelocity.x * BALL_SPEED * deltaTime; // Moving down
+			}
+			else if (CheckCollision(ball, rightWall.position)) {
+				ballVelocity.x = -ballVelocity.x;
+				ball.position.x += ballVelocity.x * BALL_SPEED * deltaTime; // Moving down
+			}
+
+
+
 			if (leftPaddleUpHeld) {
 				leftPaddle.position.y -= PADDLE_SPEED * deltaTime;
 				if (CheckCollision(leftPaddle.position, topWall.position)) {
@@ -455,8 +489,14 @@ int main(int argc, char* argv[])
 			SDL_SetRenderDrawColor(renderer, bottomWall.color.r, bottomWall.color.g, bottomWall.color.b, bottomWall.color.a);
 			SDL_RenderFillRectF(renderer, &bottomWall.position);
 
+			// Yellow
+			SDL_SetRenderDrawColor(renderer, 255, 255, 0, 255);
+			SDL_FRect ballCollider = { ball.position.x - ball.radius, ball.position.y - ball.radius, 2.0f * ball.radius, 2.0f * ball.radius };
+			SDL_RenderDrawRectF(renderer, &ballCollider);
+
 			SDL_SetRenderDrawColor(renderer, ball.color.r, ball.color.g, ball.color.b, ball.color.a);
-			SDL_RenderFillCircle(renderer, ball.position.x, ball.position.y, ball.radius );
+			SDL_RenderFillRectF(renderer, &ballCollider);
+			//SDL_RenderFillCircle(renderer, ball.position.x, ball.position.y, ball.radius);
 
 
 			SDL_RenderPresent(renderer);
