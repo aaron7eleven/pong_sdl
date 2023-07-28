@@ -218,7 +218,7 @@ int main(int argc, char* argv[])
 	const int BALL_RADIUS = SCREEN_WIDTH / 64; // Same width as paddle
 	const int BALL_INIT_X = SCREEN_WIDTH / 2;
 	const int BALL_INIT_Y = SCREEN_HEIGHT / 2;
-	const int BALL_SPEED = 50;
+	const int BALL_SPEED = 400;
 
 
 
@@ -338,7 +338,7 @@ int main(int argc, char* argv[])
 		};
 		ball.color = { 0xFF, 0xFF, 0xFF, 0xFF };
 		ball.radius = BALL_RADIUS;
-		Vector2 ballVelocity = { 0.0f, 1.0f };
+		Vector2 ballVelocity = { 0.5f, 0.5f };
 
 
 
@@ -423,34 +423,6 @@ int main(int argc, char* argv[])
 				}
 			}
 
-			// Move ball
-
-
-			// Vertical Movement
-			ball.position.y += ballVelocity.y * BALL_SPEED * deltaTime; // Moving down
-
-			if (CheckCollision(ball, topWall.position)) {
-				ballVelocity.y = -ballVelocity.y;
-				ball.position.y += ballVelocity.y * BALL_SPEED * deltaTime; // Moving down
-			}
-			else if (CheckCollision(ball, bottomWall.position)) {
-				ballVelocity.y = -ballVelocity.y;
-				ball.position.y += ballVelocity.y * BALL_SPEED * deltaTime; // Moving down
-			}
-
-			ball.position.x += ballVelocity.x * BALL_SPEED * deltaTime; // Moving down
-
-			if (CheckCollision(ball, leftWall.position)) {
-				ballVelocity.x = -ballVelocity.x;
-				ball.position.x += ballVelocity.x * BALL_SPEED * deltaTime; // Moving down
-			}
-			else if (CheckCollision(ball, rightWall.position)) {
-				ballVelocity.x = -ballVelocity.x;
-				ball.position.x += ballVelocity.x * BALL_SPEED * deltaTime; // Moving down
-			}
-
-
-
 			if (leftPaddleUpHeld) {
 				leftPaddle.position.y -= PADDLE_SPEED * deltaTime;
 				if (CheckCollision(leftPaddle.position, topWall.position)) {
@@ -467,6 +439,43 @@ int main(int argc, char* argv[])
 				}
 			}
 
+			// Move ball
+			ball.position.y += ballVelocity.y * BALL_SPEED * deltaTime; // Moving down
+			ball.position.x += ballVelocity.x * BALL_SPEED * deltaTime; // Moving down
+
+			// Ball Collision Checks
+			// Vertical Walls
+			if (CheckCollision(ball, topWall.position)) {
+				ballVelocity.y = -ballVelocity.y;
+				ball.position.y += ballVelocity.y * BALL_SPEED * deltaTime; // Moving down
+			}
+			else if (CheckCollision(ball, bottomWall.position)) {
+				ballVelocity.y = -ballVelocity.y;
+				ball.position.y += ballVelocity.y * BALL_SPEED * deltaTime; // Moving down
+			}
+
+			// Paddles
+			if (CheckCollision(ball, leftWall.position)) {
+				ballVelocity.x = -ballVelocity.x;
+				ball.position.x += ballVelocity.x * BALL_SPEED * deltaTime; // Moving down
+			}
+			else if (CheckCollision(ball, rightWall.position)) {
+				ballVelocity.x = -ballVelocity.x;
+				ball.position.x += ballVelocity.x * BALL_SPEED * deltaTime; // Moving down
+			}
+
+			// Horizontal Walls
+			if (CheckCollision(ball, leftPaddle.position)) {
+				ballVelocity.x = -ballVelocity.x;
+				ball.position.x += ballVelocity.x * BALL_SPEED * deltaTime; // Moving down
+			}
+			
+			//if (CheckCollision(ball, rightPaddle.position)) {
+			//	ballVelocity.y = -ballVelocity.y;
+			//	ball.position.y += ballVelocity.y * BALL_SPEED * deltaTime; // Moving down
+			//}
+
+			
 
 
 			//Clear screen to Black
@@ -495,8 +504,8 @@ int main(int argc, char* argv[])
 			SDL_RenderDrawRectF(renderer, &ballCollider);
 
 			SDL_SetRenderDrawColor(renderer, ball.color.r, ball.color.g, ball.color.b, ball.color.a);
-			SDL_RenderFillRectF(renderer, &ballCollider);
-			//SDL_RenderFillCircle(renderer, ball.position.x, ball.position.y, ball.radius);
+			//SDL_RenderFillRectF(renderer, &ballCollider);
+			SDL_RenderFillCircle(renderer, ball.position.x, ball.position.y, ball.radius);
 
 
 			SDL_RenderPresent(renderer);
