@@ -1,6 +1,7 @@
 #include <iostream>
 #include "stdio.h"
 #include <SDL.h>
+#include "SDL.h"
 #include <SDL_image.h>
 #include <string>
 
@@ -119,11 +120,32 @@ float DistanceSquared(float x1, float y1, float x2, float y2) {
 	return deltaX * deltaX + deltaY * deltaY;
 };
 
+float ClosestXToCircle(CircleEntity& circle, SDL_FRect b) {
+
+	float circleX = 0.0f;
+	
+	// Find closest X position to Rect b from Circle's position
+	// Circle is to the left of b
+	if (circle.position.x < b.x) {
+		circleX = b.x;
+	}
+	// Circle is to the right of b
+	else if (circle.position.x > (b.x + b.w)) {
+		circleX = b.x + b.w;
+	}
+	// Circle is inside of b
+	else {
+		circleX = circle.position.x;
+	}
+
+	return circleX;
+}
+
 bool CheckCollision(CircleEntity& circle, SDL_FRect b)
 {
 
-	int circleX;
-	int circleY;
+	float circleX;
+	float circleY;
 
 	// Find closest X position to Rect b from Circle's position
 	// Circle is to the left of b
@@ -195,11 +217,15 @@ int main(int argc, char* argv[])
 	const int SCREEN_FPS = 60;
 	const int SCREEN_TICKS_PER_FRAME = 1000 / SCREEN_FPS; // 1000 ms / X frames
 
-	const int PADDLE_INIT_X = SCREEN_WIDTH / 8;
-	const int PADDLE_INIT_Y = SCREEN_HEIGHT / 2;
 	const int PADDLE_WIDTH = SCREEN_WIDTH / 64;
 	const int PADDLE_HEIGHT = SCREEN_HEIGHT / 8;
 	const int PADDLE_SPEED = 200;
+
+	const int LEFT_PADDLE_INIT_X = SCREEN_WIDTH / 8;
+	const int LEFT_PADDLE_INIT_Y = SCREEN_HEIGHT / 2;
+
+	const int RIGHT_PADDLE_INIT_X = SCREEN_WIDTH - (SCREEN_WIDTH / 8);
+	const int RIGHT_PADDLE_INIT_Y = SCREEN_HEIGHT / 2;
 
 	const int HORZ_WALL_WIDTH = SCREEN_WIDTH / 128;
 	const int HORZ_WALL_HEIGHT = SCREEN_HEIGHT;
@@ -218,7 +244,7 @@ int main(int argc, char* argv[])
 	const int BALL_RADIUS = SCREEN_WIDTH / 64; // Same width as paddle
 	const int BALL_INIT_X = SCREEN_WIDTH / 2;
 	const int BALL_INIT_Y = SCREEN_HEIGHT / 2;
-	const int BALL_SPEED = 400;
+	const int BALL_SPEED = 800;
 
 
 
@@ -282,8 +308,8 @@ int main(int argc, char* argv[])
 
 		Entity leftPaddle;
 		leftPaddle.position = {
-			PADDLE_INIT_X,
-			PADDLE_INIT_Y,
+			LEFT_PADDLE_INIT_X,
+			LEFT_PADDLE_INIT_Y,
 			PADDLE_WIDTH,
 			PADDLE_HEIGHT
 		};
@@ -291,6 +317,21 @@ int main(int argc, char* argv[])
 		leftPaddle.color = { 0xFF, 0xFF, 0xFF, 0xFF };
 		bool leftPaddleUpHeld = false;
 		bool leftPaddleDownHeld = false;
+		float leftPaddleVelocity = 0.0f;
+
+		Entity rightPaddle;
+		rightPaddle.position = {
+			RIGHT_PADDLE_INIT_X,
+			RIGHT_PADDLE_INIT_Y,
+			PADDLE_WIDTH,
+			PADDLE_HEIGHT
+		};
+
+		rightPaddle.color = { 0xFF, 0xFF, 0xFF, 0xFF };
+		bool rightPaddleUpHeld = false;
+		bool rightPaddleDownHeld = false;
+		float rightPaddleVelocity = 0.0f;
+
 
 		Entity leftWall;
 		leftWall.position = {
@@ -357,6 +398,9 @@ int main(int argc, char* argv[])
 
 			//printf("deltaTime = %f\n", deltaTime);
 
+			leftPaddleVelocity = 0.0f;
+			rightPaddleVelocity = 0.0f;
+
 			//Handle events on queue
 			while (SDL_PollEvent(&e) != 0)
 			{
@@ -365,79 +409,110 @@ int main(int argc, char* argv[])
 				{
 					quit = true;
 				}
-				else if (e.type == SDL_KEYDOWN) {
-					//Select surfaces based on key press
-					switch (e.key.keysym.sym)
-					{
+				//else if (e.type == SDL_KEYDOWN) {
+				//	//Select surfaces based on key press
+				//	switch (e.key.keysym.sym)
+				//	{
 
-						// Left Paddle
-						case SDLK_w:							
-							leftPaddleUpHeld = true;
-							break;
+				//		// Left Paddle
+				//		case SDLK_w:							
+				//			leftPaddleUpHeld = true;
+				//			//leftPaddleVelocity -= 1.0f;
+				//			break;
 
-						case SDLK_s:
-							leftPaddleDownHeld = true;
-							break;
+				//		case SDLK_s:
+				//			leftPaddleDownHeld = true;
+				//			//leftPaddleVelocity += 1.0f;
+				//			break;
 
-						// Right Paddle
-						case SDLK_UP:
-							printf("Up");
-							break;
+				//		// Right Paddle
+				//		case SDLK_UP:
+				//			rightPaddleUpHeld = true;
+				//			break;
 
-						case SDLK_DOWN:
-							printf("Down");
-							break;
+				//		case SDLK_DOWN:
+				//			printf("Down");
+				//			break;
 
-						default:
-							printf("Default");
-							break;
-					}
-				}
-				else if (e.type == SDL_KEYUP) {
-					//Select surfaces based on key press
-					switch (e.key.keysym.sym)
-					{
+				//		default:
+				//			printf("Default");
+				//			break;
+				//	}
+				//}
+				//else if (e.type == SDL_KEYUP) {
+				//	//Select surfaces based on key press
+				//	switch (e.key.keysym.sym)
+				//	{
 
-						// Left Paddle
-					case SDLK_w:
-						leftPaddleUpHeld = false;
-						break;
+				//		// Left Paddle
+				//	case SDLK_w:
+				//		leftPaddleUpHeld = false;
+				//		//leftPaddleVelocity += 1.0f;
+				//		break;
 
-					case SDLK_s:
-						leftPaddleDownHeld = false;
-						break;
+				//	case SDLK_s:
+				//		leftPaddleDownHeld = false;
+				//		//leftPaddleVelocity -= 1.0f;
+				//		break;
 
-						// Right Paddle
-					case SDLK_UP:
-						printf("Up");
-						break;
+				//		// Right Paddle
+				//	case SDLK_UP:
+				//		printf("Up");
+				//		break;
 
-					case SDLK_DOWN:
-						printf("Down");
-						break;
+				//	case SDLK_DOWN:
+				//		printf("Down");
+				//		break;
 
-					default:
-						printf("Default");
-						break;
-					}
-				}
+				//	default:
+				//		printf("Default");
+				//		break;
+				//	}
+				//}
 			}
 
-			if (leftPaddleUpHeld) {
-				leftPaddle.position.y -= PADDLE_SPEED * deltaTime;
-				if (CheckCollision(leftPaddle.position, topWall.position)) {
-					// Undo Move
-					leftPaddle.position.y += PADDLE_SPEED * deltaTime;
-				}
+			const Uint8* currentKeyStates = SDL_GetKeyboardState(NULL);
+
+			// Not sure which this isn't working
+			//if (currentKeyStates[SDLK_w]) {
+			//	leftPaddleVelocity -= 1.0f;
+			//}
+
+			//if (currentKeyStates[SDLK_s]) {
+			//	leftPaddleVelocity += 1.0f;
+			//}
+
+			// This works
+			if (currentKeyStates[SDL_SCANCODE_W]) {
+				leftPaddleVelocity -= 1.0f;
 			}
 
-			if (leftPaddleDownHeld) {
-				leftPaddle.position.y += PADDLE_SPEED * deltaTime;
-				if (CheckCollision(leftPaddle.position, bottomWall.position)) {
-					// Undo Move
-					leftPaddle.position.y -= PADDLE_SPEED * deltaTime;
-				}
+			if (currentKeyStates[SDL_SCANCODE_S]) {
+				leftPaddleVelocity += 1.0f;
 			}
+
+			//if (currentKeyStates[SDLK_up]) {
+			//	rightPaddleVelocity -= 1.0f;
+			//}
+
+			//if (currentKeyStates[SDLK_DOWN]) {
+			//	rightPaddleVelocity += 1.0f;
+			//}
+
+			leftPaddle.position.y += leftPaddleVelocity * PADDLE_SPEED * deltaTime;
+
+			if (CheckCollision(leftPaddle.position, bottomWall.position)) {
+				// Undo Move
+				leftPaddle.position.y -= leftPaddleVelocity * PADDLE_SPEED * deltaTime;
+			}
+
+			if (CheckCollision(leftPaddle.position, topWall.position)) {
+				// Undo Move
+				leftPaddle.position.y -= leftPaddleVelocity * PADDLE_SPEED * deltaTime;
+			}
+
+			
+
 
 			// Move ball
 			ball.position.y += ballVelocity.y * BALL_SPEED * deltaTime; // Moving down
@@ -454,7 +529,7 @@ int main(int argc, char* argv[])
 				ball.position.y += ballVelocity.y * BALL_SPEED * deltaTime; // Moving down
 			}
 
-			// Paddles
+			// Horizontal Walls
 			if (CheckCollision(ball, leftWall.position)) {
 				ballVelocity.x = -ballVelocity.x;
 				ball.position.x += ballVelocity.x * BALL_SPEED * deltaTime; // Moving down
@@ -464,9 +539,10 @@ int main(int argc, char* argv[])
 				ball.position.x += ballVelocity.x * BALL_SPEED * deltaTime; // Moving down
 			}
 
-			// Horizontal Walls
+			// Paddles
 			if (CheckCollision(ball, leftPaddle.position)) {
 				ballVelocity.x = -ballVelocity.x;
+				//float collidedX = ClosestXToCircle(ball, leftPaddle.position);				
 				ball.position.x += ballVelocity.x * BALL_SPEED * deltaTime; // Moving down
 			}
 			
