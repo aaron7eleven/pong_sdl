@@ -1,13 +1,13 @@
 #include <iostream>
-#include "stdio.h"
-#include <SDL.h>
-#include "SDL.h"
-#include <SDL_image.h>
 #include <string>
 #include <cstdlib>
+#include <cmath>
 
-//bool CheckCollision(SDL_FRect a, SDL_FRect b);
-//bool CheckCollision(CircleEntity& circle, SDL_FRect& b);
+#include "stdio.h"
+
+#include <SDL.h>
+#include <SDL_image.h>
+#include <SDL_ttf.h>
 
 struct Entity {
 	SDL_FRect position;
@@ -19,8 +19,6 @@ struct CircleEntity {
 	SDL_Color color;
 	float radius;
 };
-
-
 
 struct Vector2 {
 	float x;
@@ -65,6 +63,30 @@ SDL_Texture* LoadTexture(SDL_Renderer* renderer, std::string path) {
 	}
 
 	SDL_FreeSurface(imageSurface);
+
+	return outputTexture;
+}
+
+SDL_Texture* LoadTextTexture(SDL_Renderer* renderer,TTF_Font* font, std::string textureText, SDL_Color textColor) {
+	SDL_Texture* outputTexture = NULL;
+
+	SDL_Surface* textSurface = TTF_RenderText_Solid(font, textureText.c_str() , textColor);
+	if (textSurface == NULL)
+	{
+		printf("Unable to render text surface! SDL_TTF Error: %s\n", TTF_GetError());
+	}
+	else {
+		outputTexture = SDL_CreateTextureFromSurface(renderer, textSurface);
+		if (outputTexture == NULL)
+		{
+			printf("Unable to create texture from %s! SDL Error: %s\n",SDL_GetError());
+		}
+		else {
+			// get image dimen
+		}
+	}
+
+	SDL_FreeSurface(textSurface);
 
 	return outputTexture;
 }
@@ -188,6 +210,17 @@ bool CheckCollision(CircleEntity& circle, SDL_FRect b)
 
 };
 
+float Magnitude(Vector2* vec2) {
+	return std::sqrt(vec2->x * vec2->x + vec2->y * vec2->y);
+}
+
+void Normalize(Vector2* vec2) {
+	Vector2 normVec2;
+	float magnitude = Magnitude(vec2);
+	vec2->x = vec2->x / magnitude;
+	vec2->y = vec2->y / magnitude;
+}
+
 //void ResetBall(CircleEntity* ball) {
 //
 //	ball->position = {
@@ -228,7 +261,7 @@ void SDL_RenderFillCircle(SDL_Renderer* rend, float x0, float y0, float radius)
 
 
 
-int main(int argc, char* argv[]) 
+int main(int argc, char* argv[])
 {
 	const int SCREEN_WIDTH = 1280;
 	const int SCREEN_HEIGHT = 720;
@@ -264,12 +297,34 @@ int main(int argc, char* argv[])
 	const int BALL_INIT_Y = SCREEN_HEIGHT / 2;
 	const int BALL_SPEED = 600;
 
+	const int SCORE_TEXT_WIDTH = SCREEN_WIDTH / 32;
+	const int SCORE_TEXT_HEIGHT = SCREEN_HEIGHT / 8; // Same Height as paddle
+	const int SCORE_TEXT_X_OFFSET = SCREEN_WIDTH / 16;
+	const int SCORE_TEXT_Y_OFFSET = SCREEN_WIDTH / 16;
 
+	const int LEFT_SCORE_TEXT_X = (SCREEN_WIDTH / 2) - SCORE_TEXT_WIDTH - SCORE_TEXT_X_OFFSET;
+	const int LEFT_SCORE_TEXT_Y = SCORE_TEXT_Y_OFFSET;
+
+	const int RIGHT_SCORE_TEXT_X = (SCREEN_WIDTH / 2) + SCORE_TEXT_X_OFFSET;
+	const int RIGHT_SCORE_TEXT_Y = SCORE_TEXT_Y_OFFSET;
+
+
+	int leftScore = 0;
+	bool leftScoreChanged = false;
+	int rightScore = 0;
+	bool rightScoreChanged = false;
 
 	SDL_Window* window = NULL;
 	SDL_Surface* windowSurface = NULL;
 	SDL_Renderer* renderer = NULL;
 	SDL_Texture* texture = NULL;
+	TTF_Font* font = NULL;
+	SDL_Color textColor = {255, 255, 255, 255 }; // white
+	const int fontPointSize = 12;
+
+	SDL_Texture* leftTextTexture = NULL;
+	SDL_Texture* rightTextTexture = NULL;
+
 
 	// Initialization
 	if (SDL_Init(SDL_INIT_EVERYTHING)) 
@@ -306,17 +361,36 @@ int main(int argc, char* argv[])
 					//Get window surface
 					windowSurface = SDL_GetWindowSurface(window);
 				}
-			}
-			
-			
+
+				if (TTF_Init() == -1) {
+					printf("SDL_ttf could not initialize! SDL_ttf Error: %s\n", TTF_GetError());
+				}
+				else {
+					font = TTF_OpenFont("assets/font/VT323-Regular.ttf", fontPointSize);
+					if (font == NULL) {
+						printf("Faile to load font! SDL_ttf Error: %s\n", TTF_GetError());
+					}
+					else {
+						// Render Text
+
+					}
+				}
+			}			
 		}
 	}
 
 	texture = LoadTexture(renderer, "assets/loaded.png");
-
+	leftTextTexture = LoadTextTexture(renderer, font, std::to_string(leftScore), textColor);
+	rightTextTexture = LoadTextTexture(renderer, font, std::to_string(rightScore), textColor);
 
 	if (texture == NULL) {
 		printf("Failed to load texture image\n");
+	}
+	else if (leftTextTexture == NULL) {
+		printf("Failed to load left text texture image\n");
+	}
+	else if (rightTextTexture == NULL) {
+		printf("Failed to load right text texture image\n");
 	}
 	else {
 
@@ -623,20 +697,64 @@ int main(int argc, char* argv[])
 				}
 
 				resettingBall = true;
+				leftScore++;
+				leftScoreChanged = true;
 
 			}
 
 			// Left Paddles
 			if (CheckCollision(ball, leftPaddle.position)) {
 				ballVelocity.x = -ballVelocity.x;
-				//float collidedX = ClosestXToCircle(ball, leftPaddle.position);				
 				ball.position.x += ballVelocity.x * BALL_SPEED * deltaTime; // Moving down
-			}
+				
+				// Check if Ball is above or below paddle
+				if (ball.position.x >= leftPaddle.position.x && ball.position.x < leftPaddle.position.x + PADDLE_WIDTH) {
+					ballVelocity.y = -ballVelocity.y;
+					ball.position.y += ballVelocity.y * BALL_SPEED * deltaTime; // Moving down
 
-			//if (CheckCollision(ball, leftPaddle.position)) {
-			//	ballVelocity.y = -ballVelocity.y;
-			//	ball.position.y += ballVelocity.y * BALL_SPEED * deltaTime; // Moving down
-			//}
+					// Do you care if it is above or below
+					//if (ball.position.y >= leftPaddle.position.y) {
+					//	// Above
+					//	
+					//}
+					//else {
+					//	// Below
+					//}
+
+				}
+				// Ball is in front of left paddle
+				// Check if ball is above paddle (hit paddle corner) or within paddle (hit paddle side)
+				else if (ball.position.y >= leftPaddle.position.y) {
+					// Max Angle Hit
+					if (ballVelocity.x > 0) {
+						ballVelocity.x = 0.5f;
+					}
+					else if (ballVelocity.x < 0) {
+						ballVelocity.x = 0.5f;
+					}
+					else {
+						ballVelocity.x = 0.0f;
+					}
+					// Flip for hit
+					ballVelocity.x = -ballVelocity.x;
+
+					ballVelocity.x = 0.5f;
+					if (ballVelocity.y > 0) {
+						ballVelocity.y = 0.5;
+					}
+					else {
+
+					}
+				}
+				// Ball hit paddle side
+				else {
+					// Diff 
+				}
+
+				// Ball above paddle
+				// Ball within paddle
+				// Ball below
+			}
 
 			// Right Paddle
 			if (CheckCollision(ball, rightPaddle.position)) {
@@ -650,20 +768,32 @@ int main(int argc, char* argv[])
 			//	ball.position.y += ballVelocity.y * BALL_SPEED * deltaTime; // Moving down
 			//}
 
+			if (leftScoreChanged) {
+				// Update texture
+				leftTextTexture = LoadTextTexture(renderer, font, std::to_string(leftScore), textColor);
+				leftScoreChanged = false;
+			}
 
+			/////////////////////////
+			// Render Pass
+			/////////////////////////
 
 			//Clear screen to Black
 			SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, 0x00);
 			SDL_RenderClear(renderer);
 
-			// Draw Entities
+			/////////////////////////
+			// Render Entities
+			/////////////////////////
+
+			// Draw Paddles
 			SDL_SetRenderDrawColor(renderer, leftPaddle.color.r, leftPaddle.color.g, leftPaddle.color.b, leftPaddle.color.a);
 			SDL_RenderFillRectF(renderer, &leftPaddle.position);
 
-			// Draw Entities
 			SDL_SetRenderDrawColor(renderer, rightPaddle.color.r, rightPaddle.color.g, rightPaddle.color.b, rightPaddle.color.a);
 			SDL_RenderFillRectF(renderer, &rightPaddle.position);
 
+			// Draw Walls
 			SDL_SetRenderDrawColor(renderer, leftWall.color.r, leftWall.color.g, leftWall.color.b, leftWall.color.a);
 			SDL_RenderFillRectF(renderer, &leftWall.position);
 
@@ -676,14 +806,45 @@ int main(int argc, char* argv[])
 			SDL_SetRenderDrawColor(renderer, bottomWall.color.r, bottomWall.color.g, bottomWall.color.b, bottomWall.color.a);
 			SDL_RenderFillRectF(renderer, &bottomWall.position);
 
-			// Yellow
-			SDL_SetRenderDrawColor(renderer, 255, 255, 0, 255);
-			SDL_FRect ballCollider = { ball.position.x - ball.radius, ball.position.y - ball.radius, 2.0f * ball.radius, 2.0f * ball.radius };
-			SDL_RenderDrawRectF(renderer, &ballCollider);
-
+			// Draw Ball
 			SDL_SetRenderDrawColor(renderer, ball.color.r, ball.color.g, ball.color.b, ball.color.a);
 			//SDL_RenderFillRectF(renderer, &ballCollider);
 			SDL_RenderFillCircle(renderer, ball.position.x, ball.position.y, ball.radius);
+
+			/////////////////////////
+			// Render Entities Debug
+			/////////////////////////
+
+			// Paddle Position (Top Left)
+			SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255); // Green
+			SDL_RenderDrawPointF(renderer, leftPaddle.position.x, leftPaddle.position.y);
+			SDL_RenderDrawPointF(renderer, rightPaddle.position.x, rightPaddle.position.y);
+
+			// Ball Position (Center)
+			SDL_RenderDrawPointF(renderer, ball.position.x, ball.position.y);
+
+			// Ball Collider
+			SDL_SetRenderDrawColor(renderer, 255, 255, 0, 255); // Yellow
+			SDL_FRect ballCollider = { ball.position.x - ball.radius, ball.position.y - ball.radius, 2.0f * ball.radius, 2.0f * ball.radius };
+			SDL_RenderDrawRectF(renderer, &ballCollider);
+
+			//Render text texture to screen
+			//SDL_RenderCopy(renderer, textTexture, NULL, NULL);
+			const SDL_Rect leftTextDestRect = {
+				LEFT_SCORE_TEXT_X,
+				LEFT_SCORE_TEXT_Y,
+				SCORE_TEXT_WIDTH,
+				SCORE_TEXT_HEIGHT
+			};
+			SDL_RenderCopyEx(renderer, leftTextTexture, NULL, &leftTextDestRect, 0, NULL, SDL_FLIP_NONE);
+
+			const SDL_Rect rightTextDestRect = {
+				RIGHT_SCORE_TEXT_X,
+				RIGHT_SCORE_TEXT_Y,
+				SCORE_TEXT_WIDTH,
+				SCORE_TEXT_HEIGHT
+			};
+			SDL_RenderCopyEx(renderer, rightTextTexture,NULL, &rightTextDestRect, 0, NULL, SDL_FLIP_NONE);
 
 
 			SDL_RenderPresent(renderer);
@@ -702,6 +863,13 @@ int main(int argc, char* argv[])
 
 	SDL_DestroyTexture(texture);
 	texture = NULL;
+
+	SDL_DestroyTexture(rightTextTexture);
+	rightTextTexture = NULL;
+	SDL_DestroyTexture(leftTextTexture);
+	leftTextTexture = NULL;
+
+
 	//Deallocate surface
 	SDL_FreeSurface(windowSurface);
 	windowSurface = NULL;
@@ -710,7 +878,11 @@ int main(int argc, char* argv[])
 	SDL_DestroyWindow(window);
 	window = NULL;
 
+
+
 	//Quit SDL subsystems
+	TTF_Quit();
+	IMG_Quit();
 	SDL_Quit();
 
 	return 0;
