@@ -295,7 +295,7 @@ int main(int argc, char* argv[])
 	const int BALL_RADIUS = SCREEN_WIDTH / 64; // Same width as paddle
 	const int BALL_INIT_X = SCREEN_WIDTH / 2;
 	const int BALL_INIT_Y = SCREEN_HEIGHT / 2;
-	const int BALL_SPEED = 900;
+	const int BALL_SPEED = 600;
 
 	const int SCORE_TEXT_WIDTH = SCREEN_WIDTH / 16;
 	const int SCORE_TEXT_HEIGHT = SCREEN_HEIGHT / 8; // Same Height as paddle
@@ -712,54 +712,96 @@ int main(int argc, char* argv[])
 				leftScoreChanged = true;
 			}
 
+
 			// Left Paddles
 			if (CheckCollision(ball, leftPaddle.position)) {
-				ballVelocity.x = -ballVelocity.x;
-				ball.position.x += ballVelocity.x * BALL_SPEED * deltaTime; // Moving down
+				//ballVelocity.x = -ballVelocity.x;
+				//ball.position.x += ballVelocity.x * BALL_SPEED * deltaTime; // Moving down
 				
-				// Check if Ball is above or below paddle
-				if (ball.position.x >= leftPaddle.position.x && ball.position.x < leftPaddle.position.x + PADDLE_WIDTH) {
-					ballVelocity.y = -ballVelocity.y;
-					ball.position.y += ballVelocity.y * BALL_SPEED * deltaTime; // Moving down
+				bool ballAbovePaddle = ball.position.y >= leftPaddle.position.y;
+				bool ballRightOfPaddle = ball.position.x >= leftPaddle.position.x + PADDLE_WIDTH;
 
-					// Do you care if it is above or below
-					//if (ball.position.y >= leftPaddle.position.y) {
-					//	// Above
-					//	
-					//}
-					//else {
-					//	// Below
-					//}
-
-				}
-				// Ball is in front of left paddle
-				// Check if ball is above paddle (hit paddle corner) or within paddle (hit paddle side)
-				else if (ball.position.y >= leftPaddle.position.y) {
-					// Max Angle Hit
-					if (ballVelocity.x > 0) {
-						ballVelocity.x = 0.5f;
-					}
-					else if (ballVelocity.x < 0) {
-						ballVelocity.x = 0.5f;
+				// Check ball if above paddle
+				if (ballAbovePaddle) {
+					// Check if ball is to the right of the left paddle
+					if (ballRightOfPaddle) {
+						// Hit sweet spot on corner
 					}
 					else {
-						ballVelocity.x = 0.0f;
-					}
-					// Flip for hit
-					ballVelocity.x = -ballVelocity.x;
-
-					ballVelocity.x = 0.5f;
-					if (ballVelocity.y > 0) {
-						ballVelocity.y = 0.5;
-					}
-					else {
-
+						// Hit Top -> bounce off top
+						ballVelocity.y = -ballVelocity.y;
+						ball.position.y += ballVelocity.y * BALL_SPEED * deltaTime; // Moving down
 					}
 				}
-				// Ball hit paddle side
+				//
 				else {
-					// Diff 
+					// Diff
+					printf("Paddle Hit Side");
+					ballVelocity.x = -ballVelocity.x;
+					ball.position.x += ballVelocity.x * BALL_SPEED * deltaTime; // Moving down
+
+					float paddleHalfHeight = PADDLE_HEIGHT / 2.0f;
+					float paddleCenterY = leftPaddle.position.y - paddleHalfHeight;
+					float diffFromPaddleCenter = abs(paddleCenterY - ball.position.y);
+					ballVelocity.y = 0.5f * (diffFromPaddleCenter / paddleHalfHeight);
+					if (ball.position.y < paddleCenterY) {
+						ballVelocity.y *= -1;
+					}
+					ball.position.y += ballVelocity.y * BALL_SPEED * deltaTime; // Moving down
 				}
+
+
+				//// Check if Ball is above or below paddle
+				//if (ball.position.x >= leftPaddle.position.x && ball.position.x < leftPaddle.position.x + PADDLE_WIDTH) {
+				//	ballVelocity.y = -ballVelocity.y;
+				//	ball.position.y += ballVelocity.y * BALL_SPEED * deltaTime; // Moving down
+
+				//	// Do you care if it is above or below
+				//	//if (ball.position.y >= leftPaddle.position.y) {
+				//	//	// Above
+				//	//	
+				//	//}
+				//	//else {
+				//	//	// Below
+				//	//}
+
+				//}
+				//// Ball is in front of left paddle
+				//// Check if ball is above paddle (hit paddle corner) or within paddle (hit paddle side)
+				//else if (ball.position.y >= leftPaddle.position.y) {
+				//	// Max Angle Hit
+				//	if (ballVelocity.x > 0) {
+				//		ballVelocity.x = 0.5f;
+				//	}
+				//	else if (ballVelocity.x < 0) {
+				//		ballVelocity.x = 0.5f;
+				//	}
+				//	else {
+				//		ballVelocity.x = 0.0f;
+				//	}
+				//	// Flip for hit
+				//	//ballVelocity.x = -ballVelocity.x;
+
+				//	ballVelocity.x = 0.5f;
+				//	if (ballVelocity.y > 0) {
+				//		ballVelocity.y = 0.5;
+				//	}
+				//	else {
+
+				//	}
+				//}
+				//// Ball hit paddle side
+				//else {
+				//	// Diff
+				//	printf("Paddle Hit Side");
+				//	float paddleHalfHeight = PADDLE_HEIGHT / 2.0f;
+				//	float paddleCenterY = leftPaddle.position.y - paddleHalfHeight;
+				//	float diffFromPaddleCenter = abs(paddleCenterY - ball.position.y);
+				//	ballVelocity.y = 0.5f * (diffFromPaddleCenter / paddleHalfHeight);
+				//	if (ball.position.y < 0) {
+				//		ballVelocity.y *= -1;
+				//	}
+				//}
 
 				// Ball above paddle
 				// Ball within paddle
