@@ -25,6 +25,11 @@ struct Vector2 {
 	float y;
 };
 
+struct Line {
+	SDL_Point start;
+	SDL_Point end;
+};
+
 SDL_Surface* LoadSurface(SDL_Surface* window, std::string path) {
 	
 	SDL_Surface* optimizedSurface = NULL;
@@ -308,6 +313,27 @@ int main(int argc, char* argv[])
 	const int RIGHT_SCORE_TEXT_X = (SCREEN_WIDTH / 2) + SCORE_TEXT_X_OFFSET;
 	const int RIGHT_SCORE_TEXT_Y = SCORE_TEXT_Y_OFFSET;
 
+
+	//const int MIDLINE_POINTS_COUNT = 2;
+	//SDL_Point MIDLINE_POINTS[MIDLINE_POINTS_COUNT];
+	//for (int i = 0; i < MIDLINE_POINTS_COUNT; i++)
+	//{
+	//	SDL_Point point = { SCREEN_WIDTH / 2, SCREEN_HEIGHT / MIDLINE_POINTS_COUNT * i };
+	//	MIDLINE_POINTS[i] = point;
+	//}
+
+	const int MIDLINE_LINES_COUNT = 10;
+	const int MIDLINE_LINE_LENGTH = 10;
+	//const int LINE_LENGTH = 10;
+	Line MIDLINE_LINES[MIDLINE_LINES_COUNT];
+	for (int i = 0; i < MIDLINE_LINES_COUNT; i++)
+	{
+		Line line = {
+			{SCREEN_WIDTH / 2,  SCREEN_HEIGHT / MIDLINE_LINES_COUNT * i },
+			{SCREEN_WIDTH / 2,  SCREEN_HEIGHT / MIDLINE_LINES_COUNT * i + MIDLINE_LINE_LENGTH}
+		};
+		MIDLINE_LINES[i] = line;
+	}
 
 	int leftScore = 0;
 	bool leftScoreChanged = false;
@@ -863,6 +889,18 @@ int main(int argc, char* argv[])
 
 			SDL_SetRenderDrawColor(renderer, bottomWall.color.r, bottomWall.color.g, bottomWall.color.b, bottomWall.color.a);
 			SDL_RenderFillRectF(renderer, &bottomWall.position);
+
+			// Draw Midline
+			SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
+			//SDL_RenderDrawPoints(renderer, MIDLINE_POINTS, MIDLINE_POINTS_COUNT);
+			//SDL_RenderDrawLines(renderer, MIDLINE_POINTS, MIDLINE_POINTS_COUNT);
+			for (int i = 0; i < MIDLINE_LINES_COUNT; i++)
+			{
+				Line line = MIDLINE_LINES[i];
+				SDL_RenderDrawLine(renderer, line.start.x, line.start.y, line.end.x, line.end.y);
+				
+				
+			}
 
 			// Draw Ball
 			SDL_SetRenderDrawColor(renderer, ball.color.r, ball.color.g, ball.color.b, ball.color.a);
