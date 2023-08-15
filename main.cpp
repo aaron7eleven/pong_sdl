@@ -295,9 +295,9 @@ int main(int argc, char* argv[])
 	const int BALL_RADIUS = SCREEN_WIDTH / 64; // Same width as paddle
 	const int BALL_INIT_X = SCREEN_WIDTH / 2;
 	const int BALL_INIT_Y = SCREEN_HEIGHT / 2;
-	const int BALL_SPEED = 600;
+	const int BALL_SPEED = 900;
 
-	const int SCORE_TEXT_WIDTH = SCREEN_WIDTH / 32;
+	const int SCORE_TEXT_WIDTH = SCREEN_WIDTH / 16;
 	const int SCORE_TEXT_HEIGHT = SCREEN_HEIGHT / 8; // Same Height as paddle
 	const int SCORE_TEXT_X_OFFSET = SCREEN_WIDTH / 16;
 	const int SCORE_TEXT_Y_OFFSET = SCREEN_WIDTH / 16;
@@ -320,7 +320,7 @@ int main(int argc, char* argv[])
 	SDL_Texture* texture = NULL;
 	TTF_Font* font = NULL;
 	SDL_Color textColor = {255, 255, 255, 255 }; // white
-	const int fontPointSize = 12;
+	const int fontPointSize = 100;
 
 	SDL_Texture* leftTextTexture = NULL;
 	SDL_Texture* rightTextTexture = NULL;
@@ -382,6 +382,8 @@ int main(int argc, char* argv[])
 	texture = LoadTexture(renderer, "assets/loaded.png");
 	leftTextTexture = LoadTextTexture(renderer, font, std::to_string(leftScore), textColor);
 	rightTextTexture = LoadTextTexture(renderer, font, std::to_string(rightScore), textColor);
+
+	//TTF_SizeText()
 
 	if (texture == NULL) {
 		printf("Failed to load texture image\n");
@@ -503,6 +505,13 @@ int main(int argc, char* argv[])
 				if (e.type == SDL_QUIT)
 				{
 					quit = true;
+				}
+				else if (e.type == SDL_KEYDOWN) {
+					switch (e.key.keysym.sym) {
+						case SDLK_ESCAPE: {
+							quit = true;
+						}
+					}
 				}
 				//else if (e.type == SDL_KEYDOWN) {
 				//	//Select surfaces based on key press
@@ -679,6 +688,8 @@ int main(int argc, char* argv[])
 				}
 
 				resettingBall = true;
+				rightScore++;
+				rightScoreChanged = true;
 			}
 			else if (CheckCollision(ball, rightWall.position)) {
 				ballVelocity.x = -ballVelocity.x;
@@ -699,7 +710,6 @@ int main(int argc, char* argv[])
 				resettingBall = true;
 				leftScore++;
 				leftScoreChanged = true;
-
 			}
 
 			// Left Paddles
@@ -772,6 +782,12 @@ int main(int argc, char* argv[])
 				// Update texture
 				leftTextTexture = LoadTextTexture(renderer, font, std::to_string(leftScore), textColor);
 				leftScoreChanged = false;
+			}
+
+			if (rightScoreChanged) {
+				// Update texture
+				rightTextTexture = LoadTextTexture(renderer, font, std::to_string(rightScore), textColor);
+				rightScoreChanged = false;
 			}
 
 			/////////////////////////
@@ -869,6 +885,7 @@ int main(int argc, char* argv[])
 	SDL_DestroyTexture(leftTextTexture);
 	leftTextTexture = NULL;
 
+	TTF_CloseFont(font);
 
 	//Deallocate surface
 	SDL_FreeSurface(windowSurface);
