@@ -302,7 +302,7 @@ int main(int argc, char* argv[])
 	const int BALL_INIT_Y = SCREEN_HEIGHT / 2;
 	const int BALL_SPEED = 600;
 
-	const int SCORE_TEXT_WIDTH = SCREEN_WIDTH / 16;
+	const int SCORE_TEXT_WIDTH = SCREEN_WIDTH / 32;
 	const int SCORE_TEXT_HEIGHT = SCREEN_HEIGHT / 8; // Same Height as paddle
 	const int SCORE_TEXT_X_OFFSET = SCREEN_WIDTH / 16;
 	const int SCORE_TEXT_Y_OFFSET = SCREEN_WIDTH / 16;
@@ -392,7 +392,7 @@ int main(int argc, char* argv[])
 					printf("SDL_ttf could not initialize! SDL_ttf Error: %s\n", TTF_GetError());
 				}
 				else {
-					font = TTF_OpenFont("assets/font/VT323-Regular.ttf", fontPointSize);
+					font = TTF_OpenFont("assets/font/DotGothic16-Regular.ttf", fontPointSize);
 					if (font == NULL) {
 						printf("Faile to load font! SDL_ttf Error: %s\n", TTF_GetError());
 					}
