@@ -313,6 +313,22 @@ int main(int argc, char* argv[])
 	const int RIGHT_SCORE_TEXT_X = (SCREEN_WIDTH / 2) + SCORE_TEXT_X_OFFSET;
 	const int RIGHT_SCORE_TEXT_Y = SCORE_TEXT_Y_OFFSET;
 	
+	const int TITLE_TEXT_X_OFFSET = 0;
+	const int TITLE_TEXT_Y_OFFSET = SCREEN_WIDTH / 16;
+	const int TITLE_TEXT_WIDTH = SCREEN_WIDTH / 8;
+	const int TITLE_TEXT_HEIGHT = SCREEN_HEIGHT / 8; // Same Height as paddle
+	const int TITLE_TEXT_X = (SCREEN_WIDTH / 2) - TITLE_TEXT_WIDTH / 2 ;
+	const int TITLE_TEXT_Y = SCORE_TEXT_Y_OFFSET;
+
+	const SDL_Rect title = {
+		TITLE_TEXT_X,
+		TITLE_TEXT_Y,
+		TITLE_TEXT_WIDTH,
+		TITLE_TEXT_HEIGHT
+	};
+
+	
+
 	const int MIDLINE_LINE_LENGTH = 32;
 	const int MIDLINE_LINE_THICKNESS = 20;
 	const int MIDLINE_LINES_COUNT = 10;
@@ -347,6 +363,8 @@ int main(int argc, char* argv[])
 
 	SDL_Texture* leftTextTexture = NULL;
 	SDL_Texture* rightTextTexture = NULL;
+
+	SDL_Texture* titleTextTexture = NULL;
 
 
 	// Initialization
@@ -405,6 +423,7 @@ int main(int argc, char* argv[])
 	texture = LoadTexture(renderer, "assets/loaded.png");
 	leftTextTexture = LoadTextTexture(renderer, font, std::to_string(leftScore), textColor);
 	rightTextTexture = LoadTextTexture(renderer, font, std::to_string(rightScore), textColor);
+	titleTextTexture = LoadTextTexture(renderer, font, "Pong", textColor);
 
 	//TTF_SizeText()
 
@@ -940,6 +959,9 @@ int main(int argc, char* argv[])
 				SCORE_TEXT_HEIGHT
 			};
 			SDL_RenderCopyEx(renderer, rightTextTexture,NULL, &rightTextDestRect, 0, NULL, SDL_FLIP_NONE);
+
+
+			SDL_RenderCopyEx(renderer, titleTextTexture, NULL, &title, 0, NULL, SDL_FLIP_NONE);
 
 
 			SDL_RenderPresent(renderer);
