@@ -312,23 +312,11 @@ int main(int argc, char* argv[])
 
 	const int RIGHT_SCORE_TEXT_X = (SCREEN_WIDTH / 2) + SCORE_TEXT_X_OFFSET;
 	const int RIGHT_SCORE_TEXT_Y = SCORE_TEXT_Y_OFFSET;
-
-
-	//const int MIDLINE_POINTS_COUNT = 2;
-	//SDL_Point MIDLINE_POINTS[MIDLINE_POINTS_COUNT];
-	//for (int i = 0; i < MIDLINE_POINTS_COUNT; i++)
-	//{
-	//	SDL_Point point = { SCREEN_WIDTH / 2, SCREEN_HEIGHT / MIDLINE_POINTS_COUNT * i };
-	//	MIDLINE_POINTS[i] = point;
-	//}
-
 	
 	const int MIDLINE_LINE_LENGTH = 32;
 	const int MIDLINE_LINE_THICKNESS = 20;
-	//const int MIDLINE_LINES_COUNT = 10; // Working
 	const int MIDLINE_LINES_COUNT = 10;
 	const int MIDLINE_LINES_TOTAL_COUNT = MIDLINE_LINES_COUNT * MIDLINE_LINE_THICKNESS;
-	//const int LINE_LENGTH = 10;
 	Line midlines[MIDLINE_LINES_TOTAL_COUNT];
 
 	for (int line_count = 0; line_count < MIDLINE_LINES_COUNT; line_count++)
