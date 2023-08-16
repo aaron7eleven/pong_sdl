@@ -322,17 +322,26 @@ int main(int argc, char* argv[])
 	//	MIDLINE_POINTS[i] = point;
 	//}
 
+	
+	const int MIDLINE_LINE_LENGTH = 32;
+	const int MIDLINE_LINE_THICKNESS = 20;
+	//const int MIDLINE_LINES_COUNT = 10; // Working
 	const int MIDLINE_LINES_COUNT = 10;
-	const int MIDLINE_LINE_LENGTH = 10;
+	const int MIDLINE_LINES_TOTAL_COUNT = MIDLINE_LINES_COUNT * MIDLINE_LINE_THICKNESS;
 	//const int LINE_LENGTH = 10;
-	Line MIDLINE_LINES[MIDLINE_LINES_COUNT];
-	for (int i = 0; i < MIDLINE_LINES_COUNT; i++)
+	Line midlines[MIDLINE_LINES_TOTAL_COUNT];
+
+	for (int line_count = 0; line_count < MIDLINE_LINES_COUNT; line_count++)
 	{
-		Line line = {
-			{SCREEN_WIDTH / 2,  SCREEN_HEIGHT / MIDLINE_LINES_COUNT * i },
-			{SCREEN_WIDTH / 2,  SCREEN_HEIGHT / MIDLINE_LINES_COUNT * i + MIDLINE_LINE_LENGTH}
-		};
-		MIDLINE_LINES[i] = line;
+		for (int line_thickness = 0; line_thickness < MIDLINE_LINE_THICKNESS; line_thickness++)
+		{
+			Line line = {
+				{SCREEN_WIDTH / 2 + line_thickness - (MIDLINE_LINE_THICKNESS / 2) ,  SCREEN_HEIGHT / MIDLINE_LINES_COUNT * line_count },
+				{SCREEN_WIDTH / 2 + line_thickness - (MIDLINE_LINE_THICKNESS / 2) ,  SCREEN_HEIGHT / MIDLINE_LINES_COUNT * line_count + MIDLINE_LINE_LENGTH}
+			};
+
+			midlines[line_count * MIDLINE_LINE_THICKNESS + line_thickness] = line;
+		}
 	}
 
 	int leftScore = 0;
@@ -894,11 +903,13 @@ int main(int argc, char* argv[])
 			SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
 			//SDL_RenderDrawPoints(renderer, MIDLINE_POINTS, MIDLINE_POINTS_COUNT);
 			//SDL_RenderDrawLines(renderer, MIDLINE_POINTS, MIDLINE_POINTS_COUNT);
-			for (int i = 0; i < MIDLINE_LINES_COUNT; i++)
+			for (int i = 0; i < MIDLINE_LINES_TOTAL_COUNT; i++)
 			{
-				Line line = MIDLINE_LINES[i];
+				Line line = midlines[i];
+				//if ((i % MIDLINE_LINES_COUNT) == (MIDLINE_LINE_THICKNESS / 2)) {
+				//	SDL_SetRenderDrawColor(renderer, 0xFF, 0x00, 0x00, 0xFF);
+				//}
 				SDL_RenderDrawLine(renderer, line.start.x, line.start.y, line.end.x, line.end.y);
-				
 				
 			}
 
