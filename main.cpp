@@ -34,7 +34,7 @@ struct Line {
 
 struct UI_Text {
 	SDL_FRect rect;
-	SDL_Color color;
+	SDL_Color color = {0xFF, 0xFF, 0xFF, 0xFF};
 	SDL_Texture* texture;
 	std::string text;
 };
@@ -51,6 +51,13 @@ struct UI_Button {
 	bool highlighted;
 	SDL_Color highlightedButtonColor;
 	SDL_Color highlightedTextColor;	
+};
+
+struct UI_Navigation {
+	int currentIndex;
+	UI_Button currentButton;
+	UI_Button** nav;
+	int navLength;
 };
 
 
@@ -314,6 +321,10 @@ void UnhighlightUIButton(UI_Button* button) {
 }
 
 
+void NextUIButton(UI_Navigation uiNav) {
+
+}
+
 
 int main(int argc, char* argv[])
 {
@@ -429,12 +440,24 @@ int main(int argc, char* argv[])
 	quitButtonText.color = color.white;
 
 	UI_Button quitButton;
-	quitButton.color = color.black;
+	quitButton.highlightedButtonColor = color.white;
+	quitButton.highlightedTextColor = color.black;
+	quitButton.idleButtonColor = color.black;
+	quitButton.idleTextColor = color.white;
+	quitButton.color = quitButton.idleButtonColor;
 	quitButton.text = quitButtonText;
+	quitButton.text.color = quitButton.idleTextColor;
 	quitButton.rect.w = SCREEN_WIDTH / 4;
 	quitButton.rect.h = SCREEN_HEIGHT / 8;
 	quitButton.rect.x = (SCREEN_WIDTH / 2) - quitButton.rect.w / 2;
 	quitButton.rect.y = SCREEN_HEIGHT * 5 / 8;
+
+	UI_Navigation uiNavigation;
+	uiNavigation.button = playButton;
+	uiNavigation.nav[0] = &playButton;
+	uiNavigation.nav[1] = &optionsButton;
+	uiNavigation.nav[2] = &quitButton;
+	uiNavigation.navLength = 3;
 
 	const int MIDLINE_LINE_LENGTH = 32;
 	const int MIDLINE_LINE_THICKNESS = 20;
@@ -473,6 +496,8 @@ int main(int argc, char* argv[])
 	//SDL_Texture* titleTextTexture = NULL;
 
 	AppStates gameState = AppStates::MAIN_MENU;
+
+
 
 	// Initialization
 	if (SDL_Init(SDL_INIT_EVERYTHING)) 

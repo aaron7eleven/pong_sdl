@@ -1,6 +1,8 @@
 #pragma once
 #include <SDL.h>
 
+//#define SDL_WHITE = {}
+
 struct Color
 {
 	SDL_Color black = { 0x00, 0x00, 0x00, 0xFF};
