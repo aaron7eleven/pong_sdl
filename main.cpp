@@ -9,6 +9,8 @@
 #include <SDL_image.h>
 #include <SDL_ttf.h>
 
+#include "color.h"
+
 struct Entity {
 	SDL_FRect position;
 	SDL_Color color;
@@ -28,6 +30,20 @@ struct Vector2 {
 struct Line {
 	SDL_Point start;
 	SDL_Point end;
+};
+
+struct UI_Text {
+	SDL_FRect rect;
+	SDL_Color color;
+	SDL_Texture* texture;
+	std::string text;
+};
+
+struct UI_Button {
+	SDL_FRect rect;
+	SDL_Color color;
+	SDL_Texture* texture;
+	UI_Text text;
 };
 
 SDL_Surface* LoadSurface(SDL_Surface* window, std::string path) {
@@ -78,7 +94,7 @@ SDL_Texture* LoadTextTexture(SDL_Renderer* renderer,TTF_Font* font, std::string 
 	SDL_Surface* textSurface = TTF_RenderText_Solid(font, textureText.c_str() , textColor);
 	if (textSurface == NULL)
 	{
-		printf("Unable to render text surface! SDL_TTF Error: %s\n", TTF_GetError());
+		printf("Unable to render text surface (%s)! SDL_TTF Error: %s\n", textureText, TTF_GetError());
 	}
 	else {
 		outputTexture = SDL_CreateTextureFromSurface(renderer, textSurface);
@@ -268,6 +284,8 @@ void SDL_RenderFillCircle(SDL_Renderer* rend, float x0, float y0, float radius)
 
 int main(int argc, char* argv[])
 {
+	Color color;
+	
 	const int SCREEN_WIDTH = 1280;
 	const int SCREEN_HEIGHT = 720;
 	const int SCREEN_FPS = 60;
@@ -320,13 +338,37 @@ int main(int argc, char* argv[])
 	const int TITLE_TEXT_X = (SCREEN_WIDTH / 2) - TITLE_TEXT_WIDTH / 2 ;
 	const int TITLE_TEXT_Y = SCORE_TEXT_Y_OFFSET;
 
-	const SDL_Rect title = {
-		TITLE_TEXT_X,
-		TITLE_TEXT_Y,
-		TITLE_TEXT_WIDTH,
-		TITLE_TEXT_HEIGHT
-	};
+	UI_Text title;	
+	title.rect.w = SCREEN_WIDTH / 8;
+	title.rect.h = SCREEN_HEIGHT / 8;
+	title.rect.x = (SCREEN_WIDTH / 2) - title.rect.w / 2;
+	title.rect.y = SCREEN_WIDTH / 16;	
+	title.text = "Pong";
+	title.color = color.red;
 
+	UI_Text playText;
+	playText.rect.w = SCREEN_WIDTH / 8;
+	playText.rect.h = SCREEN_HEIGHT / 8;
+	playText.rect.x = (SCREEN_WIDTH / 2) - playText.rect.w / 2;
+	playText.rect.y = SCREEN_WIDTH *  3 / 16;
+	playText.text = "Play";
+	playText.color = color.black;
+
+	UI_Button playButton;
+	playButton.color = color.white;
+	playButton.text = playText;
+	playButton.rect.w = SCREEN_WIDTH / 4;
+	playButton.rect.h = SCREEN_HEIGHT / 8;
+	playButton.rect.x = (SCREEN_WIDTH / 2) - playButton.rect.w / 2;
+	playButton.rect.y = SCREEN_WIDTH * 3 / 16;
+
+
+	enum gameState
+	{
+		MAIN_MENU = 0,
+		GAME,
+		COUNT
+	};
 	
 
 	const int MIDLINE_LINE_LENGTH = 32;
@@ -423,8 +465,9 @@ int main(int argc, char* argv[])
 	texture = LoadTexture(renderer, "assets/loaded.png");
 	leftTextTexture = LoadTextTexture(renderer, font, std::to_string(leftScore), textColor);
 	rightTextTexture = LoadTextTexture(renderer, font, std::to_string(rightScore), textColor);
-	titleTextTexture = LoadTextTexture(renderer, font, "Pong", textColor);
-
+	title.texture = LoadTextTexture(renderer, font, title.text, title.color);
+	playText.texture = LoadTextTexture(renderer, font, playText.text, playText.color);
+	
 	//TTF_SizeText()
 
 	if (texture == NULL) {
@@ -960,8 +1003,14 @@ int main(int argc, char* argv[])
 			};
 			SDL_RenderCopyEx(renderer, rightTextTexture,NULL, &rightTextDestRect, 0, NULL, SDL_FLIP_NONE);
 
+			const SDL_FRect titleDestRect = title.rect;
+			SDL_RenderCopyExF(renderer, title.texture, NULL, &titleDestRect, 0, NULL, SDL_FLIP_NONE);
 
-			SDL_RenderCopyEx(renderer, titleTextTexture, NULL, &title, 0, NULL, SDL_FLIP_NONE);
+			SDL_SetRenderDrawColor(renderer, playButton.color.r, playButton.color.g, playButton.color.b, playButton.color.a);
+			const SDL_FRect playButtonDestRect = playButton.rect;
+			SDL_RenderFillRectF(renderer, &playButtonDestRect);
+			const SDL_FRect playTextDestRect = playButton.text.rect;
+			SDL_RenderCopyExF(renderer, playText.texture, NULL, &playTextDestRect, 0, NULL, SDL_FLIP_NONE);
 
 
 			SDL_RenderPresent(renderer);
