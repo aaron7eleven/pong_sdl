@@ -44,15 +44,22 @@ struct UI_Button {
 	SDL_Color color;
 	SDL_Texture* texture;
 	UI_Text text;
+
+	SDL_Color idleButtonColor;
+	SDL_Color idleTextColor;
+
+	bool highlighted;
+	SDL_Color highlightedButtonColor;
+	SDL_Color highlightedTextColor;	
 };
 
-//struct UI_Button_State {
-//	bool selected;
-//	bool highlighted;
-//	SDL_Color color;
-//	SDL_Texture* texture;
-//	UI_Text text;
-//};
+
+enum class AppStates
+{
+	MAIN_MENU = 0,
+	GAME,
+	COUNT
+};
 
 
 SDL_Surface* LoadSurface(SDL_Surface* window, std::string path) {
@@ -288,6 +295,23 @@ void SDL_RenderFillCircle(SDL_Renderer* rend, float x0, float y0, float radius)
 	}
 }
 
+void HighlightUIButton(UI_Button* button) {
+	// Turn button white
+	// Turn text black
+	// Set as highlighted
+	button->text.color = button->highlightedTextColor;
+	button->color = button->highlightedButtonColor;
+	button->highlighted = true;
+}
+
+void UnhighlightUIButton(UI_Button* button) {
+	// Turn button black
+	// Turn text white
+	// unset as highlighted
+	button->text.color = button->highlightedTextColor;
+	button->color = button->highlightedButtonColor;
+	button->highlighted = false;
+}
 
 
 
@@ -364,7 +388,11 @@ int main(int argc, char* argv[])
 	playButtonText.color = color.black;
 
 	UI_Button playButton;
-	playButton.color = color.white;
+	playButton.highlightedButtonColor = color.white;
+	playButton.highlightedTextColor = color.black;
+	playButton.idleButtonColor = color.black;
+	playButton.idleTextColor = color.white;
+	playButton.color = playButton.highlightedButtonColor;
 	playButton.text = playButtonText;
 	playButton.rect.w = SCREEN_WIDTH / 4;
 	playButton.rect.h = SCREEN_HEIGHT / 8;
@@ -380,8 +408,13 @@ int main(int argc, char* argv[])
 	optionsButtonText.color = color.white;
 
 	UI_Button optionsButton;
-	optionsButton.color = color.black;
+	optionsButton.highlightedButtonColor = color.white;
+	optionsButton.highlightedTextColor = color.black;
+	optionsButton.idleButtonColor = color.black;
+	optionsButton.idleTextColor = color.white;
+	optionsButton.color = optionsButton.idleButtonColor;
 	optionsButton.text = optionsButtonText;
+	optionsButton.text.color = optionsButton.idleTextColor;
 	optionsButton.rect.w = SCREEN_WIDTH / 4;
 	optionsButton.rect.h = SCREEN_HEIGHT / 8;
 	optionsButton.rect.x = (SCREEN_WIDTH / 2) - optionsButton.rect.w / 2;
@@ -402,14 +435,6 @@ int main(int argc, char* argv[])
 	quitButton.rect.h = SCREEN_HEIGHT / 8;
 	quitButton.rect.x = (SCREEN_WIDTH / 2) - quitButton.rect.w / 2;
 	quitButton.rect.y = SCREEN_HEIGHT * 5 / 8;
-
-	enum gameState
-	{
-		MAIN_MENU = 0,
-		GAME,
-		COUNT
-	};
-	
 
 	const int MIDLINE_LINE_LENGTH = 32;
 	const int MIDLINE_LINE_THICKNESS = 20;
@@ -445,9 +470,9 @@ int main(int argc, char* argv[])
 
 	SDL_Texture* leftTextTexture = NULL;
 	SDL_Texture* rightTextTexture = NULL;
+	//SDL_Texture* titleTextTexture = NULL;
 
-	SDL_Texture* titleTextTexture = NULL;
-
+	AppStates gameState = AppStates::MAIN_MENU;
 
 	// Initialization
 	if (SDL_Init(SDL_INIT_EVERYTHING)) 
@@ -625,6 +650,7 @@ int main(int argc, char* argv[])
 			leftPaddleVelocity = 0.0f;
 			rightPaddleVelocity = 0.0f;
 
+			// Game Input 
 			//Handle events on queue
 			while (SDL_PollEvent(&e) != 0)
 			{
@@ -634,11 +660,33 @@ int main(int argc, char* argv[])
 					quit = true;
 				}
 				else if (e.type == SDL_KEYDOWN) {
-					switch (e.key.keysym.sym) {
-						case SDLK_ESCAPE: {
-							quit = true;
-						}
+					
+					switch (gameState)
+					{
+						case AppStates::MAIN_MENU: {
+							switch (e.key.keysym.sym) {
+								case SDLK_ESCAPE: {
+									quit = true;
+								}
+
+								case SDLK_s: {
+									quit = true;
+								}
+							}
+						} break;
+
+						case AppStates::GAME: {
+
+						} break;
+						case AppStates::COUNT: {
+						
+						} break;
+					default:
+						break;
 					}
+					
+
+					
 				}
 				//else if (e.type == SDL_KEYDOWN) {
 				//	//Select surfaces based on key press
@@ -702,42 +750,45 @@ int main(int argc, char* argv[])
 				//}
 			}
 
-			const Uint8* currentKeyStates = SDL_GetKeyboardState(NULL);
+			/////////////////////////
+			// Paddle Input
+			/////////////////////////
+			//const Uint8* currentKeyStates = SDL_GetKeyboardState(NULL);
 
-			// Not sure which this isn't working
-			//if (currentKeyStates[SDLK_w]) {
+			//// Not sure which this isn't working
+			////if (currentKeyStates[SDLK_w]) {
+			////	leftPaddleVelocity -= 1.0f;
+			////}
+
+			////if (currentKeyStates[SDLK_s]) {
+			////	leftPaddleVelocity += 1.0f;
+			////}
+
+			//// This works
+			//if (currentKeyStates[SDL_SCANCODE_W]) {
 			//	leftPaddleVelocity -= 1.0f;
 			//}
 
-			//if (currentKeyStates[SDLK_s]) {
+			//if (currentKeyStates[SDL_SCANCODE_S]) {
 			//	leftPaddleVelocity += 1.0f;
 			//}
 
-			// This works
-			if (currentKeyStates[SDL_SCANCODE_W]) {
-				leftPaddleVelocity -= 1.0f;
-			}
+			////if (currentKeyStates[SDLK_up]) {
+			////	rightPaddleVelocity -= 1.0f;
+			////}
 
-			if (currentKeyStates[SDL_SCANCODE_S]) {
-				leftPaddleVelocity += 1.0f;
-			}
+			////if (currentKeyStates[SDLK_DOWN]) {
+			////	rightPaddleVelocity += 1.0f;
+			////}
 
-			//if (currentKeyStates[SDLK_up]) {
+			//// This works
+			//if (currentKeyStates[SDL_SCANCODE_UP]) {
 			//	rightPaddleVelocity -= 1.0f;
 			//}
 
-			//if (currentKeyStates[SDLK_DOWN]) {
+			//if (currentKeyStates[SDL_SCANCODE_DOWN]) {
 			//	rightPaddleVelocity += 1.0f;
 			//}
-
-			// This works
-			if (currentKeyStates[SDL_SCANCODE_UP]) {
-				rightPaddleVelocity -= 1.0f;
-			}
-
-			if (currentKeyStates[SDL_SCANCODE_DOWN]) {
-				rightPaddleVelocity += 1.0f;
-			}
 
 			leftPaddle.position.y += leftPaddleVelocity * PADDLE_SPEED * deltaTime;
 			rightPaddle.position.y += rightPaddleVelocity * PADDLE_SPEED * deltaTime;
