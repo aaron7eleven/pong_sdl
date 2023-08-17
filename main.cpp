@@ -46,6 +46,15 @@ struct UI_Button {
 	UI_Text text;
 };
 
+//struct UI_Button_State {
+//	bool selected;
+//	bool highlighted;
+//	SDL_Color color;
+//	SDL_Texture* texture;
+//	UI_Text text;
+//};
+
+
 SDL_Surface* LoadSurface(SDL_Surface* window, std::string path) {
 	
 	SDL_Surface* optimizedSurface = NULL;
@@ -339,29 +348,60 @@ int main(int argc, char* argv[])
 	const int TITLE_TEXT_Y = SCORE_TEXT_Y_OFFSET;
 
 	UI_Text title;	
-	title.rect.w = SCREEN_WIDTH / 8;
-	title.rect.h = SCREEN_HEIGHT / 8;
+	title.rect.w = SCREEN_WIDTH / 4;
+	title.rect.h = SCREEN_HEIGHT / 4;
 	title.rect.x = (SCREEN_WIDTH / 2) - title.rect.w / 2;
-	title.rect.y = SCREEN_WIDTH / 16;	
+	title.rect.y = SCREEN_HEIGHT / 16;
 	title.text = "Pong";
-	title.color = color.red;
+	title.color = color.white;
 
-	UI_Text playText;
-	playText.rect.w = SCREEN_WIDTH / 8;
-	playText.rect.h = SCREEN_HEIGHT / 8;
-	playText.rect.x = (SCREEN_WIDTH / 2) - playText.rect.w / 2;
-	playText.rect.y = SCREEN_WIDTH *  3 / 16;
-	playText.text = "Play";
-	playText.color = color.black;
+	UI_Text playButtonText;
+	playButtonText.rect.w = SCREEN_WIDTH / 8;
+	playButtonText.rect.h = SCREEN_HEIGHT / 8;
+	playButtonText.rect.x = (SCREEN_WIDTH / 2) - playButtonText.rect.w / 2;
+	playButtonText.rect.y = SCREEN_HEIGHT * 3 / 8;
+	playButtonText.text = "Play";
+	playButtonText.color = color.black;
 
 	UI_Button playButton;
 	playButton.color = color.white;
-	playButton.text = playText;
+	playButton.text = playButtonText;
 	playButton.rect.w = SCREEN_WIDTH / 4;
 	playButton.rect.h = SCREEN_HEIGHT / 8;
 	playButton.rect.x = (SCREEN_WIDTH / 2) - playButton.rect.w / 2;
-	playButton.rect.y = SCREEN_WIDTH * 3 / 16;
+	playButton.rect.y = SCREEN_HEIGHT * 3 / 8;
 
+	UI_Text optionsButtonText;
+	optionsButtonText.rect.w = SCREEN_WIDTH / 6;
+	optionsButtonText.rect.h = SCREEN_HEIGHT / 8;
+	optionsButtonText.rect.x = (SCREEN_WIDTH / 2) - optionsButtonText.rect.w / 2;
+	optionsButtonText.rect.y = SCREEN_HEIGHT * 4 / 8;
+	optionsButtonText.text = "Options";
+	optionsButtonText.color = color.white;
+
+	UI_Button optionsButton;
+	optionsButton.color = color.black;
+	optionsButton.text = optionsButtonText;
+	optionsButton.rect.w = SCREEN_WIDTH / 4;
+	optionsButton.rect.h = SCREEN_HEIGHT / 8;
+	optionsButton.rect.x = (SCREEN_WIDTH / 2) - optionsButton.rect.w / 2;
+	optionsButton.rect.y = SCREEN_HEIGHT * 4 / 8;
+
+	UI_Text quitButtonText;
+	quitButtonText.rect.w = SCREEN_WIDTH / 8;
+	quitButtonText.rect.h = SCREEN_HEIGHT / 8;
+	quitButtonText.rect.x = (SCREEN_WIDTH / 2) - quitButtonText.rect.w / 2;
+	quitButtonText.rect.y = SCREEN_HEIGHT * 5 / 8;
+	quitButtonText.text = "Quit";
+	quitButtonText.color = color.white;
+
+	UI_Button quitButton;
+	quitButton.color = color.black;
+	quitButton.text = quitButtonText;
+	quitButton.rect.w = SCREEN_WIDTH / 4;
+	quitButton.rect.h = SCREEN_HEIGHT / 8;
+	quitButton.rect.x = (SCREEN_WIDTH / 2) - quitButton.rect.w / 2;
+	quitButton.rect.y = SCREEN_HEIGHT * 5 / 8;
 
 	enum gameState
 	{
@@ -418,7 +458,7 @@ int main(int argc, char* argv[])
 	else 
 	{
 		//Create window
-		window = SDL_CreateWindow("SDL Tutorial", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
+		window = SDL_CreateWindow("Pong", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
 		if (window == NULL)
 		{
 			printf("Window could not be created! SDL_Error: %s\n", SDL_GetError());
@@ -466,7 +506,9 @@ int main(int argc, char* argv[])
 	leftTextTexture = LoadTextTexture(renderer, font, std::to_string(leftScore), textColor);
 	rightTextTexture = LoadTextTexture(renderer, font, std::to_string(rightScore), textColor);
 	title.texture = LoadTextTexture(renderer, font, title.text, title.color);
-	playText.texture = LoadTextTexture(renderer, font, playText.text, playText.color);
+	playButtonText.texture = LoadTextTexture(renderer, font, playButtonText.text, playButtonText.color);
+	optionsButtonText.texture = LoadTextTexture(renderer, font, optionsButtonText.text, optionsButtonText.color);
+	quitButtonText.texture = LoadTextTexture(renderer, font, quitButtonText.text, quitButtonText.color);
 	
 	//TTF_SizeText()
 
@@ -924,6 +966,9 @@ int main(int argc, char* argv[])
 			//Clear screen to Black
 			SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, 0x00);
 			SDL_RenderClear(renderer);
+#if 0
+
+
 
 			/////////////////////////
 			// Render Entities
@@ -985,32 +1030,53 @@ int main(int argc, char* argv[])
 			SDL_FRect ballCollider = { ball.position.x - ball.radius, ball.position.y - ball.radius, 2.0f * ball.radius, 2.0f * ball.radius };
 			SDL_RenderDrawRectF(renderer, &ballCollider);
 
+#endif // 0
+
+			/////////////////////////
+			// Render Text
+			/////////////////////////
+
 			//Render text texture to screen
 			//SDL_RenderCopy(renderer, textTexture, NULL, NULL);
-			const SDL_Rect leftTextDestRect = {
-				LEFT_SCORE_TEXT_X,
-				LEFT_SCORE_TEXT_Y,
-				SCORE_TEXT_WIDTH,
-				SCORE_TEXT_HEIGHT
-			};
-			SDL_RenderCopyEx(renderer, leftTextTexture, NULL, &leftTextDestRect, 0, NULL, SDL_FLIP_NONE);
+			//const SDL_Rect leftTextDestRect = {
+			//	LEFT_SCORE_TEXT_X,
+			//	LEFT_SCORE_TEXT_Y,
+			//	SCORE_TEXT_WIDTH,
+			//	SCORE_TEXT_HEIGHT
+			//};
+			//SDL_RenderCopyEx(renderer, leftTextTexture, NULL, &leftTextDestRect, 0, NULL, SDL_FLIP_NONE);
 
-			const SDL_Rect rightTextDestRect = {
-				RIGHT_SCORE_TEXT_X,
-				RIGHT_SCORE_TEXT_Y,
-				SCORE_TEXT_WIDTH,
-				SCORE_TEXT_HEIGHT
-			};
-			SDL_RenderCopyEx(renderer, rightTextTexture,NULL, &rightTextDestRect, 0, NULL, SDL_FLIP_NONE);
+			//const SDL_Rect rightTextDestRect = {
+			//	RIGHT_SCORE_TEXT_X,
+			//	RIGHT_SCORE_TEXT_Y,
+			//	SCORE_TEXT_WIDTH,
+			//	SCORE_TEXT_HEIGHT
+			//};
+			//SDL_RenderCopyEx(renderer, rightTextTexture,NULL, &rightTextDestRect, 0, NULL, SDL_FLIP_NONE);
 
 			const SDL_FRect titleDestRect = title.rect;
 			SDL_RenderCopyExF(renderer, title.texture, NULL, &titleDestRect, 0, NULL, SDL_FLIP_NONE);
 
+			// Render button
 			SDL_SetRenderDrawColor(renderer, playButton.color.r, playButton.color.g, playButton.color.b, playButton.color.a);
 			const SDL_FRect playButtonDestRect = playButton.rect;
 			SDL_RenderFillRectF(renderer, &playButtonDestRect);
-			const SDL_FRect playTextDestRect = playButton.text.rect;
-			SDL_RenderCopyExF(renderer, playText.texture, NULL, &playTextDestRect, 0, NULL, SDL_FLIP_NONE);
+			const SDL_FRect playButtonTextDestRect = playButton.text.rect;
+			SDL_RenderCopyExF(renderer, playButtonText.texture, NULL, &playButtonTextDestRect, 0, NULL, SDL_FLIP_NONE);
+
+			// Render button
+			SDL_SetRenderDrawColor(renderer, optionsButton.color.r, optionsButton.color.g, optionsButton.color.b, optionsButton.color.a);
+			const SDL_FRect optionsButtonDestRect = optionsButton.rect;
+			SDL_RenderFillRectF(renderer, &optionsButtonDestRect);
+			const SDL_FRect optionsButtonTextDestRect = optionsButton.text.rect;
+			SDL_RenderCopyExF(renderer, optionsButtonText.texture, NULL, &optionsButtonTextDestRect, 0, NULL, SDL_FLIP_NONE);
+
+			// Render button
+			SDL_SetRenderDrawColor(renderer, quitButton.color.r, quitButton.color.g, quitButton.color.b, quitButton.color.a);
+			const SDL_FRect quitButtonDestRect = quitButton.rect;
+			SDL_RenderFillRectF(renderer, &quitButtonDestRect);
+			const SDL_FRect quitButtonTextDestRect = quitButton.text.rect;
+			SDL_RenderCopyExF(renderer, quitButtonText.texture, NULL, &quitButtonTextDestRect, 0, NULL, SDL_FLIP_NONE);
 
 
 			SDL_RenderPresent(renderer);
