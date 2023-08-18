@@ -60,10 +60,12 @@ struct UI_Button {
 };
 
 struct UI_Navigation {
-	//int currentIndex;
+	int currentIndex = 0;
+	int previousIndex = 0;
 	UI_Button* currentButton;
-	//UI_Button* nav;
-	//int navLength;
+	UI_Button* previousButton;
+	UI_Button** nav;
+	int navLength = 0;
 };
 
 
@@ -325,9 +327,32 @@ void UnhighlightUIButton(UI_Button* button) {
 	button->highlighted = false;
 }
 
+void NextUIButton(UI_Navigation* uiNavigation) {
+	uiNavigation->previousIndex = uiNavigation->currentIndex;
+	if (uiNavigation->currentIndex + 1 >= uiNavigation->navLength) {
+		uiNavigation->currentIndex = 0;
+	}
+	else {
+		uiNavigation->currentIndex++;
+	}
+	uiNavigation->previousButton = uiNavigation->nav[uiNavigation->previousIndex];
+	uiNavigation->currentButton = uiNavigation->nav[uiNavigation->currentIndex];
+	UnhighlightUIButton(uiNavigation->previousButton);
+	HighlightUIButton(uiNavigation->currentButton);
+}
 
-void NextUIButton(UI_Navigation uiNav) {
-
+void PreviousUIButton(UI_Navigation* uiNavigation) {
+	uiNavigation->previousIndex = uiNavigation->currentIndex;
+	if (uiNavigation->currentIndex - 1 < 0) {
+		uiNavigation->currentIndex = uiNavigation->navLength - 1;
+	}
+	else {
+		uiNavigation->currentIndex--;
+	}
+	uiNavigation->previousButton = uiNavigation->nav[uiNavigation->previousIndex];
+	uiNavigation->currentButton = uiNavigation->nav[uiNavigation->currentIndex];
+	UnhighlightUIButton(uiNavigation->previousButton);
+	HighlightUIButton(uiNavigation->currentButton);
 }
 
 void AssignId(UI_Button* button, int* idCount) {
@@ -486,12 +511,15 @@ int main(int argc, char* argv[])
 	quitButton.rect.y = SCREEN_HEIGHT * 5 / 8;
 
 	UI_Navigation uiNavigation;
-	uiNavigation.currentButton = &playButton;
+	uiNavigation.navLength = 3;
+	UI_Button* mainMenuButtons[3] = { &playButton, &optionsButton, &quitButton };
+	uiNavigation.nav = mainMenuButtons;
+	uiNavigation.currentIndex = 0;
+	uiNavigation.currentButton = uiNavigation.nav[uiNavigation.currentIndex];
+	uiNavigation.previousIndex = 0;
+	uiNavigation.previousButton = uiNavigation.nav[uiNavigation.previousIndex];
 	HighlightUIButton(uiNavigation.currentButton);
-	//uiNavigation.nav[0] = &playButton;
-	//uiNavigation.nav[1] = &optionsButton;
-	//uiNavigation.nav[2] = &quitButton;
-	//uiNavigation.navLength = 3;
+
 
 	const int MIDLINE_LINE_LENGTH = 32;
 	const int MIDLINE_LINE_THICKNESS = 20;
@@ -588,9 +616,9 @@ int main(int argc, char* argv[])
 	leftTextTexture = LoadTextTexture(renderer, font, std::to_string(leftScore), textColor);
 	rightTextTexture = LoadTextTexture(renderer, font, std::to_string(rightScore), textColor);
 	title.texture = LoadTextTexture(renderer, font, title.text, title.color);
-	//playButtonText.texture = LoadTextTexture(renderer, font, playButtonText.text, playButtonText.color);
-	//optionsButtonText.texture = LoadTextTexture(renderer, font, optionsButtonText.text, optionsButtonText.color);
-	//quitButtonText.texture = LoadTextTexture(renderer, font, quitButtonText.text, quitButtonText.color);
+	playButton.text->texture = LoadTextTexture(renderer, font, playButton.text->text, playButton.text->color);
+	optionsButton.text->texture = LoadTextTexture(renderer, font, optionsButton.text->text, optionsButton.text->color);
+	quitButton.text->texture = LoadTextTexture(renderer, font, quitButton.text->text, quitButton.text->color);
 	
 	//TTF_SizeText()
 
@@ -724,25 +752,53 @@ int main(int argc, char* argv[])
 							switch (e.key.keysym.sym) {
 								case SDLK_ESCAPE: {
 									quit = true;
-								}
+								} break;
 
 								case SDLK_s: {
-									if (uiNavigation.currentButton->id == playButton.id) {
-										UnhighlightUIButton(uiNavigation.currentButton);
-										uiNavigation.currentButton = &optionsButton;
-										HighlightUIButton(uiNavigation.currentButton);
-									}
-									else if (uiNavigation.currentButton->id == optionsButton.id) {
-										UnhighlightUIButton(uiNavigation.currentButton);
-										uiNavigation.currentButton = &quitButton;
-										HighlightUIButton(uiNavigation.currentButton);
-									}
-									else if (uiNavigation.currentButton->id == quitButton.id) {
-										UnhighlightUIButton(uiNavigation.currentButton);
-										uiNavigation.currentButton = &playButton;
-										HighlightUIButton(uiNavigation.currentButton);
-									}
-								}
+									NextUIButton(&uiNavigation);
+									//if (uiNavigation.currentButton->id == playButton.id) {
+									//	UnhighlightUIButton(uiNavigation.currentButton);
+									//	uiNavigation.previousButton = uiNavigation.currentButton;
+									//	uiNavigation.currentButton = &optionsButton;
+									//	HighlightUIButton(uiNavigation.currentButton);
+
+									//}
+									//else if (uiNavigation.currentButton->id == optionsButton.id) {
+									//	UnhighlightUIButton(uiNavigation.currentButton);
+									//	uiNavigation.previousButton = uiNavigation.currentButton;
+									//	uiNavigation.currentButton = &quitButton;
+									//	HighlightUIButton(uiNavigation.currentButton);
+									//}
+									//else if (uiNavigation.currentButton->id == quitButton.id) {
+									//	UnhighlightUIButton(uiNavigation.currentButton);
+									//	uiNavigation.previousButton = uiNavigation.currentButton;
+									//	uiNavigation.currentButton = &playButton;
+									//	HighlightUIButton(uiNavigation.currentButton);
+									//}
+								} break;
+								
+								case SDLK_w: {
+									PreviousUIButton(&uiNavigation);
+									//if (uiNavigation.currentButton->id == playButton.id) {
+									//	UnhighlightUIButton(uiNavigation.currentButton);
+									//	uiNavigation.previousButton = uiNavigation.currentButton;
+									//	uiNavigation.currentButton = &optionsButton;
+									//	HighlightUIButton(uiNavigation.currentButton);
+									//}
+									//else if (uiNavigation.currentButton->id == optionsButton.id) {
+									//	UnhighlightUIButton(uiNavigation.currentButton);
+									//	uiNavigation.previousButton = uiNavigation.currentButton;
+									//	uiNavigation.currentButton = &quitButton;
+									//	HighlightUIButton(uiNavigation.currentButton);
+									//}
+									//else if (uiNavigation.currentButton->id == quitButton.id) {
+									//	UnhighlightUIButton(uiNavigation.currentButton);
+									//	uiNavigation.previousButton = uiNavigation.currentButton;
+									//	uiNavigation.currentButton = &playButton;
+									//	HighlightUIButton(uiNavigation.currentButton);
+									//}
+								} break;
+
 							}
 						} break;
 
@@ -1081,9 +1137,10 @@ int main(int argc, char* argv[])
 				rightScoreChanged = false;
 			}
 
-			playButton.text->texture = LoadTextTexture(renderer, font, playButton.text->text, playButton.text->color);
-			optionsButton.text->texture = LoadTextTexture(renderer, font, optionsButton.text->text, optionsButton.text->color);
-			quitButton.text->texture = LoadTextTexture(renderer, font, quitButton.text->text, quitButton.text->color);
+			if (uiNavigation.previousButton->id != uiNavigation.currentButton->id) {
+				uiNavigation.previousButton->text->texture = LoadTextTexture(renderer, font, uiNavigation.previousButton->text->text, uiNavigation.previousButton->text->color);
+				uiNavigation.currentButton->text->texture = LoadTextTexture(renderer, font, uiNavigation.currentButton->text->text, uiNavigation.currentButton->text->color);
+			}
 
 			/////////////////////////
 			// Render Pass
@@ -1188,21 +1245,21 @@ int main(int argc, char* argv[])
 			const SDL_FRect playButtonDestRect = playButton.rect;
 			SDL_RenderFillRectF(renderer, &playButtonDestRect);
 			const SDL_FRect playButtonTextDestRect = playButton.text->rect;
-			SDL_RenderCopyExF(renderer, playButtonText.texture, NULL, &playButtonTextDestRect, 0, NULL, SDL_FLIP_NONE);
+			SDL_RenderCopyExF(renderer, playButton.text->texture, NULL, &playButtonTextDestRect, 0, NULL, SDL_FLIP_NONE);
 
 			// Render button
 			SDL_SetRenderDrawColor(renderer, optionsButton.color.r, optionsButton.color.g, optionsButton.color.b, optionsButton.color.a);
 			const SDL_FRect optionsButtonDestRect = optionsButton.rect;
 			SDL_RenderFillRectF(renderer, &optionsButtonDestRect);
 			const SDL_FRect optionsButtonTextDestRect = optionsButton.text->rect;
-			SDL_RenderCopyExF(renderer, optionsButtonText.texture, NULL, &optionsButtonTextDestRect, 0, NULL, SDL_FLIP_NONE);
+			SDL_RenderCopyExF(renderer, optionsButton.text->texture, NULL, &optionsButtonTextDestRect, 0, NULL, SDL_FLIP_NONE);
 
 			// Render button
 			SDL_SetRenderDrawColor(renderer, quitButton.color.r, quitButton.color.g, quitButton.color.b, quitButton.color.a);
 			const SDL_FRect quitButtonDestRect = quitButton.rect;
 			SDL_RenderFillRectF(renderer, &quitButtonDestRect);
 			const SDL_FRect quitButtonTextDestRect = quitButton.text->rect;
-			SDL_RenderCopyExF(renderer, quitButtonText.texture, NULL, &quitButtonTextDestRect, 0, NULL, SDL_FLIP_NONE);
+			SDL_RenderCopyExF(renderer, quitButton.text->texture, NULL, &quitButtonTextDestRect, 0, NULL, SDL_FLIP_NONE);
 
 
 			SDL_RenderPresent(renderer);
