@@ -368,6 +368,8 @@ void AssignId(UI_Text* text, int* idCount) {
 	(*idCount)++;
 }
 
+//void StartGame()
+
 int main(int argc, char* argv[])
 {
 	Color color;
@@ -755,48 +757,17 @@ int main(int argc, char* argv[])
 								} break;
 
 								case SDLK_s: {
-									NextUIButton(&uiNavigation);
-									//if (uiNavigation.currentButton->id == playButton.id) {
-									//	UnhighlightUIButton(uiNavigation.currentButton);
-									//	uiNavigation.previousButton = uiNavigation.currentButton;
-									//	uiNavigation.currentButton = &optionsButton;
-									//	HighlightUIButton(uiNavigation.currentButton);
-
-									//}
-									//else if (uiNavigation.currentButton->id == optionsButton.id) {
-									//	UnhighlightUIButton(uiNavigation.currentButton);
-									//	uiNavigation.previousButton = uiNavigation.currentButton;
-									//	uiNavigation.currentButton = &quitButton;
-									//	HighlightUIButton(uiNavigation.currentButton);
-									//}
-									//else if (uiNavigation.currentButton->id == quitButton.id) {
-									//	UnhighlightUIButton(uiNavigation.currentButton);
-									//	uiNavigation.previousButton = uiNavigation.currentButton;
-									//	uiNavigation.currentButton = &playButton;
-									//	HighlightUIButton(uiNavigation.currentButton);
-									//}
+									NextUIButton(&uiNavigation); 
 								} break;
 								
 								case SDLK_w: {
 									PreviousUIButton(&uiNavigation);
-									//if (uiNavigation.currentButton->id == playButton.id) {
-									//	UnhighlightUIButton(uiNavigation.currentButton);
-									//	uiNavigation.previousButton = uiNavigation.currentButton;
-									//	uiNavigation.currentButton = &optionsButton;
-									//	HighlightUIButton(uiNavigation.currentButton);
-									//}
-									//else if (uiNavigation.currentButton->id == optionsButton.id) {
-									//	UnhighlightUIButton(uiNavigation.currentButton);
-									//	uiNavigation.previousButton = uiNavigation.currentButton;
-									//	uiNavigation.currentButton = &quitButton;
-									//	HighlightUIButton(uiNavigation.currentButton);
-									//}
-									//else if (uiNavigation.currentButton->id == quitButton.id) {
-									//	UnhighlightUIButton(uiNavigation.currentButton);
-									//	uiNavigation.previousButton = uiNavigation.currentButton;
-									//	uiNavigation.currentButton = &playButton;
-									//	HighlightUIButton(uiNavigation.currentButton);
-									//}
+								} break;
+
+								case SDLK_RETURN: {
+									if (uiNavigation.currentButton->id == playButton.id) {
+										gameState = AppStates::GAME;
+									}
 								} break;
 
 							}
@@ -880,42 +851,42 @@ int main(int argc, char* argv[])
 			/////////////////////////
 			// Paddle Input
 			/////////////////////////
-			//const Uint8* currentKeyStates = SDL_GetKeyboardState(NULL);
+			const Uint8* currentKeyStates = SDL_GetKeyboardState(NULL);
 
-			//// Not sure which this isn't working
-			////if (currentKeyStates[SDLK_w]) {
-			////	leftPaddleVelocity -= 1.0f;
-			////}
-
-			////if (currentKeyStates[SDLK_s]) {
-			////	leftPaddleVelocity += 1.0f;
-			////}
-
-			//// This works
-			//if (currentKeyStates[SDL_SCANCODE_W]) {
+			// Not sure which this isn't working
+			//if (currentKeyStates[SDLK_w]) {
 			//	leftPaddleVelocity -= 1.0f;
 			//}
 
-			//if (currentKeyStates[SDL_SCANCODE_S]) {
+			//if (currentKeyStates[SDLK_s]) {
 			//	leftPaddleVelocity += 1.0f;
 			//}
 
-			////if (currentKeyStates[SDLK_up]) {
-			////	rightPaddleVelocity -= 1.0f;
-			////}
+			// This works
+			if (currentKeyStates[SDL_SCANCODE_W]) {
+				leftPaddleVelocity -= 1.0f;
+			}
 
-			////if (currentKeyStates[SDLK_DOWN]) {
-			////	rightPaddleVelocity += 1.0f;
-			////}
+			if (currentKeyStates[SDL_SCANCODE_S]) {
+				leftPaddleVelocity += 1.0f;
+			}
 
-			//// This works
-			//if (currentKeyStates[SDL_SCANCODE_UP]) {
+			//if (currentKeyStates[SDLK_up]) {
 			//	rightPaddleVelocity -= 1.0f;
 			//}
 
-			//if (currentKeyStates[SDL_SCANCODE_DOWN]) {
+			//if (currentKeyStates[SDLK_DOWN]) {
 			//	rightPaddleVelocity += 1.0f;
 			//}
+
+			// This works
+			if (currentKeyStates[SDL_SCANCODE_UP]) {
+				rightPaddleVelocity -= 1.0f;
+			}
+
+			if (currentKeyStates[SDL_SCANCODE_DOWN]) {
+				rightPaddleVelocity += 1.0f;
+			}
 
 			leftPaddle.position.y += leftPaddleVelocity * PADDLE_SPEED * deltaTime;
 			rightPaddle.position.y += rightPaddleVelocity * PADDLE_SPEED * deltaTime;
@@ -1020,110 +991,33 @@ int main(int argc, char* argv[])
 
 			// Left Paddles
 			if (CheckCollision(ball, leftPaddle.position)) {
-				//ballVelocity.x = -ballVelocity.x;
-				//ball.position.x += ballVelocity.x * BALL_SPEED * deltaTime; // Moving down
-				
-				bool ballAbovePaddle = ball.position.y >= leftPaddle.position.y;
-				bool ballRightOfPaddle = ball.position.x >= leftPaddle.position.x + PADDLE_WIDTH;
+				bool ballAbovePaddle = ball.position.y <= leftPaddle.position.y;
+				bool ballBelowPaddle = ball.position.y >= leftPaddle.position.y + PADDLE_HEIGHT;
 
-				// Check ball if above paddle
-				if (ballAbovePaddle) {
-					// Check if ball is to the right of the left paddle
-					if (ballRightOfPaddle) {
-						// Hit sweet spot on corner
-					}
-					else {
-						// Hit Top -> bounce off top
-						ballVelocity.y = -ballVelocity.y;
-						ball.position.y += ballVelocity.y * BALL_SPEED * deltaTime; // Moving down
-					}
+				// Check ball hit vertical ends of paddle
+				if (ballAbovePaddle || ballBelowPaddle) {
+					ballVelocity.y = -ballVelocity.y;
 				}
-				//
 				else {
-					// Diff
-					printf("Paddle Hit Side");
 					ballVelocity.x = -ballVelocity.x;
-					ball.position.x += ballVelocity.x * BALL_SPEED * deltaTime; // Moving down
-
-					float paddleHalfHeight = PADDLE_HEIGHT / 2.0f;
-					float paddleCenterY = leftPaddle.position.y - paddleHalfHeight;
-					float diffFromPaddleCenter = abs(paddleCenterY - ball.position.y);
-					ballVelocity.y = 0.5f * (diffFromPaddleCenter / paddleHalfHeight);
-					if (ball.position.y < paddleCenterY) {
-						ballVelocity.y *= -1;
-					}
-					ball.position.y += ballVelocity.y * BALL_SPEED * deltaTime; // Moving down
+					ball.position.x += ballVelocity.x * BALL_SPEED * deltaTime;
 				}
-
-
-				//// Check if Ball is above or below paddle
-				//if (ball.position.x >= leftPaddle.position.x && ball.position.x < leftPaddle.position.x + PADDLE_WIDTH) {
-				//	ballVelocity.y = -ballVelocity.y;
-				//	ball.position.y += ballVelocity.y * BALL_SPEED * deltaTime; // Moving down
-
-				//	// Do you care if it is above or below
-				//	//if (ball.position.y >= leftPaddle.position.y) {
-				//	//	// Above
-				//	//	
-				//	//}
-				//	//else {
-				//	//	// Below
-				//	//}
-
-				//}
-				//// Ball is in front of left paddle
-				//// Check if ball is above paddle (hit paddle corner) or within paddle (hit paddle side)
-				//else if (ball.position.y >= leftPaddle.position.y) {
-				//	// Max Angle Hit
-				//	if (ballVelocity.x > 0) {
-				//		ballVelocity.x = 0.5f;
-				//	}
-				//	else if (ballVelocity.x < 0) {
-				//		ballVelocity.x = 0.5f;
-				//	}
-				//	else {
-				//		ballVelocity.x = 0.0f;
-				//	}
-				//	// Flip for hit
-				//	//ballVelocity.x = -ballVelocity.x;
-
-				//	ballVelocity.x = 0.5f;
-				//	if (ballVelocity.y > 0) {
-				//		ballVelocity.y = 0.5;
-				//	}
-				//	else {
-
-				//	}
-				//}
-				//// Ball hit paddle side
-				//else {
-				//	// Diff
-				//	printf("Paddle Hit Side");
-				//	float paddleHalfHeight = PADDLE_HEIGHT / 2.0f;
-				//	float paddleCenterY = leftPaddle.position.y - paddleHalfHeight;
-				//	float diffFromPaddleCenter = abs(paddleCenterY - ball.position.y);
-				//	ballVelocity.y = 0.5f * (diffFromPaddleCenter / paddleHalfHeight);
-				//	if (ball.position.y < 0) {
-				//		ballVelocity.y *= -1;
-				//	}
-				//}
-
-				// Ball above paddle
-				// Ball within paddle
-				// Ball below
 			}
 
 			// Right Paddle
 			if (CheckCollision(ball, rightPaddle.position)) {
-				ballVelocity.x = -ballVelocity.x;
-				//float collidedX = ClosestXToCircle(ball, leftPaddle.position);				
-				ball.position.x += ballVelocity.x * BALL_SPEED * deltaTime; // Moving down
-			}
+				bool ballAbovePaddle = ball.position.y <= rightPaddle.position.y;
+				bool ballBelowPaddle = ball.position.y >= rightPaddle.position.y + rightPaddle.position.h;
 
-			//if (CheckCollision(ball, rightPaddle.position)) {
-			//	ballVelocity.y = -ballVelocity.y;
-			//	ball.position.y += ballVelocity.y * BALL_SPEED * deltaTime; // Moving down
-			//}
+				// Check ball hit vertical ends of paddle
+				if (ballAbovePaddle || ballBelowPaddle) {
+					ballVelocity.y = -ballVelocity.y;
+				}
+				else {
+					ballVelocity.x = -ballVelocity.x;
+					ball.position.x += ballVelocity.x * BALL_SPEED * deltaTime;
+				}
+			}
 
 			if (leftScoreChanged) {
 				// Update texture
@@ -1149,118 +1043,125 @@ int main(int argc, char* argv[])
 			//Clear screen to Black
 			SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, 0x00);
 			SDL_RenderClear(renderer);
-#if 0
 
-
-
-			/////////////////////////
-			// Render Entities
-			/////////////////////////
-
-			// Draw Paddles
-			SDL_SetRenderDrawColor(renderer, leftPaddle.color.r, leftPaddle.color.g, leftPaddle.color.b, leftPaddle.color.a);
-			SDL_RenderFillRectF(renderer, &leftPaddle.position);
-
-			SDL_SetRenderDrawColor(renderer, rightPaddle.color.r, rightPaddle.color.g, rightPaddle.color.b, rightPaddle.color.a);
-			SDL_RenderFillRectF(renderer, &rightPaddle.position);
-
-			// Draw Walls
-			SDL_SetRenderDrawColor(renderer, leftWall.color.r, leftWall.color.g, leftWall.color.b, leftWall.color.a);
-			SDL_RenderFillRectF(renderer, &leftWall.position);
-
-			SDL_SetRenderDrawColor(renderer, rightWall.color.r, rightWall.color.g, rightWall.color.b, rightWall.color.a);
-			SDL_RenderFillRectF(renderer, &rightWall.position);
-
-			SDL_SetRenderDrawColor(renderer, topWall.color.r, topWall.color.g, topWall.color.b, topWall.color.a);
-			SDL_RenderFillRectF(renderer, &topWall.position);
-
-			SDL_SetRenderDrawColor(renderer, bottomWall.color.r, bottomWall.color.g, bottomWall.color.b, bottomWall.color.a);
-			SDL_RenderFillRectF(renderer, &bottomWall.position);
-
-			// Draw Midline
-			SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
-			//SDL_RenderDrawPoints(renderer, MIDLINE_POINTS, MIDLINE_POINTS_COUNT);
-			//SDL_RenderDrawLines(renderer, MIDLINE_POINTS, MIDLINE_POINTS_COUNT);
-			for (int i = 0; i < MIDLINE_LINES_TOTAL_COUNT; i++)
+			switch (gameState)
 			{
-				Line line = midlines[i];
-				//if ((i % MIDLINE_LINES_COUNT) == (MIDLINE_LINE_THICKNESS / 2)) {
-				//	SDL_SetRenderDrawColor(renderer, 0xFF, 0x00, 0x00, 0xFF);
-				//}
-				SDL_RenderDrawLine(renderer, line.start.x, line.start.y, line.end.x, line.end.y);
-				
-			}
+			case AppStates::MAIN_MENU: {
+				//
+				const SDL_FRect titleDestRect = title.rect;
+				SDL_RenderCopyExF(renderer, title.texture, NULL, &titleDestRect, 0, NULL, SDL_FLIP_NONE);
 
-			// Draw Ball
-			SDL_SetRenderDrawColor(renderer, ball.color.r, ball.color.g, ball.color.b, ball.color.a);
-			//SDL_RenderFillRectF(renderer, &ballCollider);
-			SDL_RenderFillCircle(renderer, ball.position.x, ball.position.y, ball.radius);
+				// Render button
+				SDL_SetRenderDrawColor(renderer, playButton.color.r, playButton.color.g, playButton.color.b, playButton.color.a);
+				const SDL_FRect playButtonDestRect = playButton.rect;
+				SDL_RenderFillRectF(renderer, &playButtonDestRect);
+				const SDL_FRect playButtonTextDestRect = playButton.text->rect;
+				SDL_RenderCopyExF(renderer, playButton.text->texture, NULL, &playButtonTextDestRect, 0, NULL, SDL_FLIP_NONE);
 
-			/////////////////////////
-			// Render Entities Debug
-			/////////////////////////
+				// Render button
+				SDL_SetRenderDrawColor(renderer, optionsButton.color.r, optionsButton.color.g, optionsButton.color.b, optionsButton.color.a);
+				const SDL_FRect optionsButtonDestRect = optionsButton.rect;
+				SDL_RenderFillRectF(renderer, &optionsButtonDestRect);
+				const SDL_FRect optionsButtonTextDestRect = optionsButton.text->rect;
+				SDL_RenderCopyExF(renderer, optionsButton.text->texture, NULL, &optionsButtonTextDestRect, 0, NULL, SDL_FLIP_NONE);
 
-			// Paddle Position (Top Left)
-			SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255); // Green
-			SDL_RenderDrawPointF(renderer, leftPaddle.position.x, leftPaddle.position.y);
-			SDL_RenderDrawPointF(renderer, rightPaddle.position.x, rightPaddle.position.y);
+				// Render button
+				SDL_SetRenderDrawColor(renderer, quitButton.color.r, quitButton.color.g, quitButton.color.b, quitButton.color.a);
+				const SDL_FRect quitButtonDestRect = quitButton.rect;
+				SDL_RenderFillRectF(renderer, &quitButtonDestRect);
+				const SDL_FRect quitButtonTextDestRect = quitButton.text->rect;
+				SDL_RenderCopyExF(renderer, quitButton.text->texture, NULL, &quitButtonTextDestRect, 0, NULL, SDL_FLIP_NONE);
+			} break;
+			case AppStates::GAME: {
+				/////////////////////////
+				// Render Entities
+				/////////////////////////
 
-			// Ball Position (Center)
-			SDL_RenderDrawPointF(renderer, ball.position.x, ball.position.y);
+				// Draw Paddles
+				SDL_SetRenderDrawColor(renderer, leftPaddle.color.r, leftPaddle.color.g, leftPaddle.color.b, leftPaddle.color.a);
+				SDL_RenderFillRectF(renderer, &leftPaddle.position);
 
-			// Ball Collider
-			SDL_SetRenderDrawColor(renderer, 255, 255, 0, 255); // Yellow
-			SDL_FRect ballCollider = { ball.position.x - ball.radius, ball.position.y - ball.radius, 2.0f * ball.radius, 2.0f * ball.radius };
-			SDL_RenderDrawRectF(renderer, &ballCollider);
+				SDL_SetRenderDrawColor(renderer, rightPaddle.color.r, rightPaddle.color.g, rightPaddle.color.b, rightPaddle.color.a);
+				SDL_RenderFillRectF(renderer, &rightPaddle.position);
 
-#endif // 0
+				// Draw Walls
+				SDL_SetRenderDrawColor(renderer, leftWall.color.r, leftWall.color.g, leftWall.color.b, leftWall.color.a);
+				SDL_RenderFillRectF(renderer, &leftWall.position);
 
-			/////////////////////////
-			// Render Text
-			/////////////////////////
+				SDL_SetRenderDrawColor(renderer, rightWall.color.r, rightWall.color.g, rightWall.color.b, rightWall.color.a);
+				SDL_RenderFillRectF(renderer, &rightWall.position);
 
-			//Render text texture to screen
-			//SDL_RenderCopy(renderer, textTexture, NULL, NULL);
-			//const SDL_Rect leftTextDestRect = {
-			//	LEFT_SCORE_TEXT_X,
-			//	LEFT_SCORE_TEXT_Y,
-			//	SCORE_TEXT_WIDTH,
-			//	SCORE_TEXT_HEIGHT
-			//};
-			//SDL_RenderCopyEx(renderer, leftTextTexture, NULL, &leftTextDestRect, 0, NULL, SDL_FLIP_NONE);
+				SDL_SetRenderDrawColor(renderer, topWall.color.r, topWall.color.g, topWall.color.b, topWall.color.a);
+				SDL_RenderFillRectF(renderer, &topWall.position);
 
-			//const SDL_Rect rightTextDestRect = {
-			//	RIGHT_SCORE_TEXT_X,
-			//	RIGHT_SCORE_TEXT_Y,
-			//	SCORE_TEXT_WIDTH,
-			//	SCORE_TEXT_HEIGHT
-			//};
-			//SDL_RenderCopyEx(renderer, rightTextTexture,NULL, &rightTextDestRect, 0, NULL, SDL_FLIP_NONE);
+				SDL_SetRenderDrawColor(renderer, bottomWall.color.r, bottomWall.color.g, bottomWall.color.b, bottomWall.color.a);
+				SDL_RenderFillRectF(renderer, &bottomWall.position);
 
-			const SDL_FRect titleDestRect = title.rect;
-			SDL_RenderCopyExF(renderer, title.texture, NULL, &titleDestRect, 0, NULL, SDL_FLIP_NONE);
+				// Draw Midline
+				SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
+				//SDL_RenderDrawPoints(renderer, MIDLINE_POINTS, MIDLINE_POINTS_COUNT);
+				//SDL_RenderDrawLines(renderer, MIDLINE_POINTS, MIDLINE_POINTS_COUNT);
+				for (int i = 0; i < MIDLINE_LINES_TOTAL_COUNT; i++)
+				{
+					Line line = midlines[i];
+					//if ((i % MIDLINE_LINES_COUNT) == (MIDLINE_LINE_THICKNESS / 2)) {
+					//	SDL_SetRenderDrawColor(renderer, 0xFF, 0x00, 0x00, 0xFF);
+					//}
+					SDL_RenderDrawLine(renderer, line.start.x, line.start.y, line.end.x, line.end.y);
 
-			// Render button
-			SDL_SetRenderDrawColor(renderer, playButton.color.r, playButton.color.g, playButton.color.b, playButton.color.a);
-			const SDL_FRect playButtonDestRect = playButton.rect;
-			SDL_RenderFillRectF(renderer, &playButtonDestRect);
-			const SDL_FRect playButtonTextDestRect = playButton.text->rect;
-			SDL_RenderCopyExF(renderer, playButton.text->texture, NULL, &playButtonTextDestRect, 0, NULL, SDL_FLIP_NONE);
+				}
 
-			// Render button
-			SDL_SetRenderDrawColor(renderer, optionsButton.color.r, optionsButton.color.g, optionsButton.color.b, optionsButton.color.a);
-			const SDL_FRect optionsButtonDestRect = optionsButton.rect;
-			SDL_RenderFillRectF(renderer, &optionsButtonDestRect);
-			const SDL_FRect optionsButtonTextDestRect = optionsButton.text->rect;
-			SDL_RenderCopyExF(renderer, optionsButton.text->texture, NULL, &optionsButtonTextDestRect, 0, NULL, SDL_FLIP_NONE);
+				// Draw Ball
+				SDL_SetRenderDrawColor(renderer, ball.color.r, ball.color.g, ball.color.b, ball.color.a);
+				//SDL_RenderFillRectF(renderer, &ballCollider);
+				SDL_RenderFillCircle(renderer, ball.position.x, ball.position.y, ball.radius);
 
-			// Render button
-			SDL_SetRenderDrawColor(renderer, quitButton.color.r, quitButton.color.g, quitButton.color.b, quitButton.color.a);
-			const SDL_FRect quitButtonDestRect = quitButton.rect;
-			SDL_RenderFillRectF(renderer, &quitButtonDestRect);
-			const SDL_FRect quitButtonTextDestRect = quitButton.text->rect;
-			SDL_RenderCopyExF(renderer, quitButton.text->texture, NULL, &quitButtonTextDestRect, 0, NULL, SDL_FLIP_NONE);
+				/////////////////////////
+				// Render Entities Debug
+				/////////////////////////
 
+				// Paddle Position (Top Left)
+				SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255); // Green
+				SDL_RenderDrawPointF(renderer, leftPaddle.position.x, leftPaddle.position.y);
+				SDL_RenderDrawPointF(renderer, rightPaddle.position.x, rightPaddle.position.y);
+
+				// Ball Position (Center)
+				SDL_RenderDrawPointF(renderer, ball.position.x, ball.position.y);
+
+				// Ball Collider
+				SDL_SetRenderDrawColor(renderer, 255, 255, 0, 255); // Yellow
+				SDL_FRect ballCollider = { ball.position.x - ball.radius, ball.position.y - ball.radius, 2.0f * ball.radius, 2.0f * ball.radius };
+				SDL_RenderDrawRectF(renderer, &ballCollider);
+
+				/////////////////////////
+				// Render Text
+				/////////////////////////
+
+				//Render text texture to screen
+				//SDL_RenderCopy(renderer, textTexture, NULL, NULL);
+				const SDL_Rect leftTextDestRect = {
+					LEFT_SCORE_TEXT_X,
+					LEFT_SCORE_TEXT_Y,
+					SCORE_TEXT_WIDTH,
+					SCORE_TEXT_HEIGHT
+				};
+				SDL_RenderCopyEx(renderer, leftTextTexture, NULL, &leftTextDestRect, 0, NULL, SDL_FLIP_NONE);
+
+				const SDL_Rect rightTextDestRect = {
+					RIGHT_SCORE_TEXT_X,
+					RIGHT_SCORE_TEXT_Y,
+					SCORE_TEXT_WIDTH,
+					SCORE_TEXT_HEIGHT
+				};
+				SDL_RenderCopyEx(renderer, rightTextTexture,NULL, &rightTextDestRect, 0, NULL, SDL_FLIP_NONE);
+
+
+			} break;
+			case AppStates::COUNT:
+				break;
+			default:
+				break;
+			} 
 
 			SDL_RenderPresent(renderer);
 
