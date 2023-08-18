@@ -12,11 +12,13 @@
 #include "color.h"
 
 struct Entity {
+	int id;
 	SDL_FRect position;
 	SDL_Color color;
 };
 
 struct CircleEntity {
+	int id;
 	SDL_FRect position;
 	SDL_Color color;
 	float radius;
@@ -33,17 +35,21 @@ struct Line {
 };
 
 struct UI_Text {
+	std::string name;
+	int id;
 	SDL_FRect rect;
 	SDL_Color color = {0xFF, 0xFF, 0xFF, 0xFF};
 	SDL_Texture* texture;
-	std::string text;
+	std::string text = "Placeholder";
 };
 
 struct UI_Button {
+	std::string name;
+	int id;
 	SDL_FRect rect;
-	SDL_Color color;
+	SDL_Color color = { 0xFF, 0xFF, 0xFF, 0xFF };
 	SDL_Texture* texture;
-	UI_Text text;
+	UI_Text* text;
 
 	SDL_Color idleButtonColor;
 	SDL_Color idleTextColor;
@@ -54,10 +60,10 @@ struct UI_Button {
 };
 
 struct UI_Navigation {
-	int currentIndex;
-	UI_Button currentButton;
-	UI_Button** nav;
-	int navLength;
+	//int currentIndex;
+	UI_Button* currentButton;
+	//UI_Button* nav;
+	//int navLength;
 };
 
 
@@ -212,7 +218,6 @@ float ClosestXToCircle(CircleEntity& circle, SDL_FRect b) {
 
 bool CheckCollision(CircleEntity& circle, SDL_FRect b)
 {
-
 	float circleX;
 	float circleY;
 
@@ -306,7 +311,7 @@ void HighlightUIButton(UI_Button* button) {
 	// Turn button white
 	// Turn text black
 	// Set as highlighted
-	button->text.color = button->highlightedTextColor;
+	button->text->color = button->highlightedTextColor;
 	button->color = button->highlightedButtonColor;
 	button->highlighted = true;
 }
@@ -315,8 +320,8 @@ void UnhighlightUIButton(UI_Button* button) {
 	// Turn button black
 	// Turn text white
 	// unset as highlighted
-	button->text.color = button->highlightedTextColor;
-	button->color = button->highlightedButtonColor;
+	button->text->color = button->idleTextColor;
+	button->color = button->idleButtonColor;
 	button->highlighted = false;
 }
 
@@ -325,10 +330,23 @@ void NextUIButton(UI_Navigation uiNav) {
 
 }
 
+void AssignId(UI_Button* button, int* idCount) {
+	printf("Button %s has id %d\n", button->name.c_str(), button->id);
+	button->id = *idCount;
+	(*idCount)++;
+	//*idCount
+}
+
+void AssignId(UI_Text* text, int* idCount) {
+	printf("Text %s has id %i\n", text->name.c_str() , text->id);
+	text->id = *idCount;
+	(*idCount)++;
+}
 
 int main(int argc, char* argv[])
 {
 	Color color;
+	int idCount = 0;
 	
 	const int SCREEN_WIDTH = 1280;
 	const int SCREEN_HEIGHT = 720;
@@ -382,7 +400,9 @@ int main(int argc, char* argv[])
 	const int TITLE_TEXT_X = (SCREEN_WIDTH / 2) - TITLE_TEXT_WIDTH / 2 ;
 	const int TITLE_TEXT_Y = SCORE_TEXT_Y_OFFSET;
 
-	UI_Text title;	
+	UI_Text title;
+	title.name = "Title";
+	AssignId(&title, &idCount);
 	title.rect.w = SCREEN_WIDTH / 4;
 	title.rect.h = SCREEN_HEIGHT / 4;
 	title.rect.x = (SCREEN_WIDTH / 2) - title.rect.w / 2;
@@ -391,73 +411,87 @@ int main(int argc, char* argv[])
 	title.color = color.white;
 
 	UI_Text playButtonText;
+	playButtonText.name = "PlayButtonText";
+	AssignId(&playButtonText, &idCount);
 	playButtonText.rect.w = SCREEN_WIDTH / 8;
 	playButtonText.rect.h = SCREEN_HEIGHT / 8;
 	playButtonText.rect.x = (SCREEN_WIDTH / 2) - playButtonText.rect.w / 2;
 	playButtonText.rect.y = SCREEN_HEIGHT * 3 / 8;
 	playButtonText.text = "Play";
-	playButtonText.color = color.black;
+	playButtonText.color = color.red;
 
 	UI_Button playButton;
+	playButton.name = "PlayButton";
+	AssignId(&playButton, &idCount);
 	playButton.highlightedButtonColor = color.white;
 	playButton.highlightedTextColor = color.black;
 	playButton.idleButtonColor = color.black;
 	playButton.idleTextColor = color.white;
-	playButton.color = playButton.highlightedButtonColor;
-	playButton.text = playButtonText;
+	playButton.color = playButton.idleButtonColor;
+	playButton.text = &playButtonText;
+	playButton.text->color = playButton.idleTextColor;
 	playButton.rect.w = SCREEN_WIDTH / 4;
 	playButton.rect.h = SCREEN_HEIGHT / 8;
 	playButton.rect.x = (SCREEN_WIDTH / 2) - playButton.rect.w / 2;
 	playButton.rect.y = SCREEN_HEIGHT * 3 / 8;
 
 	UI_Text optionsButtonText;
+	optionsButtonText.name = "OptionsButtonText";
+	AssignId(&optionsButtonText, &idCount);
 	optionsButtonText.rect.w = SCREEN_WIDTH / 6;
 	optionsButtonText.rect.h = SCREEN_HEIGHT / 8;
 	optionsButtonText.rect.x = (SCREEN_WIDTH / 2) - optionsButtonText.rect.w / 2;
 	optionsButtonText.rect.y = SCREEN_HEIGHT * 4 / 8;
 	optionsButtonText.text = "Options";
-	optionsButtonText.color = color.white;
+	optionsButtonText.color = color.red;
 
 	UI_Button optionsButton;
+	optionsButton.name = "OptionsButton";
+	AssignId(&optionsButton, &idCount);
 	optionsButton.highlightedButtonColor = color.white;
 	optionsButton.highlightedTextColor = color.black;
 	optionsButton.idleButtonColor = color.black;
 	optionsButton.idleTextColor = color.white;
 	optionsButton.color = optionsButton.idleButtonColor;
-	optionsButton.text = optionsButtonText;
-	optionsButton.text.color = optionsButton.idleTextColor;
+	optionsButton.text = &optionsButtonText;
+	optionsButton.text->color = optionsButton.idleTextColor;
 	optionsButton.rect.w = SCREEN_WIDTH / 4;
 	optionsButton.rect.h = SCREEN_HEIGHT / 8;
 	optionsButton.rect.x = (SCREEN_WIDTH / 2) - optionsButton.rect.w / 2;
 	optionsButton.rect.y = SCREEN_HEIGHT * 4 / 8;
 
 	UI_Text quitButtonText;
+	quitButtonText.name = "QuitButtonText";
+	AssignId(&quitButtonText, &idCount);
 	quitButtonText.rect.w = SCREEN_WIDTH / 8;
 	quitButtonText.rect.h = SCREEN_HEIGHT / 8;
 	quitButtonText.rect.x = (SCREEN_WIDTH / 2) - quitButtonText.rect.w / 2;
 	quitButtonText.rect.y = SCREEN_HEIGHT * 5 / 8;
 	quitButtonText.text = "Quit";
-	quitButtonText.color = color.white;
+	//quitButtonText.color = color.red;
 
 	UI_Button quitButton;
+	quitButton.name = "QuitButton";
+	AssignId(&quitButton, &idCount);
 	quitButton.highlightedButtonColor = color.white;
 	quitButton.highlightedTextColor = color.black;
 	quitButton.idleButtonColor = color.black;
 	quitButton.idleTextColor = color.white;
 	quitButton.color = quitButton.idleButtonColor;
-	quitButton.text = quitButtonText;
-	quitButton.text.color = quitButton.idleTextColor;
+	quitButton.text = &quitButtonText;
+	quitButton.text->color = quitButton.idleTextColor;
 	quitButton.rect.w = SCREEN_WIDTH / 4;
 	quitButton.rect.h = SCREEN_HEIGHT / 8;
 	quitButton.rect.x = (SCREEN_WIDTH / 2) - quitButton.rect.w / 2;
 	quitButton.rect.y = SCREEN_HEIGHT * 5 / 8;
 
 	UI_Navigation uiNavigation;
-	uiNavigation.button = playButton;
-	uiNavigation.nav[0] = &playButton;
-	uiNavigation.nav[1] = &optionsButton;
-	uiNavigation.nav[2] = &quitButton;
-	uiNavigation.navLength = 3;
+	uiNavigation.currentButton = &playButton;
+	HighlightUIButton(uiNavigation.currentButton);
+	//uiNavigation.nav[0] = &playButton;
+	//uiNavigation.nav[1] = &optionsButton;
+	//uiNavigation.nav[2] = &quitButton;
+	//uiNavigation.navLength = 3;
 
 	const int MIDLINE_LINE_LENGTH = 32;
 	const int MIDLINE_LINE_THICKNESS = 20;
@@ -496,8 +530,6 @@ int main(int argc, char* argv[])
 	//SDL_Texture* titleTextTexture = NULL;
 
 	AppStates gameState = AppStates::MAIN_MENU;
-
-
 
 	// Initialization
 	if (SDL_Init(SDL_INIT_EVERYTHING)) 
@@ -556,9 +588,9 @@ int main(int argc, char* argv[])
 	leftTextTexture = LoadTextTexture(renderer, font, std::to_string(leftScore), textColor);
 	rightTextTexture = LoadTextTexture(renderer, font, std::to_string(rightScore), textColor);
 	title.texture = LoadTextTexture(renderer, font, title.text, title.color);
-	playButtonText.texture = LoadTextTexture(renderer, font, playButtonText.text, playButtonText.color);
-	optionsButtonText.texture = LoadTextTexture(renderer, font, optionsButtonText.text, optionsButtonText.color);
-	quitButtonText.texture = LoadTextTexture(renderer, font, quitButtonText.text, quitButtonText.color);
+	//playButtonText.texture = LoadTextTexture(renderer, font, playButtonText.text, playButtonText.color);
+	//optionsButtonText.texture = LoadTextTexture(renderer, font, optionsButtonText.text, optionsButtonText.color);
+	//quitButtonText.texture = LoadTextTexture(renderer, font, quitButtonText.text, quitButtonText.color);
 	
 	//TTF_SizeText()
 
@@ -695,7 +727,21 @@ int main(int argc, char* argv[])
 								}
 
 								case SDLK_s: {
-									quit = true;
+									if (uiNavigation.currentButton->id == playButton.id) {
+										UnhighlightUIButton(uiNavigation.currentButton);
+										uiNavigation.currentButton = &optionsButton;
+										HighlightUIButton(uiNavigation.currentButton);
+									}
+									else if (uiNavigation.currentButton->id == optionsButton.id) {
+										UnhighlightUIButton(uiNavigation.currentButton);
+										uiNavigation.currentButton = &quitButton;
+										HighlightUIButton(uiNavigation.currentButton);
+									}
+									else if (uiNavigation.currentButton->id == quitButton.id) {
+										UnhighlightUIButton(uiNavigation.currentButton);
+										uiNavigation.currentButton = &playButton;
+										HighlightUIButton(uiNavigation.currentButton);
+									}
 								}
 							}
 						} break;
@@ -1035,6 +1081,10 @@ int main(int argc, char* argv[])
 				rightScoreChanged = false;
 			}
 
+			playButton.text->texture = LoadTextTexture(renderer, font, playButton.text->text, playButton.text->color);
+			optionsButton.text->texture = LoadTextTexture(renderer, font, optionsButton.text->text, optionsButton.text->color);
+			quitButton.text->texture = LoadTextTexture(renderer, font, quitButton.text->text, quitButton.text->color);
+
 			/////////////////////////
 			// Render Pass
 			/////////////////////////
@@ -1137,21 +1187,21 @@ int main(int argc, char* argv[])
 			SDL_SetRenderDrawColor(renderer, playButton.color.r, playButton.color.g, playButton.color.b, playButton.color.a);
 			const SDL_FRect playButtonDestRect = playButton.rect;
 			SDL_RenderFillRectF(renderer, &playButtonDestRect);
-			const SDL_FRect playButtonTextDestRect = playButton.text.rect;
+			const SDL_FRect playButtonTextDestRect = playButton.text->rect;
 			SDL_RenderCopyExF(renderer, playButtonText.texture, NULL, &playButtonTextDestRect, 0, NULL, SDL_FLIP_NONE);
 
 			// Render button
 			SDL_SetRenderDrawColor(renderer, optionsButton.color.r, optionsButton.color.g, optionsButton.color.b, optionsButton.color.a);
 			const SDL_FRect optionsButtonDestRect = optionsButton.rect;
 			SDL_RenderFillRectF(renderer, &optionsButtonDestRect);
-			const SDL_FRect optionsButtonTextDestRect = optionsButton.text.rect;
+			const SDL_FRect optionsButtonTextDestRect = optionsButton.text->rect;
 			SDL_RenderCopyExF(renderer, optionsButtonText.texture, NULL, &optionsButtonTextDestRect, 0, NULL, SDL_FLIP_NONE);
 
 			// Render button
 			SDL_SetRenderDrawColor(renderer, quitButton.color.r, quitButton.color.g, quitButton.color.b, quitButton.color.a);
 			const SDL_FRect quitButtonDestRect = quitButton.rect;
 			SDL_RenderFillRectF(renderer, &quitButtonDestRect);
-			const SDL_FRect quitButtonTextDestRect = quitButton.text.rect;
+			const SDL_FRect quitButtonTextDestRect = quitButton.text->rect;
 			SDL_RenderCopyExF(renderer, quitButtonText.texture, NULL, &quitButtonTextDestRect, 0, NULL, SDL_FLIP_NONE);
 
 

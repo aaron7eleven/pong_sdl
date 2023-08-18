@@ -150,6 +150,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="uiButton.cpp" />
+    <ClCompile Include="uiText.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="color.h" />
