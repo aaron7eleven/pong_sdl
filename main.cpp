@@ -724,21 +724,30 @@ int main(int argc, char* argv[])
 		bool resettingBall = false;
 
 		while (!quit) {
-			/*startTime = SDL_GetTicks();
-			deltaTime = (lastTime - startTime) / 1000.0f;
-			lastTime = startTime;*/
-			//startTime = SDL_GetTicks();
 			deltaTime = (SDL_GetTicks() - startTicks) / 1000.0f;
-			//lastTime = startTime;
 			startTicks = SDL_GetTicks();
 
-			//printf("deltaTime = %f\n", deltaTime);
+			// Pre-Update
+			switch (gameState)
+			{
+			case AppStates::MAIN_MENU:
+				break;
+			case AppStates::GAME: {
+				leftPaddleVelocity = 0.0f;
+				rightPaddleVelocity = 0.0f;
+			} break;
 
-			leftPaddleVelocity = 0.0f;
-			rightPaddleVelocity = 0.0f;
+			case AppStates::COUNT:
+				break;
+			default:
+				break;
+			}
 
-			// Game Input 
-			//Handle events on queue
+
+			/////////////////////////
+			// Game Input
+			/////////////////////////
+			// Event Based Inputs (Handle events on queue)
 			while (SDL_PollEvent(&e) != 0)
 			{
 				//User requests quit
@@ -747,293 +756,243 @@ int main(int argc, char* argv[])
 					quit = true;
 				}
 				else if (e.type == SDL_KEYDOWN) {
-					
+
 					switch (gameState)
 					{
-						case AppStates::MAIN_MENU: {
-							switch (e.key.keysym.sym) {
-								case SDLK_ESCAPE: {
-									quit = true;
-								} break;
+					case AppStates::MAIN_MENU: {
+						switch (e.key.keysym.sym) {
+						case SDLK_ESCAPE: {
+							quit = true;
+						} break;
 
-								case SDLK_s: {
-									NextUIButton(&uiNavigation); 
-								} break;
-								
-								case SDLK_w: {
-									PreviousUIButton(&uiNavigation);
-								} break;
+						case SDLK_s: {
+							NextUIButton(&uiNavigation);
+						} break;
 
-								case SDLK_RETURN: {
-									if (uiNavigation.currentButton->id == playButton.id) {
-										gameState = AppStates::GAME;
-									}
-								} break;
+						case SDLK_w: {
+							PreviousUIButton(&uiNavigation);
+						} break;
 
+						case SDLK_RETURN: {
+							if (uiNavigation.currentButton->id == playButton.id) {
+								gameState = AppStates::GAME;
+							}
+							else if (uiNavigation.currentButton->id == quitButton.id) {
+								quit = true;
 							}
 						} break;
 
-						case AppStates::GAME: {
+						}
+					} break;
 
-						} break;
-						case AppStates::COUNT: {
-						
-						} break;
+					case AppStates::GAME: {
+
+					} break;
+					case AppStates::COUNT: {
+
+					} break;
 					default:
 						break;
 					}
-					
 
-					
+
+
 				}
-				//else if (e.type == SDL_KEYDOWN) {
-				//	//Select surfaces based on key press
-				//	switch (e.key.keysym.sym)
-				//	{
-
-				//		// Left Paddle
-				//		case SDLK_w:							
-				//			leftPaddleUpHeld = true;
-				//			//leftPaddleVelocity -= 1.0f;
-				//			break;
-
-				//		case SDLK_s:
-				//			leftPaddleDownHeld = true;
-				//			//leftPaddleVelocity += 1.0f;
-				//			break;
-
-				//		// Right Paddle
-				//		case SDLK_UP:
-				//			rightPaddleUpHeld = true;
-				//			break;
-
-				//		case SDLK_DOWN:
-				//			printf("Down");
-				//			break;
-
-				//		default:
-				//			printf("Default");
-				//			break;
-				//	}
-				//}
-				//else if (e.type == SDL_KEYUP) {
-				//	//Select surfaces based on key press
-				//	switch (e.key.keysym.sym)
-				//	{
-
-				//		// Left Paddle
-				//	case SDLK_w:
-				//		leftPaddleUpHeld = false;
-				//		//leftPaddleVelocity += 1.0f;
-				//		break;
-
-				//	case SDLK_s:
-				//		leftPaddleDownHeld = false;
-				//		//leftPaddleVelocity -= 1.0f;
-				//		break;
-
-				//		// Right Paddle
-				//	case SDLK_UP:
-				//		printf("Up");
-				//		break;
-
-				//	case SDLK_DOWN:
-				//		printf("Down");
-				//		break;
-
-				//	default:
-				//		printf("Default");
-				//		break;
-				//	}
-				//}
 			}
 
-			/////////////////////////
-			// Paddle Input
-			/////////////////////////
-			const Uint8* currentKeyStates = SDL_GetKeyboardState(NULL);
+			// Non Event Base game Input
+			switch (gameState)
+			{
+			case AppStates::MAIN_MENU:
+				break;
+			case AppStates::GAME: {
+					/////////////////////////
+					// Paddle Input
+					/////////////////////////
+					const Uint8* currentKeyStates = SDL_GetKeyboardState(NULL);
 
-			// Not sure which this isn't working
-			//if (currentKeyStates[SDLK_w]) {
-			//	leftPaddleVelocity -= 1.0f;
-			//}
+					// This works
+					if (currentKeyStates[SDL_SCANCODE_W]) {
+						leftPaddleVelocity -= 1.0f;
+					}
 
-			//if (currentKeyStates[SDLK_s]) {
-			//	leftPaddleVelocity += 1.0f;
-			//}
+					if (currentKeyStates[SDL_SCANCODE_S]) {
+						leftPaddleVelocity += 1.0f;
+					}
 
-			// This works
-			if (currentKeyStates[SDL_SCANCODE_W]) {
-				leftPaddleVelocity -= 1.0f;
+					// This works
+					if (currentKeyStates[SDL_SCANCODE_UP]) {
+						rightPaddleVelocity -= 1.0f;
+					}
+
+					if (currentKeyStates[SDL_SCANCODE_DOWN]) {
+						rightPaddleVelocity += 1.0f;
+					}
+				} break;
+
+				case AppStates::COUNT:
+					break;
+				default:
+					break;
 			}
 
-			if (currentKeyStates[SDL_SCANCODE_S]) {
-				leftPaddleVelocity += 1.0f;
-			}
+			// Update
+			switch (gameState)
+			{
+				case AppStates::MAIN_MENU: {
+					if (uiNavigation.previousButton->id != uiNavigation.currentButton->id) {
+						uiNavigation.previousButton->text->texture = LoadTextTexture(renderer, font, uiNavigation.previousButton->text->text, uiNavigation.previousButton->text->color);
+						uiNavigation.currentButton->text->texture = LoadTextTexture(renderer, font, uiNavigation.currentButton->text->text, uiNavigation.currentButton->text->color);
+					}
+				} break;
 
-			//if (currentKeyStates[SDLK_up]) {
-			//	rightPaddleVelocity -= 1.0f;
-			//}
+			case AppStates::GAME: {
+				leftPaddle.position.y += leftPaddleVelocity * PADDLE_SPEED * deltaTime;
+				rightPaddle.position.y += rightPaddleVelocity * PADDLE_SPEED * deltaTime;
 
-			//if (currentKeyStates[SDLK_DOWN]) {
-			//	rightPaddleVelocity += 1.0f;
-			//}
-
-			// This works
-			if (currentKeyStates[SDL_SCANCODE_UP]) {
-				rightPaddleVelocity -= 1.0f;
-			}
-
-			if (currentKeyStates[SDL_SCANCODE_DOWN]) {
-				rightPaddleVelocity += 1.0f;
-			}
-
-			leftPaddle.position.y += leftPaddleVelocity * PADDLE_SPEED * deltaTime;
-			rightPaddle.position.y += rightPaddleVelocity * PADDLE_SPEED * deltaTime;
-
-			if (resettingBall) {
-				if (resetBallTimer >= timeToResetBall) {
-					resettingBall = false; // move next frame
-					resetBallTimer = 0.0f;
+				if (resettingBall) {
+					if (resetBallTimer >= timeToResetBall) {
+						resettingBall = false; // move next frame
+						resetBallTimer = 0.0f;
+					}
+					else {
+						resetBallTimer += deltaTime;
+					}
 				}
 				else {
-					resetBallTimer += deltaTime;
-				}
-			}
-			else {
-				// Move ball
-				ball.position.y += ballVelocity.y * BALL_SPEED * deltaTime; // Moving X
-				ball.position.x += ballVelocity.x * BALL_SPEED * deltaTime; // Moving Y
-			}
-
-			/////////////////////////
-			// Paddles Collision
-			/////////////////////////
-
-			// Left
-			if (CheckCollision(leftPaddle.position, bottomWall.position)) {
-				// Undo Move
-				leftPaddle.position.y -= leftPaddleVelocity * PADDLE_SPEED * deltaTime;
-			}
-
-			if (CheckCollision(leftPaddle.position, topWall.position)) {
-				// Undo Move
-				leftPaddle.position.y -= leftPaddleVelocity * PADDLE_SPEED * deltaTime;
-			}
-
-			// Right
-			if (CheckCollision(rightPaddle.position, bottomWall.position)) {
-				// Undo Move
-				rightPaddle.position.y -= rightPaddleVelocity * PADDLE_SPEED * deltaTime;
-			}
-
-			if (CheckCollision(rightPaddle.position, topWall.position)) {
-				// Undo Move
-				rightPaddle.position.y -= rightPaddleVelocity * PADDLE_SPEED * deltaTime;
-			}
-
-			/////////////////////////
-			// Ball Collision
-			/////////////////////////
-			
-			// Vertical Walls
-			if (CheckCollision(ball, topWall.position)) {
-				ballVelocity.y = -ballVelocity.y;
-				ball.position.y += ballVelocity.y * BALL_SPEED * deltaTime; // Moving down
-			}
-			else if (CheckCollision(ball, bottomWall.position)) {
-				ballVelocity.y = -ballVelocity.y;
-				ball.position.y += ballVelocity.y * BALL_SPEED * deltaTime; // Moving down
-			}
-
-			// Horizontal Walls
-			if (CheckCollision(ball, leftWall.position)) {
-				ballVelocity.x = -ballVelocity.x;
-				ball.position.x += ballVelocity.x * BALL_SPEED * deltaTime; // Moving down
-
-				// Resetting ball
-				ball.position.x = BALL_INIT_X;
-				ball.position.y = BALL_INIT_Y;
-				
-				if (rand() % 2) {
-					ballVelocity.x = -ballVelocity.x;
+					// Move ball
+					ball.position.y += ballVelocity.y * BALL_SPEED * deltaTime; // Moving X
+					ball.position.x += ballVelocity.x * BALL_SPEED * deltaTime; // Moving Y
 				}
 
-				if (rand() % 2) {
+				/////////////////////////
+				// Paddles Collision
+				/////////////////////////
+
+				// Left
+				if (CheckCollision(leftPaddle.position, bottomWall.position)) {
+					// Undo Move
+					leftPaddle.position.y -= leftPaddleVelocity * PADDLE_SPEED * deltaTime;
+				}
+
+				if (CheckCollision(leftPaddle.position, topWall.position)) {
+					// Undo Move
+					leftPaddle.position.y -= leftPaddleVelocity * PADDLE_SPEED * deltaTime;
+				}
+
+				// Right
+				if (CheckCollision(rightPaddle.position, bottomWall.position)) {
+					// Undo Move
+					rightPaddle.position.y -= rightPaddleVelocity * PADDLE_SPEED * deltaTime;
+				}
+
+				if (CheckCollision(rightPaddle.position, topWall.position)) {
+					// Undo Move
+					rightPaddle.position.y -= rightPaddleVelocity * PADDLE_SPEED * deltaTime;
+				}
+
+				/////////////////////////
+				// Ball Collision
+				/////////////////////////
+
+				// Vertical Walls
+				if (CheckCollision(ball, topWall.position)) {
 					ballVelocity.y = -ballVelocity.y;
+					ball.position.y += ballVelocity.y * BALL_SPEED * deltaTime; // Moving down
 				}
-
-				resettingBall = true;
-				rightScore++;
-				rightScoreChanged = true;
-			}
-			else if (CheckCollision(ball, rightWall.position)) {
-				ballVelocity.x = -ballVelocity.x;
-				ball.position.x += ballVelocity.x * BALL_SPEED * deltaTime; // Moving down
-
-				// Resetting ball
-				ball.position.x = BALL_INIT_X;
-				ball.position.y = BALL_INIT_Y;
-
-				if (rand() % 2) {
-					ballVelocity.x = -ballVelocity.x;
-				}
-
-				if (rand() % 2) {
+				else if (CheckCollision(ball, bottomWall.position)) {
 					ballVelocity.y = -ballVelocity.y;
+					ball.position.y += ballVelocity.y * BALL_SPEED * deltaTime; // Moving down
 				}
 
-				resettingBall = true;
-				leftScore++;
-				leftScoreChanged = true;
-			}
-
-
-			// Left Paddles
-			if (CheckCollision(ball, leftPaddle.position)) {
-				bool ballAbovePaddle = ball.position.y <= leftPaddle.position.y;
-				bool ballBelowPaddle = ball.position.y >= leftPaddle.position.y + PADDLE_HEIGHT;
-
-				// Check ball hit vertical ends of paddle
-				if (ballAbovePaddle || ballBelowPaddle) {
-					ballVelocity.y = -ballVelocity.y;
-				}
-				else {
+				// Horizontal Walls
+				if (CheckCollision(ball, leftWall.position)) {
 					ballVelocity.x = -ballVelocity.x;
-					ball.position.x += ballVelocity.x * BALL_SPEED * deltaTime;
-				}
-			}
+					ball.position.x += ballVelocity.x * BALL_SPEED * deltaTime; // Moving down
 
-			// Right Paddle
-			if (CheckCollision(ball, rightPaddle.position)) {
-				bool ballAbovePaddle = ball.position.y <= rightPaddle.position.y;
-				bool ballBelowPaddle = ball.position.y >= rightPaddle.position.y + rightPaddle.position.h;
+					// Resetting ball
+					ball.position.x = BALL_INIT_X;
+					ball.position.y = BALL_INIT_Y;
 
-				// Check ball hit vertical ends of paddle
-				if (ballAbovePaddle || ballBelowPaddle) {
-					ballVelocity.y = -ballVelocity.y;
+					if (rand() % 2) {
+						ballVelocity.x = -ballVelocity.x;
+					}
+
+					if (rand() % 2) {
+						ballVelocity.y = -ballVelocity.y;
+					}
+
+					resettingBall = true;
+					rightScore++;
+					rightScoreChanged = true;
 				}
-				else {
+				else if (CheckCollision(ball, rightWall.position)) {
 					ballVelocity.x = -ballVelocity.x;
-					ball.position.x += ballVelocity.x * BALL_SPEED * deltaTime;
+					ball.position.x += ballVelocity.x * BALL_SPEED * deltaTime; // Moving down
+
+					// Resetting ball
+					ball.position.x = BALL_INIT_X;
+					ball.position.y = BALL_INIT_Y;
+
+					if (rand() % 2) {
+						ballVelocity.x = -ballVelocity.x;
+					}
+
+					if (rand() % 2) {
+						ballVelocity.y = -ballVelocity.y;
+					}
+
+					resettingBall = true;
+					leftScore++;
+					leftScoreChanged = true;
 				}
-			}
 
-			if (leftScoreChanged) {
-				// Update texture
-				leftTextTexture = LoadTextTexture(renderer, font, std::to_string(leftScore), textColor);
-				leftScoreChanged = false;
-			}
 
-			if (rightScoreChanged) {
-				// Update texture
-				rightTextTexture = LoadTextTexture(renderer, font, std::to_string(rightScore), textColor);
-				rightScoreChanged = false;
-			}
+				// Left Paddles
+				if (CheckCollision(ball, leftPaddle.position)) {
+					bool ballAbovePaddle = ball.position.y <= leftPaddle.position.y;
+					bool ballBelowPaddle = ball.position.y >= leftPaddle.position.y + PADDLE_HEIGHT;
 
-			if (uiNavigation.previousButton->id != uiNavigation.currentButton->id) {
-				uiNavigation.previousButton->text->texture = LoadTextTexture(renderer, font, uiNavigation.previousButton->text->text, uiNavigation.previousButton->text->color);
-				uiNavigation.currentButton->text->texture = LoadTextTexture(renderer, font, uiNavigation.currentButton->text->text, uiNavigation.currentButton->text->color);
+					// Check ball hit vertical ends of paddle
+					if (ballAbovePaddle || ballBelowPaddle) {
+						ballVelocity.y = -ballVelocity.y;
+					}
+					else {
+						ballVelocity.x = -ballVelocity.x;
+						ball.position.x += ballVelocity.x * BALL_SPEED * deltaTime;
+					}
+				}
+
+				// Right Paddle
+				if (CheckCollision(ball, rightPaddle.position)) {
+					bool ballAbovePaddle = ball.position.y <= rightPaddle.position.y;
+					bool ballBelowPaddle = ball.position.y >= rightPaddle.position.y + rightPaddle.position.h;
+
+					// Check ball hit vertical ends of paddle
+					if (ballAbovePaddle || ballBelowPaddle) {
+						ballVelocity.y = -ballVelocity.y;
+					}
+					else {
+						ballVelocity.x = -ballVelocity.x;
+						ball.position.x += ballVelocity.x * BALL_SPEED * deltaTime;
+					}
+				}
+
+				if (leftScoreChanged) {
+					// Update texture
+					leftTextTexture = LoadTextTexture(renderer, font, std::to_string(leftScore), textColor);
+					leftScoreChanged = false;
+				}
+
+				if (rightScoreChanged) {
+					// Update texture
+					rightTextTexture = LoadTextTexture(renderer, font, std::to_string(rightScore), textColor);
+					rightScoreChanged = false;
+				}
+			} break;
+
+			default:
+				break;
 			}
 
 			/////////////////////////
@@ -1072,6 +1031,7 @@ int main(int argc, char* argv[])
 				const SDL_FRect quitButtonTextDestRect = quitButton.text->rect;
 				SDL_RenderCopyExF(renderer, quitButton.text->texture, NULL, &quitButtonTextDestRect, 0, NULL, SDL_FLIP_NONE);
 			} break;
+
 			case AppStates::GAME: {
 				/////////////////////////
 				// Render Entities
@@ -1153,15 +1113,14 @@ int main(int argc, char* argv[])
 					SCORE_TEXT_WIDTH,
 					SCORE_TEXT_HEIGHT
 				};
-				SDL_RenderCopyEx(renderer, rightTextTexture,NULL, &rightTextDestRect, 0, NULL, SDL_FLIP_NONE);
+				SDL_RenderCopyEx(renderer, rightTextTexture, NULL, &rightTextDestRect, 0, NULL, SDL_FLIP_NONE);
 
 
 			} break;
-			case AppStates::COUNT:
-				break;
+
 			default:
 				break;
-			} 
+			}
 
 			SDL_RenderPresent(renderer);
 
@@ -1171,11 +1130,8 @@ int main(int argc, char* argv[])
 				//Wait remaining time
 				SDL_Delay(SCREEN_TICKS_PER_FRAME - frameTicks);
 			}
-
 		}
 	}
-
-
 
 	SDL_DestroyTexture(texture);
 	texture = NULL;
