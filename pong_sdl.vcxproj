@@ -149,12 +149,16 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="appSettings.h" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="rectCollider.cpp" />
     <ClCompile Include="uiButton.cpp" />
     <ClCompile Include="uiText.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="color.h" />
+    <ClInclude Include="paddle.h" />
+    <ClInclude Include="rectCollider.h" />
     <ClInclude Include="SDL_Management.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
