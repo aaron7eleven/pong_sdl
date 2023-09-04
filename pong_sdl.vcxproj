@@ -150,13 +150,17 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="app.cpp" />
+    <ClCompile Include="ball.cpp" />
     <ClCompile Include="collisions.cpp" />
     <ClCompile Include="gameUI.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="math.cpp" />
     <ClCompile Include="paddle.cpp" />
+    <ClCompile Include="paddleController.cpp" />
+    <ClCompile Include="SDL_wrappers.cpp" />
     <ClCompile Include="uiButton.cpp" />
     <ClCompile Include="uiText.cpp" />
+    <ClCompile Include="wall.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="app.h" />
@@ -169,9 +173,11 @@
     <ClInclude Include="line.h" />
     <ClInclude Include="math.h" />
     <ClInclude Include="paddle.h" />
+    <ClInclude Include="paddleController.h" />
     <ClInclude Include="primitives.h" />
     <ClInclude Include="rectCollider.h" />
     <ClInclude Include="SDL_Management.h" />
+    <ClInclude Include="SDL_wrappers.h" />
     <ClInclude Include="transform.h" />
     <ClInclude Include="ui.h" />
     <ClInclude Include="uiButton.h" />

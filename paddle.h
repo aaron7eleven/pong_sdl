@@ -1,8 +1,10 @@
 #pragma once
 #include <SDL.h>
+#include "app.h"
 #include "transform.h"
 #include "rectCollider.h"
 #include "color.h"
+#include "paddleController.h"
 
 struct paddle {
 	float width = 20;
@@ -20,6 +22,12 @@ struct paddle {
 	};
 	SDL_Color color = white;
 
-	bool upHeld = false;
-	bool downHeld = false;
+	paddleController paddleController = {
+		SDL_SCANCODE_UP,
+		false,
+		SDL_SCANCODE_DOWN,
+		false
+	};
 };
+
+void update(app* app, paddle* paddle);

@@ -6,6 +6,7 @@
 
 #include "color.h"
 #include "paddle.h"
+#include "paddleController.h"
 #include "wall.h"
 #include "ball.h"
 #include "appState.h"
@@ -19,6 +20,14 @@ struct app {
 	SDL_Color textColor = { 255, 255, 255, 255 }; // white
 	int fontPointSize = 100;
 
+	float deltaTime = 0.0f;
+	Uint32 startTicks = SDL_GetTicks();
+	Uint32 lastTicks = 0;
+
+	SDL_Event e;
+	const Uint8* keyStates;
+	
+	bool quit = false;
 	appState gameState = appState::GAME;
 
 	int screenWidth = 1280;
@@ -33,8 +42,12 @@ struct app {
 	float leftPaddleInitX = screenWidth / 8;
 	float leftPaddleInitY = screenHeight / 2;
 
-	float rightPaddleInitX = screenWidth - (screenWidth / 8);
-	float rightPaddleInitY = screenHeight / 2;
+	paddleController leftPaddleController = {
+		SDL_SCANCODE_W,
+		false,
+		SDL_SCANCODE_S,
+		false
+	};
 
 	paddle leftPaddle = {
 		paddleWidth,
@@ -44,10 +57,19 @@ struct app {
 		{leftPaddleInitX, leftPaddleInitY},
 		{leftPaddleInitX, leftPaddleInitY, paddleWidth, paddleHeight},
 		white,
-		false,
-		false
+		leftPaddleController
 	};
 
+
+	float rightPaddleInitX = screenWidth - (screenWidth / 8);
+	float rightPaddleInitY = screenHeight / 2;
+
+	paddleController rightPaddleController = {
+		SDL_SCANCODE_UP,
+		false,
+		SDL_SCANCODE_DOWN,
+		false
+	};
 	paddle rightPaddle = {
 		paddleWidth,
 		paddleHeight,
@@ -56,8 +78,7 @@ struct app {
 		{rightPaddleInitX, rightPaddleInitY},
 		{rightPaddleInitX, rightPaddleInitY, paddleWidth, paddleHeight},
 		white,
-		false,
-		false
+		rightPaddleController
 	};
 
 	SDL_Color wallColor = white;
@@ -140,6 +161,10 @@ struct app {
 		ballCollider,
 		ballInitVelocity
 	};
+
+	float resetBallTimer = 0.0f;
+	float timeToResetBall = 1.0f;
+	bool resettingBall = false;
 
 	float scoreTextWidth = screenWidth / 32;
 	float scoreTextHeight = screenHeight / 8; // Same Height as paddle
@@ -250,5 +275,15 @@ struct app {
 	SDL_Color	quitButtonTextColor = optionsButtonIdleTextColor;
 };
 
-int initApp(app* app);
-int freeApp(app* app);
+int init(app* app);
+int run(app* app);
+int free(app* app);
+
+void preUpdate(app* app);
+void update(app* app);
+void render(app* app);
+
+void updateGame(app* app );
+
+void updateDeltaTime(app* app);
+void getUserInput(app* app);
