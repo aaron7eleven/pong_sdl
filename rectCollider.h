@@ -1,6 +1,6 @@
 #pragma once
 #include <SDL.h>
-
-struct rectCollider {
-	SDL_FRect rectCollider;
-};
+//#define rectCollider SDL_FRect
+//struct rectCollider {
+//	SDL_FRect rectCollider;
+//};
