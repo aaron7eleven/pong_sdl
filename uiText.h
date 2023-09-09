@@ -1,14 +1,27 @@
 #pragma once
-#include <SDL.h>
 #include <string>
+#include <SDL.h>
+#include <SDL_ttf.h>
+
+#include "color.h"
 
 struct uiText {
-	std::string name = "uiText";
-	int id = 0;
-	SDL_FRect rect = {0.0f, 0.0f, 0.0f, 0.0f };
-	SDL_Color color = { 0xFF, 0xFF, 0xFF, 0xFF };
-	SDL_Texture* texture = NULL;
+	//int id = 0;
 	std::string text = "Text";
+	TTF_Font* font = NULL;
+	std::string fontFilePath = "";
+	int fontPointSize = 24;
+	SDL_FRect rect = {0.0f, 0.0f, 0.0f, 0.0f };
+	SDL_Color color = white;
+	
+	SDL_Texture* texture = NULL;
+	bool changed = false;
 };
 
-void initUIText(uiText* uiText, SDL_FRect rect, std::string text, SDL_Color color);
+
+void init(uiText* uiText);
+void loadFont(uiText* uiText);
+
+void render(SDL_Renderer* renderer, uiText* uiText);
+SDL_Texture* loadTexture(SDL_Renderer* renderer, uiText* uiText);
+

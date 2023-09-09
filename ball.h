@@ -1,8 +1,9 @@
 #pragma once
 #include <SDL.h>
-#include "app.h"
+//#include "app.h"
 #include "circleCollider.h"
 #include "color.h"
+//#include "app.h"
 
 struct ball {
 	SDL_FPoint transform = { 0.0f, 0.0f };
@@ -12,4 +13,4 @@ struct ball {
 	float speed = 600.0f;
 };
 
-void update(app* app, ball* ball);
+//void update(app* app, ball* ball);

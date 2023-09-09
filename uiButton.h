@@ -4,18 +4,22 @@
 #include "uiText.h"
 
 struct uiButton {
-	std::string name;
-	int id;
-	SDL_FRect rect;
-	SDL_Color color = { 0xFF, 0xFF, 0xFF, 0xFF };
-	SDL_Texture* tex;	
+	SDL_FRect rect = {0.0f};
+	SDL_Color color = white;
+	SDL_Texture* texture = NULL;	
 
-	SDL_Color idleButtonColor;
-	SDL_Color idleTextColor;
+	SDL_Color idleButtonColor = black;
+	SDL_Color idleTextColor = white;
 
 	bool highlighted;
-	SDL_Color highlightedButtonColor;
-	SDL_Color highlightedTextColor;
+	SDL_Color highlightedButtonColor = white;
+	SDL_Color highlightedTextColor = black;
 
 	uiText* text = NULL;
 };
+
+void init(uiButton* uiButton);
+void render(SDL_Renderer* renderer, uiButton* uiButton);
+void highlight(uiButton* button);
+void unhighlight(uiButton* button);
+

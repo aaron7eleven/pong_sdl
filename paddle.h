@@ -1,7 +1,7 @@
 #pragma once
 #include <SDL.h>
-#include "app.h"
-#include "transform.h"
+//#include "app.h"
+//#include "transform.h"
 #include "rectCollider.h"
 #include "color.h"
 #include "paddleController.h"
@@ -30,4 +30,4 @@ struct paddle {
 	};
 };
 
-void update(app* app, paddle* paddle);
+//void update(app* app, paddle* paddle);

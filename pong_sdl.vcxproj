@@ -152,25 +152,33 @@
     <ClCompile Include="app.cpp" />
     <ClCompile Include="ball.cpp" />
     <ClCompile Include="collisions.cpp" />
+    <ClCompile Include="game.cpp" />
     <ClCompile Include="gameUI.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="mainMenu.cpp" />
     <ClCompile Include="math.cpp" />
     <ClCompile Include="paddle.cpp" />
     <ClCompile Include="paddleController.cpp" />
     <ClCompile Include="SDL_wrappers.cpp" />
     <ClCompile Include="uiButton.cpp" />
+    <ClCompile Include="uiNavigation.cpp" />
     <ClCompile Include="uiText.cpp" />
     <ClCompile Include="wall.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="app.h" />
-    <ClInclude Include="appState.h" />
+    <ClInclude Include="gameState.h" />
     <ClInclude Include="ball.h" />
     <ClInclude Include="circleCollider.h" />
     <ClInclude Include="collisions.h" />
     <ClInclude Include="color.h" />
+    <ClInclude Include="game.h" />
     <ClInclude Include="gameUI.h" />
     <ClInclude Include="line.h" />
+    <ClInclude Include="mainMenu.h" />
+    <ClInclude Include="playButton.h" />
+    <ClInclude Include="playButtonText.h" />
+    <ClInclude Include="title.h" />
     <ClInclude Include="math.h" />
     <ClInclude Include="paddle.h" />
     <ClInclude Include="paddleController.h" />
@@ -181,6 +189,7 @@
     <ClInclude Include="transform.h" />
     <ClInclude Include="ui.h" />
     <ClInclude Include="uiButton.h" />
+    <ClInclude Include="uiNavigation.h" />
     <ClInclude Include="uiText.h" />
     <ClInclude Include="vectors.h" />
     <ClInclude Include="wall.h" />

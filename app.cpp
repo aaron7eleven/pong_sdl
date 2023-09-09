@@ -6,8 +6,19 @@
 #include <time.h>
 
 #include "app.h"
-#include "paddle.h"
-#include "ball.h"
+#include "game.h"
+int appMain(int argc, char* argv[]) {
+	app app;
+
+	if (init(&app)) {
+		return 1;
+	}
+
+	run(&app);
+
+	free(&app);
+	return 0;
+}
 
 int init(app* app) {
 	if (SDL_Init(SDL_INIT_EVERYTHING))
@@ -48,12 +59,12 @@ int init(app* app) {
 		return 1;
 	}
 
-	// Load Font
-	app->font = TTF_OpenFont("assets/font/DotGothic16-Regular.ttf", app->fontPointSize);
-	if (app->font == NULL) {
-		printf("Failed to load font! SDL_ttf Error: %s\n", TTF_GetError());
-		return 1;
-	}
+	//// Load Font
+	//app->font = TTF_OpenFont("assets/font/DotGothic16-Regular.ttf", app->fontPointSize);
+	//if (app->font == NULL) {
+	//	printf("Failed to load font! SDL_ttf Error: %s\n", TTF_GetError());
+	//	return 1;
+	//}
 
 	srand((unsigned)time(NULL));
 
@@ -61,8 +72,8 @@ int init(app* app) {
 }
 
 int free(app* app) {
-	TTF_CloseFont(app->font);
-	app->font = NULL;
+	//TTF_CloseFont(app->font);
+	//app->font = NULL;
 
 	//Deallocate surface
 	SDL_FreeSurface(app->windowSurface);
@@ -84,7 +95,7 @@ void updateDeltaTime(app* app) {
 	app->startTicks = SDL_GetTicks();
 }
 
-void frameDelay(app* app) {
+void applyFrameDelay(app* app) {
 	int frameTicks = SDL_GetTicks() - app->startTicks;
 	if (frameTicks < app->ticksPerFrame)
 	{
@@ -167,26 +178,26 @@ void getUserInput(app* app) {
 }
 
 void preUpdate(app* app) {
-	switch (app->gameState)
-	{
-		case appState::MAIN_MENU:
-			break;
-		case appState::GAME: {
-			app->leftPaddle.velocity = 0.0f;
-			app->rightPaddle.velocity = 0.0f;
-		} break;
-		default:
-			break;
-	}
+	//switch (app->gameState)
+	//{
+	//	case appState::MAIN_MENU:
+	//		break;
+	//	case appState::GAME: {
+	//		app->leftPaddle.velocity = 0.0f;
+	//		app->rightPaddle.velocity = 0.0f;
+	//	} break;
+	//	default:
+	//		break;
+	//}
 }
 
 void updateGame(app* app) {
 	// update left paddle
-	update(app, &app->leftPaddle);
+	//update(app, &app->leftPaddle);
 	// update right paddle
-	update(app, &app->rightPaddle);
+	//update(app, &app->rightPaddle);
 	// update ball
-	update(app, &app->ball);
+	//update(app, &app->ball);
 
 //	/////////////////////////
 //// Paddles Collision
@@ -314,23 +325,24 @@ void updateGame(app* app) {
 
 
 void update(app* app) {
-	// Update
-	switch (app->gameState)
-	{
-	case appState::MAIN_MENU: {
-		//if (uiNavigation.previousButton->id != uiNavigation.currentButton->id) {
-		//	uiNavigation.previousButton->text->texture = LoadTextTexture(renderer, font, uiNavigation.previousButton->text->text, uiNavigation.previousButton->text->color);
-		//	uiNavigation.currentButton->text->texture = LoadTextTexture(renderer, font, uiNavigation.currentButton->text->text, uiNavigation.currentButton->text->color);
-		//}
-	} break;
 
-	case appState::GAME: {
-		updateGame(app);
-	} break;
+	//// Update
+	//switch (app->gameState)
+	//{
+	//case appState::MAIN_MENU: {
+	//	//if (uiNavigation.previousButton->id != uiNavigation.currentButton->id) {
+	//	//	uiNavigation.previousButton->text->texture = LoadTextTexture(renderer, font, uiNavigation.previousButton->text->text, uiNavigation.previousButton->text->color);
+	//	//	uiNavigation.currentButton->text->texture = LoadTextTexture(renderer, font, uiNavigation.currentButton->text->text, uiNavigation.currentButton->text->color);
+	//	//}
+	//} break;
 
-	default:
-		break;
-	}
+	//case appState::GAME: {
+	//	updateGame(app);
+	//} break;
+
+	//default:
+	//	break;
+	//}
 }
 
 void renderGame(app* app) {
@@ -339,29 +351,29 @@ void renderGame(app* app) {
 	/////////////////////////
 
 	// Draw Paddles
-	render(app, &app->leftPaddle);
+	//render(app, &app->leftPaddle);
 	
 	//SDL_SetRenderDrawColor(app.renderer, leftPaddle.color.r, leftPaddle.color.g, leftPaddle.color.b, leftPaddle.color.a);
 	//SDL_RenderFillRectF(app.renderer, &leftPaddle.rectCollider);
 
-	render(app, &app->rightPaddle);
+	//render(app, &app->rightPaddle);
 	//SDL_SetRenderDrawColor(app.renderer, rightPaddle.color.r, rightPaddle.color.g, rightPaddle.color.b, rightPaddle.color.a);
 	//SDL_RenderFillRectF(app.renderer, &rightPaddle.rectCollider);
 
 	// Draw Walls
-	render(app, &app->leftWall);
+	//render(app, &app->leftWall);
 	//SDL_SetRenderDrawColor(app.renderer, leftWall.color.r, leftWall.color.g, leftWall.color.b, leftWall.color.a);
 	//SDL_RenderFillRectF(app.renderer, &leftWall.rectCollider);
 
-	render(app, &app->rightWall);
+	//render(app, &app->rightWall);
 	//SDL_SetRenderDrawColor(app.renderer, rightWall.color.r, rightWall.color.g, rightWall.color.b, rightWall.color.a);
 	//SDL_RenderFillRectF(app.renderer, &rightWall.rectCollider);
 
-	render(app, &app->topWall);
+	//render(app, &app->topWall);
 	//SDL_SetRenderDrawColor(app.renderer, topWall.color.r, topWall.color.g, topWall.color.b, topWall.color.a);
 	//SDL_RenderFillRectF(app.renderer, &topWall.rectCollider);
 
-	render(app, &app->bottomWall);
+	//render(app, &app->bottomWall);
 	//SDL_SetRenderDrawColor(app.renderer, bottomWall.color.r, bottomWall.color.g, bottomWall.color.b, bottomWall.color.a);
 	//SDL_RenderFillRectF(app.renderer, &bottomWall.rectCollider);
 
@@ -430,45 +442,47 @@ void render(app* app) {
 	SDL_SetRenderDrawColor(app->renderer, 0x00, 0x00, 0x00, 0x00);
 	SDL_RenderClear(app->renderer);
 
-	switch (app->gameState)
-	{
-	case appState::MAIN_MENU: {
-		//
-		//const SDL_FRect titleDestRect = title.rect;
-		//SDL_RenderCopyExF(renderer, title.texture, NULL, &titleDestRect, 0, NULL, SDL_FLIP_NONE);
+	render(app->renderer, app->game);
 
-		// Render button
-		/*SDL_SetRenderDrawColor(renderer, playButton.color.r, playButton.color.g, playButton.color.b, playButton.color.a);
-		const SDL_FRect playButtonDestRect = playButton.rect;
-		SDL_RenderFillRectF(renderer, &playButtonDestRect);
-		const SDL_FRect playButtonTextDestRect = playButton.text->rect;
-		SDL_RenderCopyExF(renderer, playButton.text->texture, NULL, &playButtonTextDestRect, 0, NULL, SDL_FLIP_NONE);*/
+	//switch (app->gameState)
+	//{
+	//case appState::MAIN_MENU: {
+	//	//
+	//	//const SDL_FRect titleDestRect = title.rect;
+	//	//SDL_RenderCopyExF(renderer, title.texture, NULL, &titleDestRect, 0, NULL, SDL_FLIP_NONE);
 
-		//// Render button
-		//SDL_SetRenderDrawColor(renderer, optionsButton.color.r, optionsButton.color.g, optionsButton.color.b, optionsButton.color.a);
-		//const SDL_FRect optionsButtonDestRect = optionsButton.rect;
-		//SDL_RenderFillRectF(renderer, &optionsButtonDestRect);
-		//const SDL_FRect optionsButtonTextDestRect = optionsButton.text->rect;
-		//SDL_RenderCopyExF(app.renderer, optionsButton.text->texture, NULL, &optionsButtonTextDestRect, 0, NULL, SDL_FLIP_NONE);
+	//	// Render button
+	//	/*SDL_SetRenderDrawColor(renderer, playButton.color.r, playButton.color.g, playButton.color.b, playButton.color.a);
+	//	const SDL_FRect playButtonDestRect = playButton.rect;
+	//	SDL_RenderFillRectF(renderer, &playButtonDestRect);
+	//	const SDL_FRect playButtonTextDestRect = playButton.text->rect;
+	//	SDL_RenderCopyExF(renderer, playButton.text->texture, NULL, &playButtonTextDestRect, 0, NULL, SDL_FLIP_NONE);*/
 
-		//// Render button
-		//SDL_SetRenderDrawColor(app.renderer, quitButton.color.r, quitButton.color.g, quitButton.color.b, quitButton.color.a);
-		//const SDL_FRect quitButtonDestRect = quitButton.rect;
-		//SDL_RenderFillRectF(app.renderer, &quitButtonDestRect);
-		//const SDL_FRect quitButtonTextDestRect = quitButton.text->rect;
-		//SDL_RenderCopyExF(app.renderer, quitButton.text->texture, NULL, &quitButtonTextDestRect, 0, NULL, SDL_FLIP_NONE);
-	} break;
+	//	//// Render button
+	//	//SDL_SetRenderDrawColor(renderer, optionsButton.color.r, optionsButton.color.g, optionsButton.color.b, optionsButton.color.a);
+	//	//const SDL_FRect optionsButtonDestRect = optionsButton.rect;
+	//	//SDL_RenderFillRectF(renderer, &optionsButtonDestRect);
+	//	//const SDL_FRect optionsButtonTextDestRect = optionsButton.text->rect;
+	//	//SDL_RenderCopyExF(app.renderer, optionsButton.text->texture, NULL, &optionsButtonTextDestRect, 0, NULL, SDL_FLIP_NONE);
 
-	case appState::GAME: {
-		renderGame(app);
-		
-		
+	//	//// Render button
+	//	//SDL_SetRenderDrawColor(app.renderer, quitButton.color.r, quitButton.color.g, quitButton.color.b, quitButton.color.a);
+	//	//const SDL_FRect quitButtonDestRect = quitButton.rect;
+	//	//SDL_RenderFillRectF(app.renderer, &quitButtonDestRect);
+	//	//const SDL_FRect quitButtonTextDestRect = quitButton.text->rect;
+	//	//SDL_RenderCopyExF(app.renderer, quitButton.text->texture, NULL, &quitButtonTextDestRect, 0, NULL, SDL_FLIP_NONE);
+	//} break;
 
-	} break;
+	//case appState::GAME: {
+	//	renderGame(app);
+	//	
+	//	
 
-	default:
-		break;
-	}
+	//} break;
+
+	//default:
+	//	break;
+	//}
 
 	SDL_RenderPresent(app->renderer);
 
@@ -476,20 +490,14 @@ void render(app* app) {
 
 int run(app* app) {
 	// Load all textures
+	// Check all the textures (if not NULL)
 
-	// Check all the textures
+	game game;
+	app->game = &game;
+	init(&game);
 
-//if (texture == NULL) {
-//	printf("Failed to load texture image\n");
-//}
-////else if (leftTextTexture == NULL) {
-////	printf("Failed to load left text texture image\n");
-////}
-////else if (rightTextTexture == NULL) {
-////	printf("Failed to load right text texture image\n");
-////}
-//else {
-//}
+
+
 	while (!app->quit) {
 		updateDeltaTime(app);
 
@@ -500,7 +508,9 @@ int run(app* app) {
 		
 		render(app);
 		
-		frameDelay(app);
+		applyFrameDelay(app);
 	}
+
+	return 0;
 }
 
