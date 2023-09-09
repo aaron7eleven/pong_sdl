@@ -143,5 +143,17 @@
     <ClInclude Include="playButton.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="optionsButtonText.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="optionsButton.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="quitButtonText.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="quitButton.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

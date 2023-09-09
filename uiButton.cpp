@@ -16,7 +16,7 @@ void unhighlight(uiButton* button) {
 
 void init(uiButton* uiButton) {
 	init(uiButton->text);
-	highlight(uiButton);
+	unhighlight(uiButton);
 }
 
 void render(SDL_Renderer* renderer, uiButton* uiButton) {

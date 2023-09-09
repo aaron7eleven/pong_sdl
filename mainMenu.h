@@ -5,12 +5,15 @@
 #include "color.h"
 #include "title.h"
 #include "playButton.h"
+#include "optionsButton.h"
+#include "quitButton.h"
 
 struct mainMenu {
 	title title;
 	//playButtonText playButtonText;
 	playButton playButton;
-
+	optionsButton optionsButton;
+	quitButton quitButton;
 	//uiText title = {
 	//	"titleText",
 	//	"Pong",
@@ -34,29 +37,29 @@ struct mainMenu {
 	//	false
 	//};
 
-	uiText optionsButtonText = {
-		"Options",
-		NULL,
-		"assets/font/DotGothic16-Regular.ttf",
-		100,
-		//{640, 270, 180, 90}, // {x,y,w,h}
-		{505, 360, 270, 90}, // {x,y,w,h}
-		white,
-		NULL,
-		false
-	};
+	//uiText optionsButtonText = {
+	//	"Options",
+	//	NULL,
+	//	"assets/font/DotGothic16-Regular.ttf",
+	//	100,
+	//	//{640, 270, 180, 90}, // {x,y,w,h}
+	//	{505, 360, 270, 90}, // {x,y,w,h}
+	//	white,
+	//	NULL,
+	//	false
+	//};
 
-	uiText quitButtonText = {
-		"Quit",
-		NULL,
-		"assets/font/DotGothic16-Regular.ttf",
-		100,
-		//{640, 270, 180, 90}, // {x,y,w,h}
-		{550, 450, 180, 90}, // {x,y,w,h}
-		white,
-		NULL,
-		false
-	};
+	//uiText quitButtonText = {
+	//	"Quit",
+	//	NULL,
+	//	"assets/font/DotGothic16-Regular.ttf",
+	//	100,
+	//	//{640, 270, 180, 90}, // {x,y,w,h}
+	//	{550, 450, 180, 90}, // {x,y,w,h}
+	//	white,
+	//	NULL,
+	//	false
+	//};
 
 	//float		playButtonWidth = screenWidth / 4;
 	//float		playButtonHeight = screenHeight / 8;

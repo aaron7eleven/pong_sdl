@@ -1,12 +1,12 @@
 #pragma once
 #include "uiButton.h"
-#include "playButtonText.h"
+#include "optionsButtonText.h"
 
-struct playButton {
+struct optionsButton {
 	float width = 320;
 	float height = 90;
 	float x = 640 - width / 2;
-	float y = 270;
+	float y = 360;
 	SDL_FRect rect = {
 		x,
 		y,
@@ -14,7 +14,7 @@ struct playButton {
 		height
 	};
 
-	playButtonText playbuttonText;
+	optionsButtonText optionsbuttonText;
 
 	uiButton uiButton = {
 		rect,
@@ -25,6 +25,6 @@ struct playButton {
 		false,
 		white,
 		black,
-		&playbuttonText.uiText
+		& optionsbuttonText.uiText
 	};
 };

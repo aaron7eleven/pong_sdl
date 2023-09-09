@@ -176,8 +176,12 @@
     <ClInclude Include="gameUI.h" />
     <ClInclude Include="line.h" />
     <ClInclude Include="mainMenu.h" />
+    <ClInclude Include="optionsButton.h" />
+    <ClInclude Include="optionsButtonText.h" />
     <ClInclude Include="playButton.h" />
     <ClInclude Include="playButtonText.h" />
+    <ClInclude Include="quitButton.h" />
+    <ClInclude Include="quitButtonText.h" />
     <ClInclude Include="title.h" />
     <ClInclude Include="math.h" />
     <ClInclude Include="paddle.h" />
