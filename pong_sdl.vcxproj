@@ -156,6 +156,7 @@
     <ClCompile Include="gameUI.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="mainMenu.cpp" />
+    <ClCompile Include="mainMenuNavigation.cpp" />
     <ClCompile Include="math.cpp" />
     <ClCompile Include="paddle.cpp" />
     <ClCompile Include="paddleController.cpp" />
@@ -176,6 +177,7 @@
     <ClInclude Include="gameUI.h" />
     <ClInclude Include="line.h" />
     <ClInclude Include="mainMenu.h" />
+    <ClInclude Include="mainMenuNavigation.h" />
     <ClInclude Include="optionsButton.h" />
     <ClInclude Include="optionsButtonText.h" />
     <ClInclude Include="playButton.h" />

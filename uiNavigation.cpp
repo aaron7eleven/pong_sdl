@@ -1,7 +1,7 @@
 #pragma once
 #include "uiNavigation.h"
 
-void NextUIButton(uiNavigation* uiNavigation) {
+void next(uiNavigation* uiNavigation) {
 	uiNavigation->previousIndex = uiNavigation->currentIndex;
 	if (uiNavigation->currentIndex + 1 >= uiNavigation->navLength) {
 		uiNavigation->currentIndex = 0;
@@ -11,11 +11,11 @@ void NextUIButton(uiNavigation* uiNavigation) {
 	}
 	uiNavigation->previousButton = uiNavigation->nav[uiNavigation->previousIndex];
 	uiNavigation->currentButton = uiNavigation->nav[uiNavigation->currentIndex];
-	//UnhighlightUIButton(uiNavigation->previousButton);
-	//HighlightUIButton(uiNavigation->currentButton);
+	unhighlight(uiNavigation->previousButton);
+	highlight(uiNavigation->currentButton);
 }
 
-void PreviousUIButton(uiNavigation* uiNavigation) {
+void previous(uiNavigation* uiNavigation) {
 	uiNavigation->previousIndex = uiNavigation->currentIndex;
 	if (uiNavigation->currentIndex - 1 < 0) {
 		uiNavigation->currentIndex = uiNavigation->navLength - 1;
@@ -25,6 +25,6 @@ void PreviousUIButton(uiNavigation* uiNavigation) {
 	}
 	uiNavigation->previousButton = uiNavigation->nav[uiNavigation->previousIndex];
 	uiNavigation->currentButton = uiNavigation->nav[uiNavigation->currentIndex];
-	//UnhighlightUIButton(uiNavigation->previousButton);
-	//HighlightUIButton(uiNavigation->currentButton);
+	unhighlight(uiNavigation->previousButton);
+	highlight(uiNavigation->currentButton);
 }

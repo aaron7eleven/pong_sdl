@@ -9,3 +9,6 @@ struct uiNavigation {
 	uiButton** nav;
 	int navLength = 0;
 };
+
+void next(uiNavigation* uiNavigation);
+void previous(uiNavigation* uiNavigation);
