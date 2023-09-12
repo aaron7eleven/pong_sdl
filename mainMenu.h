@@ -20,4 +20,5 @@ struct mainMenu {
 };
 
 void init(mainMenu* mainMenu);
+void update(float deltaTime, const Uint8* keyStates, mainMenu* mainMenu);
 void render(SDL_Renderer* renderer, mainMenu* mainMenu);

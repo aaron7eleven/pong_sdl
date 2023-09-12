@@ -10,5 +10,6 @@ struct uiNavigation {
 	int navLength = 0;
 };
 
+void init(uiNavigation* uiNavigation);
 void next(uiNavigation* uiNavigation);
 void previous(uiNavigation* uiNavigation);

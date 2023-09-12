@@ -5,6 +5,7 @@
 #include <SDL_ttf.h>
 #include <time.h>
 
+#include "SDL_wrappers.h"
 #include "app.h"
 #include "game.h"
 int appMain(int argc, char* argv[]) {
@@ -326,6 +327,8 @@ void updateGame(app* app) {
 
 void update(app* app) {
 
+	update(app->deltaTime, app->keyStates, app->game);
+	
 	//// Update
 	//switch (app->gameState)
 	//{
@@ -439,53 +442,10 @@ void renderGame(app* app) {
 
 void render(app* app) {
 	//Clear screen to Black
-	SDL_SetRenderDrawColor(app->renderer, 0x00, 0x00, 0x00, 0x00);
+	SDL_SetRenderDrawColor(app->renderer, black);
 	SDL_RenderClear(app->renderer);
-
 	render(app->renderer, app->game);
-
-	//switch (app->gameState)
-	//{
-	//case appState::MAIN_MENU: {
-	//	//
-	//	//const SDL_FRect titleDestRect = title.rect;
-	//	//SDL_RenderCopyExF(renderer, title.texture, NULL, &titleDestRect, 0, NULL, SDL_FLIP_NONE);
-
-	//	// Render button
-	//	/*SDL_SetRenderDrawColor(renderer, playButton.color.r, playButton.color.g, playButton.color.b, playButton.color.a);
-	//	const SDL_FRect playButtonDestRect = playButton.rect;
-	//	SDL_RenderFillRectF(renderer, &playButtonDestRect);
-	//	const SDL_FRect playButtonTextDestRect = playButton.text->rect;
-	//	SDL_RenderCopyExF(renderer, playButton.text->texture, NULL, &playButtonTextDestRect, 0, NULL, SDL_FLIP_NONE);*/
-
-	//	//// Render button
-	//	//SDL_SetRenderDrawColor(renderer, optionsButton.color.r, optionsButton.color.g, optionsButton.color.b, optionsButton.color.a);
-	//	//const SDL_FRect optionsButtonDestRect = optionsButton.rect;
-	//	//SDL_RenderFillRectF(renderer, &optionsButtonDestRect);
-	//	//const SDL_FRect optionsButtonTextDestRect = optionsButton.text->rect;
-	//	//SDL_RenderCopyExF(app.renderer, optionsButton.text->texture, NULL, &optionsButtonTextDestRect, 0, NULL, SDL_FLIP_NONE);
-
-	//	//// Render button
-	//	//SDL_SetRenderDrawColor(app.renderer, quitButton.color.r, quitButton.color.g, quitButton.color.b, quitButton.color.a);
-	//	//const SDL_FRect quitButtonDestRect = quitButton.rect;
-	//	//SDL_RenderFillRectF(app.renderer, &quitButtonDestRect);
-	//	//const SDL_FRect quitButtonTextDestRect = quitButton.text->rect;
-	//	//SDL_RenderCopyExF(app.renderer, quitButton.text->texture, NULL, &quitButtonTextDestRect, 0, NULL, SDL_FLIP_NONE);
-	//} break;
-
-	//case appState::GAME: {
-	//	renderGame(app);
-	//	
-	//	
-
-	//} break;
-
-	//default:
-	//	break;
-	//}
-
 	SDL_RenderPresent(app->renderer);
-
 }
 
 int run(app* app) {
