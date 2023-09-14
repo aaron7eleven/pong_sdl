@@ -1,13 +1,16 @@
 #pragma once
 #include <cstdlib>
+#include <sstream>
+#include <time.h>
+
 #include <SDL.h>
 #include <SDL_image.h>
 #include <SDL_ttf.h>
-#include <time.h>
 
 #include "SDL_wrappers.h"
 #include "app.h"
 #include "game.h"
+//#include "ui.h"
 int appMain(int argc, char* argv[]) {
 	app app;
 
@@ -69,6 +72,8 @@ int init(app* app) {
 
 	srand((unsigned)time(NULL));
 
+	init(&app->fpsCounter.uiText);
+
 	return 0;
 }
 
@@ -104,7 +109,7 @@ void applyFrameDelay(app* app) {
 		SDL_Delay(app->ticksPerFrame - frameTicks);
 	}
 }
-void getUserInput(app* app) {
+void getInput(app* app) {
 	/////////////////////////
 	// Game Input
 	/////////////////////////
@@ -327,6 +332,19 @@ void updateGame(app* app) {
 
 void update(app* app) {
 
+	// https://stackoverflow.com/questions/16605967/set-precision-of-stdto-string-when-converting-floating-point-values
+	
+	//std::ostringstream out;
+	//out.precision(2);
+	////out << std::fixed << 1.0f / (app->deltaTime / 1000.0f);
+	//out << std::fixed << 1.0f / (app->ticksPerFrame);
+	//app->fpsCounter.uiText.text = "FPS = " + std::move(out).str();
+
+	//out << std::fixed << 1.0f / (app->ticksPerFrame);
+
+	app->fpsCounter.uiText.text = "FPS = " + std::to_string(1.0f / (app->deltaTime / 1000.0f)) + "\n";
+	app->fpsCounter.uiText.text += "app->deltaTime = " + std::to_string(app->deltaTime);
+
 	update(app->deltaTime, app->keyStates, app->game);
 	
 	//// Update
@@ -445,8 +463,12 @@ void render(app* app) {
 	SDL_SetRenderDrawColor(app->renderer, black);
 	SDL_RenderClear(app->renderer);
 	render(app->renderer, app->game);
+
+	render(app->renderer, &app->fpsCounter.uiText);
+
 	SDL_RenderPresent(app->renderer);
 }
+
 
 int run(app* app) {
 	// Load all textures
@@ -456,19 +478,17 @@ int run(app* app) {
 	app->game = &game;
 	init(&game);
 
-
-
 	while (!app->quit) {
 		updateDeltaTime(app);
 
-		getUserInput(app);
+		getInput(app);
 
 		preUpdate(app);
 		update(app);
 		
 		render(app);
 		
-		applyFrameDelay(app);
+		//applyFrameDelay(app);
 	}
 
 	return 0;
