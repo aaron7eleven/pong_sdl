@@ -73,7 +73,7 @@ SDL_Texture* loadTexture(SDL_Renderer* renderer, uiText* uiText) {
 	}
 
 	SDL_FreeSurface(textSurface);
-
+	SDL_DestroyTexture(uiText->texture);
 	uiText->texture = outputTexture;
 	return uiText->texture;
 }
@@ -86,16 +86,24 @@ void loadFont(uiText* uiText) {
 }
 
 void render(SDL_Renderer* renderer, uiText* uiText) {
-	if (uiText->texture == NULL) {
-		loadTexture(renderer, uiText);
-	}
-	else if (uiText->changed) {
-		loadTexture(renderer, uiText);
-	}
+	//if (uiText->texture == NULL) {
+	//	loadTexture(renderer, uiText);
+	//}
+	//else if (uiText->changed) {
+	//	loadTexture(renderer, uiText);
+	//	uiText->changed = false;
+	//}
+
+	loadTexture(renderer, uiText);
 
 	SDL_RenderCopyExF(renderer, uiText->texture, NULL, &uiText->rect, 0, NULL, SDL_FLIP_NONE);
 
 	// Debug
 	SDL_SetRenderDrawColor(renderer, magenta);
 	SDL_RenderDrawRectF(renderer, &uiText->rect);
+}
+
+void setText(uiText* uiText, std::string text) {
+	uiText->text = text;
+	uiText->changed = true;
 }

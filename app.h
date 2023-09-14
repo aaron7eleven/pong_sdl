@@ -15,9 +15,11 @@ struct app {
 	SDL_Texture* texture = NULL;
 	TTF_Font* font = NULL;
 
+	Uint32 appStartTime = SDL_GetTicks();
 	float deltaTime = 0.0f; // in seconds
-	Uint32 startTicks = SDL_GetTicks();
+	Uint32 startTicks = appStartTime;
 	Uint32 lastTicks = 0;
+	 
 
 	SDL_Event e;
 	const Uint8* keyStates;
@@ -27,9 +29,12 @@ struct app {
 
 	int screenWidth = 1280;
 	int screenHeight = 720;
-	int fps = 60;
-	int ticksPerFrame = 1000 / fps; // 1000 ms / X frames
-	fpsCounter fpsCounter;	
+	Uint32 fps = 60;
+	Uint32 ticksPerFrame = 1000 / fps; // 1000 ms / X frames
+	fpsCounter fpsCounter;
+	Uint32 frameCount = 0;
+	float deltaTimes[5] = {0.0f,0.0f, 0.0f, 0.0f, 0.0f};
+	int deltaTimeIndex = 0;
 
 	game* game;
 };

@@ -3,8 +3,8 @@
 #include "uiText.h"
 
 struct fpsCounter {
-	float width = 600.0f;
-	float height = 50.0f;
+	float width = 150.0f;
+	float height = 25.0f;
 	float x = 0.0f;
 	float y = 0.0f;
 	SDL_FRect rect = {

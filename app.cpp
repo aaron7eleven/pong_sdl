@@ -10,7 +10,7 @@
 #include "SDL_wrappers.h"
 #include "app.h"
 #include "game.h"
-//#include "ui.h"
+#include "ui.h"
 int appMain(int argc, char* argv[]) {
 	app app;
 
@@ -102,7 +102,8 @@ void updateDeltaTime(app* app) {
 }
 
 void applyFrameDelay(app* app) {
-	int frameTicks = SDL_GetTicks() - app->startTicks;
+	Uint32 frameTicks = SDL_GetTicks() - app->startTicks;
+	//printf("frameTicks = ")
 	if (frameTicks < app->ticksPerFrame)
 	{
 		//Wait remaining time
@@ -334,16 +335,24 @@ void update(app* app) {
 
 	// https://stackoverflow.com/questions/16605967/set-precision-of-stdto-string-when-converting-floating-point-values
 	
-	//std::ostringstream out;
-	//out.precision(2);
-	////out << std::fixed << 1.0f / (app->deltaTime / 1000.0f);
-	//out << std::fixed << 1.0f / (app->ticksPerFrame);
+	std::ostringstream out;
+	out.precision(2);
+	//out << std::fixed << 1.0f / (app->deltaTime / 1000.0f);
 	//app->fpsCounter.uiText.text = "FPS = " + std::move(out).str();
 
-	//out << std::fixed << 1.0f / (app->ticksPerFrame);
+	app->deltaTimes[app->deltaTimeIndex] = app->deltaTime;
+	app->deltaTimeIndex++;
+	if (app->deltaTimeIndex > 5) {
+		app->deltaTimeIndex = 0;
+	}
+	float avgDeltaTime = 0.0f;
+	for (int i = 0; i < 5; i++) {
+		avgDeltaTime += app->deltaTimes[i];
+	}
+	avgDeltaTime /= 5.0f;
 
-	app->fpsCounter.uiText.text = "FPS = " + std::to_string(1.0f / (app->deltaTime / 1000.0f)) + "\n";
-	app->fpsCounter.uiText.text += "app->deltaTime = " + std::to_string(app->deltaTime);
+	out << std::fixed << 1.0f / avgDeltaTime;
+	app->fpsCounter.uiText.text = "Avg. FPS = " + std::move(out).str();
 
 	update(app->deltaTime, app->keyStates, app->game);
 	
@@ -488,7 +497,8 @@ int run(app* app) {
 		
 		render(app);
 		
-		//applyFrameDelay(app);
+		applyFrameDelay(app);
+		app->frameCount++;
 	}
 
 	return 0;
