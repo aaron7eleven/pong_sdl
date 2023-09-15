@@ -13,12 +13,32 @@ void init(mainMenu* mainMenu) {
 	init(&mainMenu->mainMenuNavigation.uiNavigation);
 }
 
-void update(float deltaTime, const Uint8* keyStates, mainMenu* mainMenu) {
-	if (keyStates[SDL_SCANCODE_W]) {
-		previous(&mainMenu->mainMenuNavigation.uiNavigation);
-	}
-	else if (keyStates[SDL_SCANCODE_S]) {
-		next(&mainMenu->mainMenuNavigation.uiNavigation);
+void update(float deltaTime, inputs* inputs, mainMenu* mainMenu) {
+	//if (keyStates[SDL_SCANCODE_W]) {
+	//	previous(&mainMenu->mainMenuNavigation.uiNavigation);
+	//}
+	//else if (keyStates[SDL_SCANCODE_S]) {
+	//	next(&mainMenu->mainMenuNavigation.uiNavigation);
+	//}
+
+	while (SDL_PollEvent(&inputs->e) != 0)
+	{
+		if (inputs->e.type == SDL_KEYDOWN) {
+			switch (inputs->e.key.keysym.sym)
+			{
+				case SDLK_w: {
+					previous(&mainMenu->mainMenuNavigation.uiNavigation);
+				} break;
+
+				case SDLK_s: {
+					next(&mainMenu->mainMenuNavigation.uiNavigation);
+				} break;
+			default:
+				break;
+			}
+		}
+		
+		
 	}
 }
 

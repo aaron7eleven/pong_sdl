@@ -8,6 +8,7 @@
 #include "optionsButton.h"
 #include "quitButton.h"
 #include "mainMenuNavigation.h"
+#include "inputs.h"
 
 struct mainMenu {
 	title title;
@@ -20,5 +21,5 @@ struct mainMenu {
 };
 
 void init(mainMenu* mainMenu);
-void update(float deltaTime, const Uint8* keyStates, mainMenu* mainMenu);
+void update(float deltaTime, inputs* inputs, mainMenu* mainMenu);
 void render(SDL_Renderer* renderer, mainMenu* mainMenu);

@@ -9,8 +9,8 @@ void init(game* game) {
 	init(&game->mainMenu);
 }
 
-void update(float deltaTime, const Uint8* keyStates, game* game) {
-	update(deltaTime, keyStates, &game->mainMenu);
+void update(float deltaTime, inputs* inputs, game* game) {
+	update(deltaTime, inputs, &game->mainMenu);
 }
 
 void render(SDL_Renderer* renderer, game* game) {

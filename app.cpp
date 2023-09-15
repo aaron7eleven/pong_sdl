@@ -115,37 +115,37 @@ void getInput(app* app) {
 	// Game Input
 	/////////////////////////
 	// Event Based Inputs (Handle events on queue)
-	while (SDL_PollEvent(&app->e) != 0)
-	{
-		//User requests quit
-		if (app->e.type == SDL_QUIT)
-		{
-			app->quit = true;
-		}
-		//else if (app->e.type == SDL_KEYDOWN) {
+	//while (SDL_PollEvent(&app->inputs.e) != 0)
+	//{
+	//	//User requests quit
+	//	if (app->inputs.e.type == SDL_QUIT)
+	//	{
+	//		app->quit = true;
+	//	}
+	//	//else if (app->e.type == SDL_KEYDOWN) {
 
-		//	switch (app->gameState)
-		//	{
-		//	case appState::MAIN_MENU: {
-		//		switch (app->e.key.keysym.sym) {
-		//		case SDLK_ESCAPE: {
-		//			app->quit = true;
-		//		} break;
-		//	} break;
+	//	//	switch (app->gameState)
+	//	//	{
+	//	//	case appState::MAIN_MENU: {
+	//	//		switch (app->e.key.keysym.sym) {
+	//	//		case SDLK_ESCAPE: {
+	//	//			app->quit = true;
+	//	//		} break;
+	//	//	} break;
 
-		//	case appState::GAME: {
+	//	//	case appState::GAME: {
 
-		//	} break;
-		//	case appState::COUNT: {
+	//	//	} break;
+	//	//	case appState::COUNT: {
 
-		//	} break;
-		//	default:
-		//		break;
-		//	}
-		//}
-	}
+	//	//	} break;
+	//	//	default:
+	//	//		break;
+	//	//	}
+	//	//}
+	//}
 
-	app->keyStates = SDL_GetKeyboardState(NULL);
+	app->inputs.keyStates = SDL_GetKeyboardState(NULL);
 
 	//// Non Event Base game Input
 	//switch (app.gameState)
@@ -354,7 +354,7 @@ void update(app* app) {
 	out << std::fixed << 1.0f / avgDeltaTime;
 	app->fpsCounter.uiText.text = "Avg. FPS = " + std::move(out).str();
 
-	update(app->deltaTime, app->keyStates, app->game);
+	update(app->deltaTime, &app->inputs, app->game);
 	
 	//// Update
 	//switch (app->gameState)

@@ -176,6 +176,7 @@
     <ClInclude Include="color.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="gameUI.h" />
+    <ClInclude Include="inputs.h" />
     <ClInclude Include="line.h" />
     <ClInclude Include="mainMenu.h" />
     <ClInclude Include="mainMenuNavigation.h" />

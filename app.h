@@ -6,7 +6,7 @@
 
 #include "game.h"
 #include "fpsCounter.h"
-
+#include "inputs.h"
 
 struct app {
 	SDL_Window* window = NULL;
@@ -20,9 +20,7 @@ struct app {
 	Uint32 startTicks = appStartTime;
 	Uint32 lastTicks = 0;
 	 
-
-	SDL_Event e;
-	const Uint8* keyStates;
+	inputs inputs;
 	
 	bool quit = false;
 	bool restart = false;
