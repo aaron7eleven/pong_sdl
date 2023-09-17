@@ -1,4 +1,5 @@
 #pragma once
+#include <iostream>
 #include "controlsMenu.h"
 
 void init(controlsMenu* controlsMenu) {
@@ -24,7 +25,15 @@ void init(controlsMenu* controlsMenu) {
 void processInput(inputs* inputs, controlsMenu* controlsMenu) {
 	if (inputs->e.type == SDL_KEYDOWN) {
 		// Dynamic Input -> use if's
-		if (inputs->e.key.keysym.sym == inputs->uiPrimaryMoveUp) {
+		if (controlsMenu->listening) {
+			
+			controlsMenu->listeningKeyCode = inputs->e.key.keysym.sym;
+			//controlsMenu->listeningKeyCode = SDLK_1;
+			std::cout << "Pressed " << SDL_GetKeyName(inputs->e.key.keysym.sym) << std::endl;
+			controlsMenu->heard = true;
+			//inputs->uiSelected = true;
+		}
+		else if (inputs->e.key.keysym.sym == inputs->uiPrimaryMoveUp) {
 			previous(&controlsMenu->uiNavigation);
 		}
 		else if (inputs->e.key.keysym.sym == inputs->uiPrimaryMoveDown) {
@@ -41,12 +50,14 @@ void processInput(inputs* inputs, controlsMenu* controlsMenu) {
 
 void update(float deltaTime, inputs* inputs, controlsMenu* controlsMenu)
 {
-	setButtonText(&controlsMenu->uiMoveUpButton, SDL_GetKeyName(inputs->uiPrimaryMoveUp));
-	setButtonText(&controlsMenu->uiMoveDownButton, SDL_GetKeyName(inputs->uiPrimaryMoveDown));
-	setButtonText(&controlsMenu->uiMoveLeftButton, SDL_GetKeyName(inputs->uiPrimaryMoveLeft));
-	setButtonText(&controlsMenu->uiMoveRightButton, SDL_GetKeyName(inputs->uiPrimaryMoveRight));
-	setButtonText(&controlsMenu->uiSelectButton, SDL_GetKeyName(inputs->uiPrimarySelect));
-	setButtonText(&controlsMenu->uiBackButton, SDL_GetKeyName(inputs->uiPrimaryBack));
+	if (!controlsMenu->listening) {
+		setButtonText(&controlsMenu->uiMoveUpButton, SDL_GetKeyName(inputs->uiPrimaryMoveUp));
+		setButtonText(&controlsMenu->uiMoveDownButton, SDL_GetKeyName(inputs->uiPrimaryMoveDown));
+		setButtonText(&controlsMenu->uiMoveLeftButton, SDL_GetKeyName(inputs->uiPrimaryMoveLeft));
+		setButtonText(&controlsMenu->uiMoveRightButton, SDL_GetKeyName(inputs->uiPrimaryMoveRight));
+		setButtonText(&controlsMenu->uiSelectButton, SDL_GetKeyName(inputs->uiPrimarySelect));
+		setButtonText(&controlsMenu->uiBackButton, SDL_GetKeyName(inputs->uiPrimaryBack));
+	}
 }
 
 void render(SDL_Renderer* renderer, controlsMenu* controlsMenu) {

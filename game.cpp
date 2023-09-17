@@ -63,9 +63,42 @@ void update(float deltaTime, inputs* inputs, game* game) {
 		case gameState::controlsMenu: {
 
 			update(deltaTime, inputs, &game->controlsMenu);
+			if (game->controlsMenu.listening) {
+				if (game->controlsMenu.heard) {
+					*game->controlsMenu.listeningKeyCodeToChange = game->controlsMenu.listeningKeyCode;
+					game->controlsMenu.listening = false;
+					game->controlsMenu.heard = false;
+					game->controlsMenu.listeningButton = NULL;
+					game->controlsMenu.listeningKeyCode = NULL;
+				}
+			}
+			else if (inputs->uiSelected) {
 
-			if (inputs->uiSelected) {
-				// Do nothing
+				if (!game->controlsMenu.listening) {
+					game->controlsMenu.listening = true;
+					game->controlsMenu.listeningButton = game->controlsMenu.uiNavigation.currentButton;
+					setButtonText(game->controlsMenu.listeningButton, "Listen");
+
+					// Link button to action to change
+					if (game->controlsMenu.listeningButton == &game->controlsMenu.uiBackButton) {
+						game->controlsMenu.listeningKeyCodeToChange = &inputs->uiPrimaryBack;
+					}
+					else if (game->controlsMenu.listeningButton == &game->controlsMenu.uiSelectButton) {
+						game->controlsMenu.listeningKeyCodeToChange = &inputs->uiPrimarySelect;
+					}
+					else if (game->controlsMenu.listeningButton == &game->controlsMenu.uiMoveUpButton) {
+						game->controlsMenu.listeningKeyCodeToChange = &inputs->uiPrimaryMoveUp;
+					}
+					else if (game->controlsMenu.listeningButton == &game->controlsMenu.uiMoveDownButton) {
+						game->controlsMenu.listeningKeyCodeToChange = &inputs->uiPrimaryMoveDown;
+					}
+					else if (game->controlsMenu.listeningButton == &game->controlsMenu.uiMoveLeftButton) {
+						game->controlsMenu.listeningKeyCodeToChange = &inputs->uiPrimaryMoveLeft;
+					}
+					else if (game->controlsMenu.listeningButton == &game->controlsMenu.uiMoveRightButton) {
+						game->controlsMenu.listeningKeyCodeToChange = &inputs->uiPrimaryMoveRight;
+					}
+				}				
 			}
 			else if (inputs->uiBack) {
 				game->gameState = gameState::optionsMenu;

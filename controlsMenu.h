@@ -5,6 +5,13 @@
 #include "inputs.h"
 
 struct controlsMenu {
+
+	bool listening = false;
+	bool heard = false;
+	uiButton* listeningButton = NULL;
+	SDL_Keycode listeningKeyCode = NULL;
+	SDL_Keycode* listeningKeyCodeToChange = NULL;
+
 	//////////////////////////////
 	// Title: Controls
 	//////////////////////////////
