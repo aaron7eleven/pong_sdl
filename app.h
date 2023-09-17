@@ -49,4 +49,5 @@ void update(app* app);
 void render(app* app);
 
 void updateDeltaTime(app* app);
-void getInput(app* app);
+//void getInput(app* app);
+void processInput(app* app);

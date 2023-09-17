@@ -13,33 +13,23 @@ void init(mainMenu* mainMenu) {
 	init(&mainMenu->mainMenuNavigation.uiNavigation);
 }
 
-void update(float deltaTime, inputs* inputs, mainMenu* mainMenu) {
-	//if (keyStates[SDL_SCANCODE_W]) {
-	//	previous(&mainMenu->mainMenuNavigation.uiNavigation);
-	//}
-	//else if (keyStates[SDL_SCANCODE_S]) {
-	//	next(&mainMenu->mainMenuNavigation.uiNavigation);
-	//}
 
-	while (SDL_PollEvent(&inputs->e) != 0)
-	{
-		if (inputs->e.type == SDL_KEYDOWN) {
-			switch (inputs->e.key.keysym.sym)
-			{
-				case SDLK_w: {
-					previous(&mainMenu->mainMenuNavigation.uiNavigation);
-				} break;
-
-				case SDLK_s: {
-					next(&mainMenu->mainMenuNavigation.uiNavigation);
-				} break;
-			default:
-				break;
-			}
+void processInput(inputs* inputs, mainMenu* mainMenu) {
+	if (inputs->e.type == SDL_KEYDOWN) {
+		// Dynamic Input -> use if's
+		if (inputs->e.key.keysym.sym == inputs->uiPrimaryMoveUp) {
+			previous(&mainMenu->mainMenuNavigation.uiNavigation);
 		}
-		
-		
+		else if (inputs->e.key.keysym.sym == inputs->uiPrimaryMoveDown) {
+			next(&mainMenu->mainMenuNavigation.uiNavigation);
+		}
+		else if (inputs->e.key.keysym.sym == inputs->uiPrimarySelect) {
+			inputs->uiSelected = true;
+		}
 	}
+}
+
+void update(float deltaTime, inputs* inputs, mainMenu* mainMenu) {
 }
 
 void render(SDL_Renderer* renderer, mainMenu* mainMenu) {

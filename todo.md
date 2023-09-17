@@ -5,7 +5,7 @@ Win conditions in game
 Win Menu
 Pause Menu
 Refactor into sub components to reuse (basis for engine)
-
+Menu Navigation
 
 ## List of everything
 ### Gameplay Features
@@ -24,11 +24,21 @@ Main Volume
 Sound FX Volume
 Music Volume
 
-#### Input
+#### Controls
 Input Rebinding
 
 ##### Mouse
 Sensetivity
+
+##### UI
+- Select
+- Back
+- Up
+- Down
+- Right
+- Left
+
+
 
 #### Gameplay Customization
 ##### Paddle

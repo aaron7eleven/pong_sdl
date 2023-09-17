@@ -152,12 +152,14 @@
     <ClCompile Include="app.cpp" />
     <ClCompile Include="ball.cpp" />
     <ClCompile Include="collisions.cpp" />
+    <ClCompile Include="controlsMenu.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="gameUI.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="mainMenu.cpp" />
     <ClCompile Include="mainMenuNavigation.cpp" />
     <ClCompile Include="math.cpp" />
+    <ClCompile Include="optionsMenu.cpp" />
     <ClCompile Include="paddle.cpp" />
     <ClCompile Include="paddleController.cpp" />
     <ClCompile Include="SDL_wrappers.cpp" />
@@ -168,6 +170,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="app.h" />
+    <ClInclude Include="audioButton.h" />
+    <ClInclude Include="audioButtonText.h" />
+    <ClInclude Include="controlsButton.h" />
+    <ClInclude Include="controlsButtonText.h" />
+    <ClInclude Include="controlsMenu.h" />
     <ClInclude Include="fpsCounter.h" />
     <ClInclude Include="gameState.h" />
     <ClInclude Include="ball.h" />
@@ -182,6 +189,7 @@
     <ClInclude Include="mainMenuNavigation.h" />
     <ClInclude Include="optionsButton.h" />
     <ClInclude Include="optionsButtonText.h" />
+    <ClInclude Include="optionsMenu.h" />
     <ClInclude Include="playButton.h" />
     <ClInclude Include="playButtonText.h" />
     <ClInclude Include="quitButton.h" />
@@ -200,6 +208,8 @@
     <ClInclude Include="uiNavigation.h" />
     <ClInclude Include="uiText.h" />
     <ClInclude Include="vectors.h" />
+    <ClInclude Include="videoButton.h" />
+    <ClInclude Include="videoButtonText.h" />
     <ClInclude Include="wall.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

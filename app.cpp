@@ -110,79 +110,32 @@ void applyFrameDelay(app* app) {
 		SDL_Delay(app->ticksPerFrame - frameTicks);
 	}
 }
+
 void getInput(app* app) {
-	/////////////////////////
-	// Game Input
-	/////////////////////////
-	// Event Based Inputs (Handle events on queue)
-	//while (SDL_PollEvent(&app->inputs.e) != 0)
-	//{
-	//	//User requests quit
-	//	if (app->inputs.e.type == SDL_QUIT)
-	//	{
-	//		app->quit = true;
-	//	}
-	//	//else if (app->e.type == SDL_KEYDOWN) {
+}
 
-	//	//	switch (app->gameState)
-	//	//	{
-	//	//	case appState::MAIN_MENU: {
-	//	//		switch (app->e.key.keysym.sym) {
-	//	//		case SDLK_ESCAPE: {
-	//	//			app->quit = true;
-	//	//		} break;
-	//	//	} break;
-
-	//	//	case appState::GAME: {
-
-	//	//	} break;
-	//	//	case appState::COUNT: {
-
-	//	//	} break;
-	//	//	default:
-	//	//		break;
-	//	//	}
-	//	//}
-	//}
-
+void processInput(app* app) {
+	app->inputs.uiSelected = false;
+	app->inputs.uiBack = false;
 	app->inputs.keyStates = SDL_GetKeyboardState(NULL);
 
-	//// Non Event Base game Input
-	//switch (app.gameState)
-	//{
-	//case appState::MAIN_MENU:
-	//	break;
-	//case appState::GAME: {
-	//	/////////////////////////
-	//	// Paddle Input
-	//	/////////////////////////
-	//	const Uint8* currentKeyStates = SDL_GetKeyboardState(NULL);
-
-	//	// This works
-	//	if (currentKeyStates[SDL_SCANCODE_W]) {
-	//		leftPaddle.velocity -= 1.0f;
-	//	}
-
-	//	if (currentKeyStates[SDL_SCANCODE_S]) {
-	//		leftPaddle.velocity += 1.0f;
-	//	}
-
-	//	// This works
-	//	if (currentKeyStates[SDL_SCANCODE_UP]) {
-	//		rightPaddle.velocity -= 1.0f;
-	//	}
-
-	//	if (currentKeyStates[SDL_SCANCODE_DOWN]) {
-	//		rightPaddle.velocity += 1.0f;
-	//	}
-	//} break;
-
-	//case appState::COUNT:
-	//	break;
-	//default:
-	//	break;
-	//}
+	// Event Based Inputs (Handle events on queue)
+	while (SDL_PollEvent(&app->inputs.e) != 0)
+	{
+		//User requests quit
+		if (app->inputs.e.type == SDL_QUIT)
+		{
+			app->quit = true;
+		}
+		else {
+			processInput(&app->inputs, app->game);
+			if (app->game->quit) {
+				app->quit = true;
+			}
+		}
+	}
 }
+
 
 void preUpdate(app* app) {
 	//switch (app->gameState)
@@ -490,7 +443,8 @@ int run(app* app) {
 	while (!app->quit) {
 		updateDeltaTime(app);
 
-		getInput(app);
+		//getInput(app);
+		processInput(app);
 
 		preUpdate(app);
 		update(app);

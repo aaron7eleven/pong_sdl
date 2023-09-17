@@ -2,7 +2,9 @@
 
 enum class gameState
 {
-	MAIN_MENU = 0,
-	GAME,
-	COUNT
+	mainMenu = 0,
+	optionsMenu,
+	controlsMenu,
+	gameplay,
+	count
 };

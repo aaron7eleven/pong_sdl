@@ -1,12 +1,21 @@
 #pragma once
 #include <SDL.h>
+#include "gameState.h"
 #include "mainMenu.h"
+#include "optionsMenu.h"
+#include "controlsMenu.h"
+
 
 struct game {
 	//app* app;
+	bool quit = false;
+	gameState gameState = gameState::controlsMenu;
 	mainMenu mainMenu;
+	optionsMenu optionsMenu;
+	controlsMenu controlsMenu;
 
-	//gameState gameState = gameState::GAME;
+
+	
 
 	//float paddleWidth = screenWidth / 64;
 	//float paddleHeight = screenHeight / 8;
@@ -154,5 +163,6 @@ struct game {
 };
 
 void init(game* game);
+void processInput(inputs* inputs, game* game);
 void update(float deltaTime, inputs* inputs, game* game);
 void render(SDL_Renderer* renderer, game* game);
