@@ -4,14 +4,20 @@
 void init(controlsMenu* controlsMenu) {
 	init(&controlsMenu->title);
 	init(&controlsMenu->uiMoveUp);
+	init(&controlsMenu->uiMoveUpButton);
 	init(&controlsMenu->uiMoveDown);
+	init(&controlsMenu->uiMoveDownButton);
 	init(&controlsMenu->uiMoveLeft);
+	init(&controlsMenu->uiMoveLeftButton);
 	init(&controlsMenu->uiMoveRight);
+	init(&controlsMenu->uiMoveRightButton);
 	init(&controlsMenu->uiSelect);
+	init(&controlsMenu->uiSelectButton);
 	init(&controlsMenu->uiBack);
-	//init(&controlsMenu->audioButton);
-	//init(&controlsMenu->controlsButton);
-	//init(&controlsMenu->uiNavigation);
+	init(&controlsMenu->uiBackButton);
+
+	init(&controlsMenu->uiNavigation);
+
 }
 
 
@@ -33,18 +39,28 @@ void processInput(inputs* inputs, controlsMenu* controlsMenu) {
 	}
 }
 
+void update(float deltaTime, inputs* inputs, controlsMenu* controlsMenu)
+{
+	setButtonText(&controlsMenu->uiMoveUpButton, SDL_GetKeyName(inputs->uiPrimaryMoveUp));
+	setButtonText(&controlsMenu->uiMoveDownButton, SDL_GetKeyName(inputs->uiPrimaryMoveDown));
+	setButtonText(&controlsMenu->uiMoveLeftButton, SDL_GetKeyName(inputs->uiPrimaryMoveLeft));
+	setButtonText(&controlsMenu->uiMoveRightButton, SDL_GetKeyName(inputs->uiPrimaryMoveRight));
+	setButtonText(&controlsMenu->uiSelectButton, SDL_GetKeyName(inputs->uiPrimarySelect));
+	setButtonText(&controlsMenu->uiBackButton, SDL_GetKeyName(inputs->uiPrimaryBack));
+}
+
 void render(SDL_Renderer* renderer, controlsMenu* controlsMenu) {
 	render(renderer, &controlsMenu->title);
 	render(renderer, &controlsMenu->uiMoveUp);
+	render(renderer, &controlsMenu->uiMoveUpButton);
 	render(renderer, &controlsMenu->uiMoveDown);
+	render(renderer, &controlsMenu->uiMoveDownButton);
 	render(renderer, &controlsMenu->uiMoveLeft);
+	render(renderer, &controlsMenu->uiMoveLeftButton);
 	render(renderer, &controlsMenu->uiMoveRight);
+	render(renderer, &controlsMenu->uiMoveRightButton);
 	render(renderer, &controlsMenu->uiSelect);
+	render(renderer, &controlsMenu->uiSelectButton);
 	render(renderer, &controlsMenu->uiBack);
-	
-	//render(renderer, &controlsMenu->videoButton);
-	//render(renderer, &controlsMenu->audioButton);
-	//render(renderer, &controlsMenu->controlsButton);
-	//render(renderer, &mainMenu->optionsButton.uiButton);
-	//render(renderer, &mainMenu->quitButton.uiButton);
+	render(renderer, &controlsMenu->uiBackButton);
 }

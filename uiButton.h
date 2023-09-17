@@ -23,3 +23,5 @@ void render(SDL_Renderer* renderer, uiButton* uiButton);
 void highlight(uiButton* button);
 void unhighlight(uiButton* button);
 
+void centerAlignText(uiButton* button);
+void setButtonText(uiButton* button, std::string text);

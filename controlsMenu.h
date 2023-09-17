@@ -56,6 +56,54 @@ struct controlsMenu {
 	};
 
 	//////////////////////////////
+	// Button 1: UI Move Up
+	//////////////////////////////
+	float uiMoveUpButtonTextWidth = 120;
+	float uiMoveUpButtonTextHeight = 60;
+	float uiMoveUpButtonTextX = 800 - uiMoveUpButtonTextWidth / 2;
+	float uiMoveUpButtonTextY = 180;
+	SDL_FRect uiMoveUpButtonTextRect = {
+		uiMoveUpButtonTextX,
+		uiMoveUpButtonTextY,
+		uiMoveUpButtonTextWidth,
+		uiMoveUpButtonTextHeight
+	};
+
+	uiText uiMoveUpButtonText = {
+		"uiMoveUpKey",
+		NULL,
+		"assets/font/DotGothic16-Regular.ttf",
+		100,
+		uiMoveUpButtonTextRect,
+		white,
+		NULL,
+		false
+	};
+
+	float uiMoveUpButtonWidth = 240;
+	float uiMoveUpButtonHeight = 60;
+	float uiMoveUpButtonX = 800 - uiMoveUpButtonWidth / 2;
+	float uiMoveUpButtonY = 180;
+	SDL_FRect uiMoveUpButtonRect = {
+		uiMoveUpButtonX,
+		uiMoveUpButtonY,
+		uiMoveUpButtonWidth,
+		uiMoveUpButtonHeight
+	};
+
+	uiButton uiMoveUpButton = {
+		uiMoveUpButtonRect,
+		white,
+		NULL,
+		black,
+		white,
+		false,
+		white,
+		black,
+		&uiMoveUpButtonText
+	};
+
+	//////////////////////////////
 	// Text: UI Move Down
 	//////////////////////////////
 	float uiMoveDownWidth = 180;
@@ -78,6 +126,54 @@ struct controlsMenu {
 		white,
 		NULL,
 		false
+	};
+
+	//////////////////////////////
+	// Button 1: UI Move Down
+	//////////////////////////////
+	float uiMoveDownButtonTextWidth = 120;
+	float uiMoveDownButtonTextHeight = 60;
+	float uiMoveDownButtonTextX = 800 - uiMoveDownButtonTextWidth / 2;
+	float uiMoveDownButtonTextY = 270;
+	SDL_FRect uiMoveDownButtonTextRect = {
+		uiMoveDownButtonTextX,
+		uiMoveDownButtonTextY,
+		uiMoveDownButtonTextWidth,
+		uiMoveDownButtonTextHeight
+	};
+
+	uiText uiMoveDownButtonText = {
+		"uiMoveDownKey",
+		NULL,
+		"assets/font/DotGothic16-Regular.ttf",
+		100,
+		uiMoveDownButtonTextRect,
+		white,
+		NULL,
+		false
+	};
+
+	float uiMoveDownButtonWidth = 240;
+	float uiMoveDownButtonHeight = 60;
+	float uiMoveDownButtonX = 800 - uiMoveDownButtonWidth / 2;
+	float uiMoveDownButtonY = 270;
+	SDL_FRect uiMoveDownButtonRect = {
+		uiMoveDownButtonX,
+		uiMoveDownButtonY,
+		uiMoveDownButtonWidth,
+		uiMoveDownButtonHeight
+	};
+
+	uiButton uiMoveDownButton = {
+		uiMoveDownButtonRect,
+		white,
+		NULL,
+		black,
+		white,
+		false,
+		white,
+		black,
+		&uiMoveDownButtonText
 	};
 
 	//////////////////////////////
@@ -106,6 +202,54 @@ struct controlsMenu {
 	};
 
 	//////////////////////////////
+	// Button 1: UI Move Left
+	//////////////////////////////
+	float uiMoveLeftButtonTextWidth = 120;
+	float uiMoveLeftButtonTextHeight = 60;
+	float uiMoveLeftButtonTextX = 800 - uiMoveLeftButtonTextWidth / 2;
+	float uiMoveLeftButtonTextY = 360;
+	SDL_FRect uiMoveLeftButtonTextRect = {
+		uiMoveLeftButtonTextX,
+		uiMoveLeftButtonTextY,
+		uiMoveLeftButtonTextWidth,
+		uiMoveLeftButtonTextHeight
+	};
+
+	uiText uiMoveLeftButtonText = {
+		"uiMoveLeftKey",
+		NULL,
+		"assets/font/DotGothic16-Regular.ttf",
+		100,
+		uiMoveLeftButtonTextRect,
+		white,
+		NULL,
+		false
+	};
+
+	float uiMoveLeftButtonWidth = 240;
+	float uiMoveLeftButtonHeight = 60;
+	float uiMoveLeftButtonX = 800 - uiMoveLeftButtonWidth / 2;
+	float uiMoveLeftButtonY = 360;
+	SDL_FRect uiMoveLeftButtonRect = {
+		uiMoveLeftButtonX,
+		uiMoveLeftButtonY,
+		uiMoveLeftButtonWidth,
+		uiMoveLeftButtonHeight
+	};
+
+	uiButton uiMoveLeftButton = {
+		uiMoveLeftButtonRect,
+		white,
+		NULL,
+		black,
+		white,
+		false,
+		white,
+		black,
+		&uiMoveLeftButtonText
+	};
+
+	//////////////////////////////
 	// Text: UI Move Right
 	//////////////////////////////
 	float uiMoveRightWidth = 180;
@@ -128,6 +272,54 @@ struct controlsMenu {
 		white,
 		NULL,
 		false
+	};
+
+	//////////////////////////////
+	// Button 1: UI Move Right
+	//////////////////////////////
+	float uiMoveRightButtonTextWidth = 120;
+	float uiMoveRightButtonTextHeight = 60;
+	float uiMoveRightButtonTextX = 800 - uiMoveRightButtonTextWidth / 2;
+	float uiMoveRightButtonTextY = 450;
+	SDL_FRect uiMoveRightButtonTextRect = {
+		uiMoveRightButtonTextX,
+		uiMoveRightButtonTextY,
+		uiMoveRightButtonTextWidth,
+		uiMoveRightButtonTextHeight
+	};
+
+	uiText uiMoveRightButtonText = {
+		"uiMoveRightKey",
+		NULL,
+		"assets/font/DotGothic16-Regular.ttf",
+		100,
+		uiMoveRightButtonTextRect,
+		white,
+		NULL,
+		false
+	};
+
+	float uiMoveRightButtonWidth = 240;
+	float uiMoveRightButtonHeight = 60;
+	float uiMoveRightButtonX = 800 - uiMoveRightButtonWidth / 2;
+	float uiMoveRightButtonY = 450;
+	SDL_FRect uiMoveRightButtonRect = {
+		uiMoveRightButtonX,
+		uiMoveRightButtonY,
+		uiMoveRightButtonWidth,
+		uiMoveRightButtonHeight
+	};
+
+	uiButton uiMoveRightButton = {
+		uiMoveRightButtonRect,
+		white,
+		NULL,
+		black,
+		white,
+		false,
+		white,
+		black,
+		&uiMoveRightButtonText
 	};
 
 	//////////////////////////////
@@ -156,6 +348,54 @@ struct controlsMenu {
 	};
 
 	//////////////////////////////
+	// Button 1: UI Select
+	//////////////////////////////
+	float uiSelectButtonTextWidth = 120;
+	float uiSelectButtonTextHeight = 60;
+	float uiSelectButtonTextX = 800 - uiSelectButtonTextWidth / 2;
+	float uiSelectButtonTextY = 540;
+	SDL_FRect uiSelectButtonTextRect = {
+		uiSelectButtonTextX,
+		uiSelectButtonTextY,
+		uiSelectButtonTextWidth,
+		uiSelectButtonTextHeight
+	};
+
+	uiText uiSelectButtonText = {
+		"uiSelectKey",
+		NULL,
+		"assets/font/DotGothic16-Regular.ttf",
+		100,
+		uiSelectButtonTextRect,
+		white,
+		NULL,
+		false
+	};
+
+	float uiSelectButtonWidth = 240;
+	float uiSelectButtonHeight = 60;
+	float uiSelectButtonX = 800 - uiSelectButtonWidth / 2;
+	float uiSelectButtonY = 540;
+	SDL_FRect uiSelectButtonRect = {
+		uiSelectButtonX,
+		uiSelectButtonY,
+		uiSelectButtonWidth,
+		uiSelectButtonHeight
+	};
+
+	uiButton uiSelectButton = {
+		uiSelectButtonRect,
+		white,
+		NULL,
+		black,
+		white,
+		false,
+		white,
+		black,
+		&uiSelectButtonText
+	};
+
+	//////////////////////////////
 	// Text: UI Back
 	//////////////////////////////
 	float uiBackWidth = 180;
@@ -181,44 +421,43 @@ struct controlsMenu {
 	};
 
 	//////////////////////////////
-	// Button 1: Video
+	// Button 1: UI Back
 	//////////////////////////////
-	//videoButton videoButton;
-	float videoTextWidth = 150;
-	float videoTextHeight = 90;
-	float videoTextX = 640 - videoTextWidth / 2;
-	float videoTextY = 270;
-	SDL_FRect videoTextRect = {
-		videoTextX,
-		videoTextY,
-		videoTextWidth,
-		videoTextHeight
+	float uiBackButtonTextWidth = 120;
+	float uiBackButtonTextHeight = 60;
+	float uiBackButtonTextX = 800 - uiBackButtonTextWidth / 2;
+	float uiBackButtonTextY = 630;
+	SDL_FRect uiBackButtonTextRect = {
+		uiBackButtonTextX,
+		uiBackButtonTextY,
+		uiBackButtonTextWidth,
+		uiBackButtonTextHeight
 	};
 
-	uiText videoButtonText = {
-		"Video",
+	uiText uiBackButtonText = {
+		"uiBackKey",
 		NULL,
 		"assets/font/DotGothic16-Regular.ttf",
 		100,
-		videoTextRect,
+		uiBackButtonTextRect,
 		white,
 		NULL,
 		false
 	};
 
-	float videoButtonWidth = 320;
-	float videoButtonHeight = 90;
-	float videoButtonX = 640 - videoButtonWidth / 2;
-	float videoButtonY = 270;
-	SDL_FRect videoButtonRect = {
-		videoButtonX,
-		videoButtonY,
-		videoButtonWidth,
-		videoButtonHeight
+	float uiBackButtonWidth = 240;
+	float uiBackButtonHeight = 60;
+	float uiBackButtonX = 800 - uiBackButtonWidth / 2;
+	float uiBackButtonY = 630;
+	SDL_FRect uiBackButtonRect = {
+		uiBackButtonX,
+		uiBackButtonY,
+		uiBackButtonWidth,
+		uiBackButtonHeight
 	};
 
-	uiButton videoButton = {
-		videoButtonRect,
+	uiButton uiBackButton = {
+		uiBackButtonRect,
 		white,
 		NULL,
 		black,
@@ -226,116 +465,27 @@ struct controlsMenu {
 		false,
 		white,
 		black,
-		&videoButtonText
-	};
-
-	//////////////////////////////
-	// Button 2: Audio
-	//////////////////////////////
-	float audioTextWidth = 150;
-	float audioTextHeight = 90;
-	float audioTextX = 640 - audioTextWidth / 2;
-	float audioTextY = 360;
-	SDL_FRect audioTextRect = {
-		audioTextX,
-		audioTextY,
-		audioTextWidth,
-		audioTextHeight
-	};
-
-	uiText audioButtonText = {
-		"Audio",
-		NULL,
-		"assets/font/DotGothic16-Regular.ttf",
-		100,
-		audioTextRect,
-		white,
-		NULL,
-		false
-	};
-
-	float audioButtonWidth = 320;
-	float audioButtonHeight = 90;
-	float audioButtonX = 640 - audioButtonWidth / 2;
-	float audioButtonY = 360;
-	SDL_FRect audioButtonRect = {
-		audioButtonX,
-		audioButtonY,
-		audioButtonWidth,
-		audioButtonHeight
-	};
-
-	uiButton audioButton = {
-		audioButtonRect,
-		white,
-		NULL,
-		black,
-		white,
-		false,
-		white,
-		black,
-		&audioButtonText
-	};
-
-	//////////////////////////////
-	// Button 3: Controls
-	//////////////////////////////
-	float controlsTextWidth = 262.5;
-	float controlsTextHeight = 90;
-	float controlsTextX = 640 - controlsTextWidth / 2;
-	float controlsTextY = 450;
-	SDL_FRect controlsTextRect = {
-		controlsTextX,
-		controlsTextY,
-		controlsTextWidth,
-		controlsTextHeight
-	};
-
-	uiText controlsButtonText = {
-		"Controls",
-		NULL,
-		"assets/font/DotGothic16-Regular.ttf",
-		100,
-		controlsTextRect,
-		white,
-		NULL,
-		false
-	};
-
-	float controlsButtonWidth = 320;
-	float controlsButtonHeight = 90;
-	float controlsButtonX = 640 - controlsButtonWidth / 2;
-	float controlsButtonY = 450;
-	SDL_FRect controlsButtonRect = {
-		controlsButtonX,
-		controlsButtonY,
-		controlsButtonWidth,
-		controlsButtonHeight
-	};
-
-	uiButton controlsButton = {
-		controlsButtonRect,
-		white,
-		NULL,
-		black,
-		white,
-		false,
-		white,
-		black,
-		&controlsButtonText
+		&uiBackButtonText
 	};
 
 	//////////////////////////////
 	// Menu Navigation
 	//////////////////////////////
-	uiButton* nav[3] = { &videoButton, &audioButton, &controlsButton };
+	uiButton* nav[6] = { 
+		&uiMoveUpButton,
+		&uiMoveDownButton,
+		&uiMoveLeftButton,
+		&uiMoveRightButton,
+		&uiSelectButton,
+		&uiBackButton,
+	};
 	uiNavigation uiNavigation = {
 		0,
 		0,
 		NULL,
 		NULL,
 		nav,
-		3
+		6
 	};
 };
 

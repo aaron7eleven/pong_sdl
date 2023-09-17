@@ -19,6 +19,11 @@ void processInput(inputs* inputs, game* game) {
 
 		} break;
 
+		case gameState::controlsMenu: {
+			processInput(inputs, &game->controlsMenu);
+
+		} break;
+
 		default:
 			break;
 	}
@@ -56,6 +61,9 @@ void update(float deltaTime, inputs* inputs, game* game) {
 		} break;
 
 		case gameState::controlsMenu: {
+
+			update(deltaTime, inputs, &game->controlsMenu);
+
 			if (inputs->uiSelected) {
 				// Do nothing
 			}

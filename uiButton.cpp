@@ -31,3 +31,13 @@ void render(SDL_Renderer* renderer, uiButton* uiButton) {
 
 }
 
+void centerAlignText(uiButton* button) {
+	float buttonCenterX = button->rect.x + (button->rect.w / 2.0f);
+	button->text->rect.x = buttonCenterX - (button->text->rect.w / 2.0f);
+}
+
+void setButtonText(uiButton* uiButton, std::string text) {
+	setText(uiButton->text, text);
+	centerAlignText(uiButton);
+}
+

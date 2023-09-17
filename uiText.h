@@ -16,6 +16,7 @@ struct uiText {
 	
 	SDL_Texture* texture = NULL;
 	bool changed = false;
+	float widthPerChar = 37.5f; // Looks decent for text of all sizes
 };
 
 
@@ -25,3 +26,4 @@ void loadFont(uiText* uiText);
 void render(SDL_Renderer* renderer, uiText* uiText);
 SDL_Texture* loadTexture(SDL_Renderer* renderer, uiText* uiText);
 
+void setText(uiText* uiText, std::string text);

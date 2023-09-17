@@ -9,7 +9,7 @@
 struct game {
 	//app* app;
 	bool quit = false;
-	gameState gameState = gameState::controlsMenu;
+	gameState gameState = gameState::mainMenu;
 	mainMenu mainMenu;
 	optionsMenu optionsMenu;
 	controlsMenu controlsMenu;
