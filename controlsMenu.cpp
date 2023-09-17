@@ -18,7 +18,6 @@ void init(controlsMenu* controlsMenu) {
 	init(&controlsMenu->uiBackButton);
 
 	init(&controlsMenu->uiNavigation);
-
 }
 
 
@@ -28,10 +27,7 @@ void processInput(inputs* inputs, controlsMenu* controlsMenu) {
 		if (controlsMenu->listening) {
 			
 			controlsMenu->listeningKeyCode = inputs->e.key.keysym.sym;
-			//controlsMenu->listeningKeyCode = SDLK_1;
-			std::cout << "Pressed " << SDL_GetKeyName(inputs->e.key.keysym.sym) << std::endl;
 			controlsMenu->heard = true;
-			//inputs->uiSelected = true;
 		}
 		else if (inputs->e.key.keysym.sym == inputs->uiPrimaryMoveUp) {
 			previous(&controlsMenu->uiNavigation);
