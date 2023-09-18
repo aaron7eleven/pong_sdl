@@ -6,6 +6,8 @@ Win Menu
 Pause Menu
 Refactor into sub components to reuse (basis for engine)
 Menu Navigation
+Save/Load App Settings
+Save/Load Input Settings
 
 ## List of everything
 ### Gameplay Features
@@ -14,10 +16,10 @@ Proper ball paddle collision: Ball launch angle and speed affected by where hit 
 
 ### Menu Options
 #### Video
-V-Sync
-Resolution
-(Skipping)Frame Rate Cap
-Windowed/Full Screen
+(Done) V-Sync
+(Done) Windowed/Full Screen
+(Skip) Resolution
+(Skip) Frame Rate Cap
 
 #### Audio
 Main Volume
@@ -25,12 +27,12 @@ Sound FX Volume
 Music Volume
 
 #### Controls
-Input Rebinding
+(WIP) Input Rebinding
 
 ##### Mouse
 Sensetivity
 
-##### UI
+##### UI (Done)
 - Select
 - Back
 - Up
