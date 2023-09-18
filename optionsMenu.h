@@ -1,14 +1,10 @@
 #pragma once
 #pragma once
 #include <SDL.h>
-//#include "app.h"
-//#include "game.h"
+
 #include "uiText.h"
 #include "color.h"
-#include "title.h"
-#include "videoButton.h"
 #include "uiNavigation.h"
-//#include "mainMenuNavigation.h"
 #include "inputs.h"
 
 struct optionsMenu {

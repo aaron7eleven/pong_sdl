@@ -51,13 +51,13 @@ void update(float deltaTime, inputs* inputs, game* game) {
 	{
 		case gameState::mainMenu: {
 			if (inputs->uiSelected) {
-				if (game->mainMenu.mainMenuNavigation.uiNavigation.currentButton->text->text == "Play") {
+				if (game->mainMenu.uiNavigation.currentButton->text->text == "Play") {
 					// do nothing
 				}
-				else if (game->mainMenu.mainMenuNavigation.uiNavigation.currentButton->text->text == "Options") {
+				else if (game->mainMenu.uiNavigation.currentButton->text->text == "Options") {
 					game->gameState = gameState::optionsMenu;
 				}
-				else if (game->mainMenu.mainMenuNavigation.uiNavigation.currentButton->text->text == "Quit") {
+				else if (game->mainMenu.uiNavigation.currentButton->text->text == "Quit") {
 					game->quit = true;
 				}
 			}

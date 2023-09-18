@@ -157,7 +157,6 @@
     <ClCompile Include="gameUI.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="mainMenu.cpp" />
-    <ClCompile Include="mainMenuNavigation.cpp" />
     <ClCompile Include="math.cpp" />
     <ClCompile Include="optionsMenu.cpp" />
     <ClCompile Include="paddle.cpp" />
@@ -174,8 +173,6 @@
     <ClInclude Include="appSettings.h" />
     <ClInclude Include="audioButton.h" />
     <ClInclude Include="audioButtonText.h" />
-    <ClInclude Include="controlsButton.h" />
-    <ClInclude Include="controlsButtonText.h" />
     <ClInclude Include="controlsMenu.h" />
     <ClInclude Include="fpsCounter.h" />
     <ClInclude Include="gameState.h" />
@@ -188,14 +185,9 @@
     <ClInclude Include="inputs.h" />
     <ClInclude Include="line.h" />
     <ClInclude Include="mainMenu.h" />
-    <ClInclude Include="mainMenuNavigation.h" />
-    <ClInclude Include="optionsButton.h" />
-    <ClInclude Include="optionsButtonText.h" />
     <ClInclude Include="optionsMenu.h" />
     <ClInclude Include="playButton.h" />
     <ClInclude Include="playButtonText.h" />
-    <ClInclude Include="quitButton.h" />
-    <ClInclude Include="quitButtonText.h" />
     <ClInclude Include="title.h" />
     <ClInclude Include="math.h" />
     <ClInclude Include="paddle.h" />
@@ -210,8 +202,6 @@
     <ClInclude Include="uiNavigation.h" />
     <ClInclude Include="uiText.h" />
     <ClInclude Include="vectors.h" />
-    <ClInclude Include="videoButton.h" />
-    <ClInclude Include="videoButtonText.h" />
     <ClInclude Include="videoMenu.h" />
     <ClInclude Include="wall.h" />
   </ItemGroup>

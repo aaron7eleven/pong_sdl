@@ -60,7 +60,13 @@
     <ClCompile Include="game.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="mainMenuNavigation.cpp">
+    <ClCompile Include="controlsMenu.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="optionsMenu.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="videoMenu.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -146,25 +152,28 @@
     <ClInclude Include="playButton.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="optionsButtonText.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="optionsButton.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="quitButtonText.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="quitButton.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="mainMenuNavigation.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="fpsCounter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="inputs.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="appSettings.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="audioButton.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="audioButtonText.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="controlsMenu.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="optionsMenu.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="videoMenu.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

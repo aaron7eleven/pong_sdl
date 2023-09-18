@@ -3,7 +3,7 @@
 #include <SDL.h>
 #include <SDL_ttf.h>
 
-#include "color.h"
+#include "SDL_wrappers.h"
 
 struct uiText {
 	//int id = 0;
