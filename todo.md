@@ -16,7 +16,7 @@ Proper ball paddle collision: Ball launch angle and speed affected by where hit 
 #### Video
 V-Sync
 Resolution
-Frame Rate Cap
+(Skipping)Frame Rate Cap
 Windowed/Full Screen
 
 #### Audio

@@ -5,6 +5,7 @@ enum class gameState
 	mainMenu = 0,
 	optionsMenu,
 	controlsMenu,
+	videoMenu,
 	gameplay,
 	count
 };

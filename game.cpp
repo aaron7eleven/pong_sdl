@@ -5,7 +5,18 @@ void init(game* game) {
 	init(&game->mainMenu);
 	init(&game->optionsMenu);
 	init(&game->controlsMenu);
-}
+	init(&game->videoMenu);
+
+	// Might put this in another function later after init and before main loop
+	//std::string windowModeButtonState = game->appSettings->fullscreen ? "Fullscreen" : "Windowed";
+	//setButtonText(&game->videoMenu.windowModeButton, windowModeButtonState);
+
+	setButtonText(&game->videoMenu.windowModeButton, game->appSettings->fullscreenState[game->appSettings->fullscreen]);
+
+	//std::string vSyncButtonState = game->appSettings->vSync ? "Enabled" : "Disabled";
+	//setButtonText(&game->videoMenu.vSyncButton, vSyncButtonState);
+	setButtonText(&game->videoMenu.vSyncButton, game->appSettings->vSyncState[game->appSettings->vSync]);
+};
 
 void processInput(inputs* inputs, game* game) {
 	switch (game->gameState)
@@ -24,6 +35,11 @@ void processInput(inputs* inputs, game* game) {
 
 		} break;
 
+		case gameState::videoMenu: {
+			processInput(inputs, &game->videoMenu);
+
+		} break;
+
 		default:
 			break;
 	}
@@ -35,8 +51,6 @@ void update(float deltaTime, inputs* inputs, game* game) {
 	{
 		case gameState::mainMenu: {
 			if (inputs->uiSelected) {
-				// what button was selected?
-				// Play? Options? Quit?
 				if (game->mainMenu.mainMenuNavigation.uiNavigation.currentButton->text->text == "Play") {
 					// do nothing
 				}
@@ -54,9 +68,34 @@ void update(float deltaTime, inputs* inputs, game* game) {
 				if (game->optionsMenu.uiNavigation.currentButton->text->text == "Controls") {
 					game->gameState = gameState::controlsMenu;
 				}
+				else if (game->optionsMenu.uiNavigation.currentButton->text->text == "Video") {
+					game->gameState = gameState::videoMenu;
+				}
 			}
 			else if (inputs->uiBack) {
 				game->gameState = gameState::mainMenu;
+			}
+		} break;
+
+		case gameState::videoMenu: {
+			if (inputs->uiSelected) {
+				if (game->videoMenu.uiNavigation.currentButton == &game->videoMenu.vSyncButton) {
+					bool vSync = game->videoMenu.uiNavigation.currentButton->text->text == "Enabled";
+					bool toggledVSync = !vSync;
+					setButtonText(game->videoMenu.uiNavigation.currentButton, game->appSettings->vSyncState[toggledVSync]);
+					game->appSettings->vSync = toggledVSync;
+					game->changeAppSettings = true;
+				}
+				else if (game->videoMenu.uiNavigation.currentButton == &game->videoMenu.windowModeButton) {
+					bool fullscreen = game->videoMenu.uiNavigation.currentButton->text->text == "Fullscreen";
+					bool toggledFullscreen = !fullscreen;
+					setButtonText(game->videoMenu.uiNavigation.currentButton, game->appSettings->fullscreenState[toggledFullscreen]);
+					game->appSettings->fullscreen = toggledFullscreen;
+					game->changeAppSettings = true;
+				}
+			}
+			else if (inputs->uiBack) {
+				game->gameState = gameState::optionsMenu;
 			}
 		} break;
 
@@ -124,6 +163,10 @@ void render(SDL_Renderer* renderer, game* game) {
 
 		case gameState::controlsMenu: {
 			render(renderer, &game->controlsMenu);
+		} break;
+
+		case gameState::videoMenu: {
+			render(renderer, &game->videoMenu);
 		} break;
 
 	default:

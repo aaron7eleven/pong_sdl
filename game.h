@@ -4,15 +4,20 @@
 #include "mainMenu.h"
 #include "optionsMenu.h"
 #include "controlsMenu.h"
-
+#include "videoMenu.h"
+#include "appSettings.h"
 
 struct game {
 	//app* app;
 	bool quit = false;
-	gameState gameState = gameState::controlsMenu;
+	appSettings* appSettings;
+	bool changeAppSettings = false;
+
+	gameState gameState = gameState::videoMenu;
 	mainMenu mainMenu;
 	optionsMenu optionsMenu;
 	controlsMenu controlsMenu;
+	videoMenu videoMenu;
 
 
 	

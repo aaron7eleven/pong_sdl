@@ -5,6 +5,7 @@
 #include <SDL_ttf.h>
 
 #include "game.h"
+#include "appSettings.h"
 #include "fpsCounter.h"
 #include "inputs.h"
 
@@ -15,6 +16,8 @@ struct app {
 	SDL_Texture* texture = NULL;
 	TTF_Font* font = NULL;
 
+	appSettings* appSettings;
+
 	Uint32 appStartTime = SDL_GetTicks();
 	float deltaTime = 0.0f; // in seconds
 	Uint32 startTicks = appStartTime;
@@ -23,12 +26,8 @@ struct app {
 	inputs inputs;
 	
 	bool quit = false;
-	bool restart = false;
+	bool restart = true;
 
-	int screenWidth = 1280;
-	int screenHeight = 720;
-	Uint32 fps = 60;
-	Uint32 ticksPerFrame = 1000 / fps; // 1000 ms / X frames
 	fpsCounter fpsCounter;
 	Uint32 frameCount = 0;
 	float deltaTimes[5] = {0.0f,0.0f, 0.0f, 0.0f, 0.0f};
@@ -49,5 +48,5 @@ void update(app* app);
 void render(app* app);
 
 void updateDeltaTime(app* app);
-//void getInput(app* app);
+void applyFrameDelay(app* app);
 void processInput(app* app);

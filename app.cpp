@@ -13,14 +13,22 @@
 #include "ui.h"
 int appMain(int argc, char* argv[]) {
 	app app;
+	appSettings appSettings;
+	app.appSettings = &appSettings;
 
-	if (init(&app)) {
-		return 1;
-	}
+	while(!app.quit) {
+		if (init(&app)) {
+			return 1;
+		}
 
-	run(&app);
+		run(&app);
 
-	free(&app);
+		free(&app);
+
+		if (app.restart) {
+			app.quit = false;
+		}
+	}	
 	return 0;
 }
 
@@ -32,7 +40,9 @@ int init(app* app) {
 	}
 
 	//Create window
-	app->window = SDL_CreateWindow("Pong", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, app->screenWidth, app->screenHeight, SDL_WINDOW_SHOWN);
+	Uint32 windowFlags = SDL_WINDOW_SHOWN;
+	windowFlags = app->appSettings->fullscreen ? windowFlags | SDL_WINDOW_FULLSCREEN : windowFlags;
+	app->window = SDL_CreateWindow("Pong", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, app->appSettings->screenWidth, app->appSettings->screenHeight, windowFlags);
 	if (app->window == NULL)
 	{
 		printf("Window could not be created! SDL_Error: %s\n", SDL_GetError());
@@ -40,7 +50,9 @@ int init(app* app) {
 	}
 
 	// Create Renderer
-	app->renderer = SDL_CreateRenderer(app->window, -1, SDL_RENDERER_ACCELERATED);
+	Uint32 renderFlags = SDL_RENDERER_ACCELERATED;
+	renderFlags = app->appSettings->vSync ? renderFlags | SDL_RENDERER_PRESENTVSYNC : renderFlags;
+	app->renderer = SDL_CreateRenderer(app->window, -1, renderFlags);
 	if (app->renderer == NULL) {
 		printf("Renderer could not be created! SDL Error: %s\n", SDL_GetError());
 		return 1;
@@ -73,19 +85,18 @@ int init(app* app) {
 	srand((unsigned)time(NULL));
 
 	init(&app->fpsCounter.uiText);
+	app->restart = false;
 
 	return 0;
 }
 
 int free(app* app) {
-	//TTF_CloseFont(app->font);
-	//app->font = NULL;
-
-	//Deallocate surface
 	SDL_FreeSurface(app->windowSurface);
 	app->windowSurface = NULL;
 
-	//Destroy window
+	SDL_DestroyRenderer(app->renderer);
+	app->renderer = NULL;
+
 	SDL_DestroyWindow(app->window);
 	app->window = NULL;
 
@@ -103,15 +114,11 @@ void updateDeltaTime(app* app) {
 
 void applyFrameDelay(app* app) {
 	Uint32 frameTicks = SDL_GetTicks() - app->startTicks;
-	//printf("frameTicks = ")
-	if (frameTicks < app->ticksPerFrame)
+	if (frameTicks < app->appSettings->ticksPerFrame)
 	{
 		//Wait remaining time
-		SDL_Delay(app->ticksPerFrame - frameTicks);
+		SDL_Delay(app->appSettings->ticksPerFrame - frameTicks);
 	}
-}
-
-void getInput(app* app) {
 }
 
 void processInput(app* app) {
@@ -130,6 +137,11 @@ void processInput(app* app) {
 		else {
 			processInput(&app->inputs, app->game);
 			if (app->game->quit) {
+				app->quit = true;
+			}
+			else if (app->game->changeAppSettings) {
+				//app->game->changeAppSettings = false; // should get reset when restarted
+				app->restart = true;
 				app->quit = true;
 			}
 		}
@@ -437,7 +449,9 @@ int run(app* app) {
 	// Check all the textures (if not NULL)
 
 	game game;
+	game.appSettings = app->appSettings;
 	app->game = &game;
+
 	init(&game);
 
 	while (!app->quit) {
@@ -451,8 +465,8 @@ int run(app* app) {
 		
 		render(app);
 		
-		applyFrameDelay(app);
-		app->frameCount++;
+		//applyFrameDelay(app);
+		//app->frameCount++;
 	}
 
 	return 0;

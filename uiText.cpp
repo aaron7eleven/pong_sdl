@@ -105,6 +105,6 @@ void render(SDL_Renderer* renderer, uiText* uiText) {
 
 void setText(uiText* uiText, std::string text) {
 	uiText->text = text;
-	uiText->rect.w = text.length() * uiText->widthPerChar;
+	//uiText->rect.w = text.length() * uiText->widthPerChar;
 
 }
