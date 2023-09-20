@@ -150,3 +150,8 @@ struct gameplay {
 	float rightScoreTextX = (1280 / 2) + scoreTextXOffset; // (screenWidth / 2) + scoreTextXOffset
 	float rightScoreTextY = scoreTextYOffset;
 };
+
+void init(gameplay* gameplay);
+void processInput(inputs* inputs, gameplay* gameplay);
+void update(float deltaTime, inputs* inputs, gameplay* gameplay);
+void render(SDL_Renderer* renderer, gameplay* gameplay);

@@ -6,6 +6,7 @@ void init(game* game) {
 	init(&game->optionsMenu);
 	init(&game->controlsMenu);
 	init(&game->videoMenu);
+	init(&game->gameplay);
 
 	// Might put this in another function later after init and before main loop
 	//std::string windowModeButtonState = game->appSettings->fullscreen ? "Fullscreen" : "Windowed";
@@ -37,7 +38,10 @@ void processInput(inputs* inputs, game* game) {
 
 		case gameState::videoMenu: {
 			processInput(inputs, &game->videoMenu);
+		} break;
 
+		case gameState::gameplay: {
+			processInput(inputs, &game->gameplay);
 		} break;
 
 		default:

@@ -154,6 +154,7 @@
     <ClCompile Include="collisions.cpp" />
     <ClCompile Include="controlsMenu.cpp" />
     <ClCompile Include="game.cpp" />
+    <ClCompile Include="gameplay.cpp" />
     <ClCompile Include="gameUI.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="mainMenu.cpp" />
@@ -175,6 +176,7 @@
     <ClInclude Include="audioButtonText.h" />
     <ClInclude Include="controlsMenu.h" />
     <ClInclude Include="fpsCounter.h" />
+    <ClInclude Include="gameplay.h" />
     <ClInclude Include="gameState.h" />
     <ClInclude Include="ball.h" />
     <ClInclude Include="circleCollider.h" />

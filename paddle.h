@@ -30,4 +30,4 @@ struct paddle {
 	};
 };
 
-//void update(app* app, paddle* paddle);
+void render(SDL_Renderer renderer, paddle* paddle)
