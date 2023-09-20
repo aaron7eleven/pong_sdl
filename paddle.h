@@ -1,10 +1,9 @@
 #pragma once
 #include <SDL.h>
-//#include "app.h"
-//#include "transform.h"
-#include "rectCollider.h"
-#include "color.h"
+
+#include "SDL_wrappers.h"
 #include "paddleController.h"
+#include "inputs.h"
 
 struct paddle {
 	float width = 20;
@@ -30,4 +29,6 @@ struct paddle {
 	};
 };
 
-void render(SDL_Renderer renderer, paddle* paddle)
+void processInput(inputs* inputs, paddle* paddle);
+void update(float deltaTime, inputs* inputs, paddle* paddle);
+void render(SDL_Renderer* renderer, paddle* paddle);

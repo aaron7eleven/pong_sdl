@@ -56,7 +56,7 @@ void update(float deltaTime, inputs* inputs, game* game) {
 		case gameState::mainMenu: {
 			if (inputs->uiSelected) {
 				if (game->mainMenu.uiNavigation.currentButton->text->text == "Play") {
-					// do nothing
+					game->gameState = gameState::gameplay;
 				}
 				else if (game->mainMenu.uiNavigation.currentButton->text->text == "Options") {
 					game->gameState = gameState::optionsMenu;
@@ -148,6 +148,21 @@ void update(float deltaTime, inputs* inputs, game* game) {
 			}
 		} break;
 
+		case gameState::gameplay: {
+			update(deltaTime, inputs, &game->gameplay);
+			//if (inputs->uiSelected) {
+			//	if (game->mainMenu.uiNavigation.currentButton->text->text == "Play") {
+			//		game->gameState = gameState::gameplay;
+			//	}
+			//	else if (game->mainMenu.uiNavigation.currentButton->text->text == "Options") {
+			//		game->gameState = gameState::optionsMenu;
+			//	}
+			//	else if (game->mainMenu.uiNavigation.currentButton->text->text == "Quit") {
+			//		game->quit = true;
+			//	}
+			//}
+		} break;
+
 		default:
 			break;
 	}
@@ -171,6 +186,10 @@ void render(SDL_Renderer* renderer, game* game) {
 
 		case gameState::videoMenu: {
 			render(renderer, &game->videoMenu);
+		} break;
+
+		case gameState::gameplay: {
+			render(renderer, &game->gameplay);
 		} break;
 
 	default:

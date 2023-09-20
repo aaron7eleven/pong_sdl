@@ -1,9 +1,8 @@
 #pragma once
-#include "app.h"
-#include "wall.h"
 #include "SDL_wrappers.h"
+#include "wall.h"
 
-void render(app* app, wall* wall) {
-	SDL_SetRenderDrawColor(app->renderer, wall->color);
-	SDL_RenderFillRectF(app->renderer, &wall->rectCollider);
+void render(SDL_Renderer* renderer, wall* wall) {
+	SDL_SetRenderDrawColor(renderer, wall->color);
+	SDL_RenderFillRectF(renderer, &wall->rectCollider);
 }
