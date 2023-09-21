@@ -24,5 +24,6 @@ struct game {
 
 void init(game* game);
 void processInput(inputs* inputs, game* game);
+void preUpdate(game* game);
 void update(float deltaTime, inputs* inputs, game* game);
 void render(SDL_Renderer* renderer, game* game);

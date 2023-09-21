@@ -153,5 +153,6 @@ struct gameplay {
 
 void init(gameplay* gameplay);
 void processInput(inputs* inputs, gameplay* gameplay);
+void preUpdate(gameplay* gameplay);
 void update(float deltaTime, inputs* inputs, gameplay* gameplay);
 void render(SDL_Renderer* renderer, gameplay* gameplay);

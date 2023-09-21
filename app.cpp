@@ -150,6 +150,8 @@ void processInput(app* app) {
 
 
 void preUpdate(app* app) {
+	preUpdate(app->game);
+
 	//switch (app->gameState)
 	//{
 	//	case appState::MAIN_MENU:

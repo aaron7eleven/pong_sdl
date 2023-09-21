@@ -4,6 +4,22 @@
 
 
 void processInput(inputs* inputs, paddle* paddle) {
+	//// Update based on user input
+	//if (inputs->keyStates[paddle->paddleController.up]) {
+	//	paddle->velocity -= 1.0f;
+	//}
+
+	//if (inputs->keyStates[paddle->paddleController.down]) {
+	//	paddle->velocity += 1.0f;
+	//}
+}
+
+void preUpdate(paddle* paddle)
+{
+	paddle->velocity = 0.0f;
+}
+
+void update(float deltaTime, inputs* inputs, paddle* paddle) {
 	// Update based on user input
 	if (inputs->keyStates[paddle->paddleController.up]) {
 		paddle->velocity -= 1.0f;
@@ -12,9 +28,7 @@ void processInput(inputs* inputs, paddle* paddle) {
 	if (inputs->keyStates[paddle->paddleController.down]) {
 		paddle->velocity += 1.0f;
 	}
-}
-
-void update(float deltaTime, inputs* inputs, paddle* paddle) {
+	
 	// Move
 	paddle->rectCollider.y += paddle->velocity * paddle->speed * deltaTime;
 }

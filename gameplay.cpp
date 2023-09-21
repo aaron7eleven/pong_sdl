@@ -15,8 +15,16 @@ void processInput(inputs* inputs, gameplay* gameplay) {
 	//render(renderer, &gameplay->bottomWall);
 }
 
+void preUpdate(gameplay* gameplay) {
+	preUpdate(&gameplay->leftPaddle);
+	preUpdate(&gameplay->rightPaddle);
+}
+
 void update(float deltaTime, inputs* inputs, gameplay* gameplay) {
 
+	update(deltaTime, inputs, &gameplay->leftPaddle);
+	update(deltaTime, inputs, &gameplay->rightPaddle);
+	
 	if (checkCollision(gameplay->leftPaddle.rectCollider, gameplay->bottomWall.rectCollider)) {
 		// Undo Move
 		gameplay->leftPaddle.rectCollider.y -= gameplay->leftPaddle.velocity * gameplay->leftPaddle.speed * deltaTime;

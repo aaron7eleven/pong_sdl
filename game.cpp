@@ -49,6 +49,37 @@ void processInput(inputs* inputs, game* game) {
 	}
 }
 
+void preUpdate(game* game)
+{
+	switch (game->gameState)
+	{
+	//case gameState::mainMenu: {
+	//	processInput(inputs, &game->mainMenu);
+	//} break;
+
+	//case gameState::optionsMenu: {
+	//	processInput(inputs, &game->optionsMenu);
+
+	//} break;
+
+	//case gameState::controlsMenu: {
+	//	processInput(inputs, &game->controlsMenu);
+
+	//} break;
+
+	//case gameState::videoMenu: {
+	//	processInput(inputs, &game->videoMenu);
+	//} break;
+
+	case gameState::gameplay: {
+		preUpdate(&game->gameplay);
+	} break;
+
+	default:
+		break;
+	}
+}
+
 void update(float deltaTime, inputs* inputs, game* game) {
 	//update(deltaTime, inputs, &game->mainMenu);
 	switch (game->gameState)

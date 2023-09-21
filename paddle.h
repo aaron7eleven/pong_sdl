@@ -29,6 +29,8 @@ struct paddle {
 	};
 };
 
+
 void processInput(inputs* inputs, paddle* paddle);
+void preUpdate(paddle* paddle);
 void update(float deltaTime, inputs* inputs, paddle* paddle);
 void render(SDL_Renderer* renderer, paddle* paddle);
