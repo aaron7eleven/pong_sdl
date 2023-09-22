@@ -1,9 +1,9 @@
 #pragma once
 #include <SDL.h>
-//#include "app.h"
+
 #include "circleCollider.h"
 #include "color.h"
-//#include "app.h"
+#include "inputs.h"
 
 struct ball {
 	SDL_FPoint transform = { 0.0f, 0.0f };
@@ -11,6 +11,12 @@ struct ball {
 	circleCollider circleCollider = { transform, 20.0f };
 	SDL_FPoint velocity = { 0.5f, 0.5f };
 	float speed = 600.0f;
+
+	bool reset = false;
+	float resetTimer = 0.0f;
+	float timeToReset = 1.0f;
 };
 
-//void update(app* app, ball* ball);
+void update(float deltaTime, inputs* inputs, ball* ball);
+void renderCircle(SDL_Renderer* renderer, SDL_FPoint center, float radius);
+void render(SDL_Renderer* renderer, ball* ball);

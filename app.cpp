@@ -151,18 +151,6 @@ void processInput(app* app) {
 
 void preUpdate(app* app) {
 	preUpdate(app->game);
-
-	//switch (app->gameState)
-	//{
-	//	case appState::MAIN_MENU:
-	//		break;
-	//	case appState::GAME: {
-	//		app->leftPaddle.velocity = 0.0f;
-	//		app->rightPaddle.velocity = 0.0f;
-	//	} break;
-	//	default:
-	//		break;
-	//}
 }
 
 void updateGame(app* app) {

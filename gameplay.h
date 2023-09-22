@@ -4,6 +4,7 @@
 #include "paddleController.h"
 #include "wall.h"
 #include "ball.h"
+#include "ui.h"
 
 struct gameplay {
 	float paddleWidth = 20; // screenWidth / 64
@@ -89,7 +90,7 @@ struct gameplay {
 	float vertWallWidth = 1280; // screenWidth
 	float vertWallHeight = 1280 / 128; // screenWidth / 128
 	float topWallX = 0; // Starts at top left corner not center (0 not screenWidth / 2)
-	float topWallY = vertWallHeight;
+	float topWallY = -vertWallHeight;
 	SDL_FRect topWallRectTransform = {
 		topWallX,
 		topWallY,
@@ -103,7 +104,8 @@ struct gameplay {
 	};
 
 	float bottomWallX = 0; // Starts at top left corner not center (0 not screenWidth / 2)
-	float bottomWallY = 720 - vertWallHeight * 2.0f; // Move above the bottom edge of window // screenHeight - vertWallHeight * 2.0f
+	//float bottomWallY = 720 - vertWallHeight * 2.0f; // Move above the bottom edge of window // screenHeight - vertWallHeight * 2.0f
+	float bottomWallY = 720; // Move above the bottom edge of window // screenHeight - vertWallHeight * 2.0f
 	SDL_FRect bottomWallRectTransform = {
 		bottomWallX,
 		bottomWallY,
@@ -142,13 +144,35 @@ struct gameplay {
 	float scoreTextWidth = 1280 / 32; // screenWidth / 32
 	float scoreTextHeight = 720 / 8; // Same Height as paddle // screenHeight / 8
 	float scoreTextXOffset = 1280 / 16; // screenWidth / 16
-	float scoreTextYOffset = 1280 / 16; // screenWidth / 16
+	float scoreTextYOffset = 1280 / 64; // screenWidth / 64
 
 	float leftScoreTextX = (1280 / 2) - scoreTextWidth - scoreTextXOffset; // (screenWidth / 2) - scoreTextWidth - scoreTextXOffset
 	float leftScoreTextY = scoreTextYOffset;
 
+	uiText leftScore = {
+		"leftScore",
+		NULL,
+		"assets/font/DotGothic16-Regular.ttf",
+		100,
+		{leftScoreTextX, leftScoreTextY, scoreTextWidth, scoreTextHeight},
+		white,
+		NULL,
+		false
+	};
+
 	float rightScoreTextX = (1280 / 2) + scoreTextXOffset; // (screenWidth / 2) + scoreTextXOffset
 	float rightScoreTextY = scoreTextYOffset;
+
+	uiText rightScore = {
+		"rightScore",
+		NULL,
+		"assets/font/DotGothic16-Regular.ttf",
+		100,
+		{rightScoreTextX, rightScoreTextY, scoreTextWidth, scoreTextHeight},
+		white,
+		NULL,
+		false
+	};
 };
 
 void init(gameplay* gameplay);

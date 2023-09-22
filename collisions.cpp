@@ -50,7 +50,7 @@ bool checkCollision(SDL_FRect a, SDL_FRect b)
 
 };
 
-bool checkCollision(circleCollider& circleCollider, SDL_FRect rect)
+bool checkCollision(circleCollider circleCollider, SDL_FRect rect)
 {
 	SDL_FPoint circle = circleCollider.center;
 	
