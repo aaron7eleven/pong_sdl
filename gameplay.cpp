@@ -28,6 +28,7 @@ void update(float deltaTime, inputs* inputs, gameplay* gameplay) {
 
 	update(deltaTime, inputs, &gameplay->leftPaddle);
 	update(deltaTime, inputs, &gameplay->rightPaddle);
+	update(deltaTime, inputs, &gameplay->ball);
 	
 	if (checkCollision(gameplay->leftPaddle.rectCollider, gameplay->bottomWall.rectCollider)) {
 		// Undo Move
@@ -79,7 +80,7 @@ void update(float deltaTime, inputs* inputs, gameplay* gameplay) {
 			gameplay->ball.velocity.y = -gameplay->ball.velocity.y;
 		}
 
-		gameplay->resettingBall = true;
+		gameplay->ball.reset = true;
 		//rightScore++;
 		//rightScoreChanged = true;
 	}
@@ -98,7 +99,7 @@ void update(float deltaTime, inputs* inputs, gameplay* gameplay) {
 			gameplay->ball.velocity.y = -gameplay->ball.velocity.y;
 		}
 
-		gameplay->resettingBall = true;
+		gameplay->ball.reset = true;
 		//leftScore++;
 		//leftScoreChanged = true;
 	}
@@ -112,6 +113,7 @@ void update(float deltaTime, inputs* inputs, gameplay* gameplay) {
 		// Check ball hit vertical ends of paddle
 		if (ballAbovePaddle || ballBelowPaddle) {
 			gameplay->ball.velocity.y = -gameplay->ball.velocity.y;
+			gameplay->ball.circleCollider.center.y += gameplay->ball.velocity.y * gameplay->ball.speed * deltaTime;
 		}
 		else {
 			gameplay->ball.velocity.x = -gameplay->ball.velocity.x;
@@ -127,6 +129,7 @@ void update(float deltaTime, inputs* inputs, gameplay* gameplay) {
 		// Check ball hit vertical ends of paddle
 		if (ballAbovePaddle || ballBelowPaddle) {
 			gameplay->ball.velocity.y = -gameplay->ball.velocity.y;
+			gameplay->ball.circleCollider.center.y += gameplay->ball.velocity.y * gameplay->ball.speed * deltaTime;
 		}
 		else {
 			gameplay->ball.velocity.x = -gameplay->ball.velocity.x;
@@ -157,5 +160,4 @@ void render(SDL_Renderer* renderer, gameplay* gameplay) {
 	render(renderer, &gameplay->leftScore);
 	render(renderer, &gameplay->rightScore);
 	render(renderer, &gameplay->ball);
-
 }
