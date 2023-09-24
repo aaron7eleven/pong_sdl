@@ -1,4 +1,5 @@
 #pragma once
+#include <iostream>
 #include <SDL.h>
 #include "paddle.h"
 #include "paddleController.h"
@@ -7,6 +8,13 @@
 #include "ui.h"
 
 struct gameplay {
+	bool win = false;
+	int scoreToWin = 9;
+	int leftScore = 0;
+	bool leftScoreChanged = false;
+	int rightScore = 0;
+	bool rightScoreChanged = false;
+
 	float paddleWidth = 20; // screenWidth / 64
 	float paddleHeight = 90; // screenHeight / 8
 	float paddleSpeed = 300;
@@ -149,7 +157,7 @@ struct gameplay {
 	float leftScoreTextX = (1280 / 2) - scoreTextWidth - scoreTextXOffset; // (screenWidth / 2) - scoreTextWidth - scoreTextXOffset
 	float leftScoreTextY = scoreTextYOffset;
 
-	uiText leftScore = {
+	uiText leftScoreText = {
 		"leftScore",
 		NULL,
 		"assets/font/DotGothic16-Regular.ttf",
@@ -163,7 +171,7 @@ struct gameplay {
 	float rightScoreTextX = (1280 / 2) + scoreTextXOffset; // (screenWidth / 2) + scoreTextXOffset
 	float rightScoreTextY = scoreTextYOffset;
 
-	uiText rightScore = {
+	uiText rightScoreText = {
 		"rightScore",
 		NULL,
 		"assets/font/DotGothic16-Regular.ttf",

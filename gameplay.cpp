@@ -3,12 +3,14 @@
 #include "collisions.h"
 
 void init(gameplay* gameplay) {
-	init(&gameplay->leftScore);
-	init(&gameplay->rightScore);
+	init(&gameplay->leftScoreText);
+	init(&gameplay->rightScoreText);
 
 	gameplay->ball.reset = true;
-	setText(&gameplay->leftScore, std::to_string(0));
-	setText(&gameplay->rightScore, std::to_string(0));
+	gameplay->leftScore = 0;
+	gameplay->rightScore = 0;
+	setText(&gameplay->leftScoreText, std::to_string(gameplay->leftScore));
+	setText(&gameplay->rightScoreText, std::to_string(gameplay->rightScore));
 }
 
 void processInput(inputs* inputs, gameplay* gameplay) {
@@ -82,8 +84,8 @@ void update(float deltaTime, inputs* inputs, gameplay* gameplay) {
 		}
 
 		gameplay->ball.reset = true;
-		//rightScore++;
-		//rightScoreChanged = true;
+		gameplay->rightScore++;
+		gameplay->rightScoreChanged = true;
 	}
 	else if (checkCollision(gameplay->ball.circleCollider, gameplay->rightWall.rectCollider)) {
 		gameplay->ball.velocity.x = -gameplay->ball.velocity.x;
@@ -101,8 +103,8 @@ void update(float deltaTime, inputs* inputs, gameplay* gameplay) {
 		}
 
 		gameplay->ball.reset = true;
-		//leftScore++;
-		//leftScoreChanged = true;
+		gameplay->leftScore++;
+		gameplay->leftScoreChanged = true;
 	}
 
 
@@ -138,17 +140,22 @@ void update(float deltaTime, inputs* inputs, gameplay* gameplay) {
 		}
 	}
 
-	//if (leftScoreChanged) {
-//	// Update texture
-//	leftTextTexture = LoadTextTexture(renderer, font, std::to_string(leftScore), textColor);
-//	leftScoreChanged = false;
-//}
+	if (gameplay->leftScore >= gameplay->scoreToWin) {
+		gameplay->win = true;
+	}
+	else if (gameplay->rightScore >= gameplay->scoreToWin) {
+		gameplay->win = true;
+	}
 
-//if (rightScoreChanged) {
-//	// Update texture
-//	rightTextTexture = LoadTextTexture(renderer, font, std::to_string(rightScore), textColor);
-//	rightScoreChanged = false;
-//}
+	if (gameplay->leftScoreChanged) {
+		setText(&gameplay->leftScoreText, std::to_string(gameplay->leftScore));
+		gameplay->leftScoreChanged = false;
+	}
+
+	if (gameplay->rightScoreChanged) {
+		setText(&gameplay->rightScoreText, std::to_string(gameplay->rightScore));
+		gameplay->rightScoreChanged = false;
+	}
 }
 
 void render(SDL_Renderer* renderer, gameplay* gameplay) {
@@ -158,7 +165,7 @@ void render(SDL_Renderer* renderer, gameplay* gameplay) {
 	render(renderer, &gameplay->rightWall);
 	render(renderer, &gameplay->topWall);
 	render(renderer, &gameplay->bottomWall);
-	render(renderer, &gameplay->leftScore);
-	render(renderer, &gameplay->rightScore);
+	render(renderer, &gameplay->leftScoreText);
+	render(renderer, &gameplay->rightScoreText);
 	render(renderer, &gameplay->ball);
 }
