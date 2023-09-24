@@ -3,6 +3,11 @@
 #include "paddle.h"
 
 
+void init(paddle* paddle)
+{
+
+}
+
 void processInput(inputs* inputs, paddle* paddle) {
 	//// Update based on user input
 	//if (inputs->keyStates[paddle->paddleController.up]) {

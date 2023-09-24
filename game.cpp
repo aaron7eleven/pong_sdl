@@ -6,6 +6,7 @@ void init(game* game) {
 	init(&game->optionsMenu);
 	init(&game->controlsMenu);
 	init(&game->videoMenu);
+	init(&game->winMenu);
 	init(&game->gameplay);
 
 	// Might put this in another function later after init and before main loop
@@ -42,6 +43,10 @@ void processInput(inputs* inputs, game* game) {
 
 		case gameState::gameplay: {
 			processInput(inputs, &game->gameplay);
+		} break;
+
+		case gameState::winMenu: {
+			processInput(inputs, &game->winMenu);
 		} break;
 
 		default:
@@ -87,6 +92,7 @@ void update(float deltaTime, inputs* inputs, game* game) {
 		case gameState::mainMenu: {
 			if (inputs->uiSelected) {
 				if (game->mainMenu.uiNavigation.currentButton->text->text == "Play") {
+					init(&game->gameplay);
 					game->gameState = gameState::gameplay;
 				}
 				else if (game->mainMenu.uiNavigation.currentButton->text->text == "Options") {
@@ -181,17 +187,35 @@ void update(float deltaTime, inputs* inputs, game* game) {
 
 		case gameState::gameplay: {
 			update(deltaTime, inputs, &game->gameplay);
-			//if (inputs->uiSelected) {
-			//	if (game->mainMenu.uiNavigation.currentButton->text->text == "Play") {
-			//		game->gameState = gameState::gameplay;
-			//	}
-			//	else if (game->mainMenu.uiNavigation.currentButton->text->text == "Options") {
-			//		game->gameState = gameState::optionsMenu;
-			//	}
-			//	else if (game->mainMenu.uiNavigation.currentButton->text->text == "Quit") {
-			//		game->quit = true;
-			//	}
-			//}
+			
+			if (game->gameplay.win) {
+				if (game->gameplay.leftScore >= game->gameplay.scoreToWin) {
+					setText(&game->winMenu.title, "Left Player Won!!!");
+				}
+				else {
+					setText(&game->winMenu.title, "Right Player Won!!!");
+				}
+				setText(&game->winMenu.subtitle, std::to_string(game->gameplay.leftScore) + " - " + std::to_string(game->gameplay.rightScore));
+				game->gameState = gameState::winMenu;
+			}
+		} break;
+
+		case gameState::winMenu: {
+			if (inputs->uiSelected) {
+				if (game->winMenu.uiNavigation.currentButton->text->text == "Play Again") {
+					init(&game->gameplay);
+					game->gameState = gameState::gameplay;
+				}
+				else if (game->winMenu.uiNavigation.currentButton->text->text == "Main Menu") {
+					game->gameState = gameState::mainMenu;
+				}
+				else if (game->winMenu.uiNavigation.currentButton->text->text == "Quit") {
+					game->quit = true;
+				}
+			}
+			else if (inputs->uiBack) {
+				game->gameState = gameState::mainMenu;
+			}
 		} break;
 
 		default:
@@ -221,6 +245,10 @@ void render(SDL_Renderer* renderer, game* game) {
 
 		case gameState::gameplay: {
 			render(renderer, &game->gameplay);
+		} break;
+
+		case gameState::winMenu: {
+			render(renderer, &game->winMenu);
 		} break;
 
 	default:

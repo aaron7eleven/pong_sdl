@@ -9,7 +9,7 @@
 
 struct gameplay {
 	bool win = false;
-	int scoreToWin = 9;
+	int scoreToWin = 1;
 	int leftScore = 0;
 	bool leftScoreChanged = false;
 	int rightScore = 0;

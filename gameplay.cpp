@@ -3,14 +3,25 @@
 #include "collisions.h"
 
 void init(gameplay* gameplay) {
+	init(&gameplay->leftPaddle);
+	init(&gameplay->rightPaddle);
 	init(&gameplay->leftScoreText);
 	init(&gameplay->rightScoreText);
 
+	gameplay->win = false;
 	gameplay->ball.reset = true;
 	gameplay->leftScore = 0;
+	gameplay->leftScoreChanged = false;
 	gameplay->rightScore = 0;
+	gameplay->rightScoreChanged = false;
 	setText(&gameplay->leftScoreText, std::to_string(gameplay->leftScore));
 	setText(&gameplay->rightScoreText, std::to_string(gameplay->rightScore));
+
+	gameplay->leftPaddle.rectCollider.x = gameplay->leftPaddleInitX;
+	gameplay->leftPaddle.rectCollider.y = gameplay->leftPaddleInitY;
+
+	gameplay->rightPaddle.rectCollider.x = gameplay->rightPaddleInitX;
+	gameplay->rightPaddle.rectCollider.y = gameplay->rightPaddleInitY;
 }
 
 void processInput(inputs* inputs, gameplay* gameplay) {

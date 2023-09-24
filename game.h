@@ -1,4 +1,6 @@
 #pragma once
+#include <iostream>
+#include <string>
 #include <SDL.h>
 #include "gameState.h"
 #include "appSettings.h"
@@ -6,6 +8,7 @@
 #include "optionsMenu.h"
 #include "controlsMenu.h"
 #include "videoMenu.h"
+#include "winMenu.h"
 #include "gameplay.h"
 
 struct game {
@@ -14,12 +17,14 @@ struct game {
 	appSettings* appSettings;
 	bool changeAppSettings = false;
 
-	gameState gameState = gameState::gameplay;
+	gameState gameState = gameState::mainMenu;
 	mainMenu mainMenu;
 	optionsMenu optionsMenu;
 	controlsMenu controlsMenu;
 	videoMenu videoMenu;
+	winMenu winMenu;
 	gameplay gameplay;
+	
 };
 
 void init(game* game);

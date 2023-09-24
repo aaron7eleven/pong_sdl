@@ -168,6 +168,7 @@
     <ClCompile Include="uiText.cpp" />
     <ClCompile Include="videoMenu.cpp" />
     <ClCompile Include="wall.cpp" />
+    <ClCompile Include="winMenu.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="app.h" />
@@ -206,6 +207,7 @@
     <ClInclude Include="vectors.h" />
     <ClInclude Include="videoMenu.h" />
     <ClInclude Include="wall.h" />
+    <ClInclude Include="winMenu.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
