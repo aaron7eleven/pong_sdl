@@ -6,6 +6,7 @@ void init(gameplay* gameplay) {
 	init(&gameplay->leftScore);
 	init(&gameplay->rightScore);
 
+	gameplay->ball.reset = true;
 	setText(&gameplay->leftScore, std::to_string(0));
 	setText(&gameplay->rightScore, std::to_string(0));
 }

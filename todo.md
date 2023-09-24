@@ -5,9 +5,11 @@ Win conditions in game
 Win Menu
 Pause Menu
 Refactor into sub components to reuse (basis for engine)
+Refactor into Entity and Components (basis for EC engine)
 Menu Navigation
 Save/Load App Settings
 Save/Load Input Settings
+Render vertical walls with texture
 
 ## List of everything
 ### Gameplay Features
@@ -78,3 +80,6 @@ Color
 Initial Position
 Size
 image/texture
+
+
+#Done
