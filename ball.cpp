@@ -171,23 +171,7 @@ void renderFillCircle(SDL_Renderer* renderer, SDL_FPoint center, float radius) {
 }
 
 void render(SDL_Renderer* renderer, ball* ball) {
-	// Draw Ball
 	SDL_SetRenderDrawColor(renderer, ball->color);
-
 	//renderCircle(renderer, ball->circleCollider.center, ball->circleCollider.radius);
 	renderFillCircle(renderer, ball->circleCollider.center, ball->circleCollider.radius);
-	// Debug
-	//SDL_FRect debug = {
-	//	ball->circleCollider.center.x,
-	//	ball->circleCollider.center.y,
-	//	ball->circleCollider.radius,
-	//	ball->circleCollider.radius
-	//};
-
-	//circleColor() // available in SDL_gfx
-	//SDL_SetRenderDrawColor(renderer, yellow);
-	//SDL_RenderFillRectF(renderer, &debug);
-	//SDL_RenderFillRectF(renderer, ball->circleCollider);
-	//SDL_RenderFillCircle(renderer, ball.circleCollider.center.x, ball.circleCollider.center.y, ball.circleCollider.radius);
-
 }
