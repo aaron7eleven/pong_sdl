@@ -97,7 +97,7 @@ void update(float deltaTime, inputs* inputs, gameplay* gameplay) {
 
 		gameplay->ball.reset = true;
 		gameplay->rightScore++;
-		gameplay->rightScoreChanged = true;
+		setText(&gameplay->rightScoreText, std::to_string(gameplay->rightScore));
 	}
 	else if (checkCollision(gameplay->ball.circleCollider, gameplay->rightWall.rectCollider)) {
 		gameplay->ball.velocity.x = -gameplay->ball.velocity.x;
@@ -116,7 +116,7 @@ void update(float deltaTime, inputs* inputs, gameplay* gameplay) {
 
 		gameplay->ball.reset = true;
 		gameplay->leftScore++;
-		gameplay->leftScoreChanged = true;
+		setText(&gameplay->leftScoreText, std::to_string(gameplay->leftScore));
 	}
 
 
@@ -159,15 +159,6 @@ void update(float deltaTime, inputs* inputs, gameplay* gameplay) {
 		gameplay->win = true;
 	}
 
-	if (gameplay->leftScoreChanged) {
-		setText(&gameplay->leftScoreText, std::to_string(gameplay->leftScore));
-		gameplay->leftScoreChanged = false;
-	}
-
-	if (gameplay->rightScoreChanged) {
-		setText(&gameplay->rightScoreText, std::to_string(gameplay->rightScore));
-		gameplay->rightScoreChanged = false;
-	}
 }
 
 void render(SDL_Renderer* renderer, gameplay* gameplay) {
