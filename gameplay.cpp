@@ -1,6 +1,7 @@
 #pragma once
 #include "gameplay.h"
 #include "collisions.h"
+#include "SDL_mixer.h"
 
 void init(gameplay* gameplay) {
 	init(&gameplay->leftPaddle);

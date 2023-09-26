@@ -6,6 +6,7 @@
 #include <SDL.h>
 #include <SDL_image.h>
 #include <SDL_ttf.h>
+#include <SDL_mixer.h>
 
 #include "SDL_wrappers.h"
 #include "app.h"
@@ -81,6 +82,13 @@ int init(app* app) {
 	//	printf("Failed to load font! SDL_ttf Error: %s\n", TTF_GetError());
 	//	return 1;
 	//}
+
+	 //Initialize SDL_mixer
+	if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0)
+	{
+		printf("SDL_mixer could not initialize! SDL_mixer Error: %s\n", Mix_GetError());
+		success = false;
+	}
 
 	srand((unsigned)time(NULL));
 
