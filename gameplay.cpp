@@ -79,11 +79,17 @@ void update(float deltaTime, inputs* inputs, gameplay* gameplay) {
 	// Vertical Walls
 	if (checkCollision(gameplay->ball.circleCollider, gameplay->topWall.rectCollider)) {
 		gameplay->ball.velocity.y = -gameplay->ball.velocity.y;
-		gameplay->ball.circleCollider.center.y += gameplay->ball.velocity.y * gameplay->ball.speed * deltaTime; // Moving down
+		gameplay->ball.circleCollider.center.y += gameplay->ball.velocity.y * gameplay->ball.speed * deltaTime; // Moving down1
+		//Mix_Volume(-1, 63);
+		Mix_Volume(-1, ((63 - 8) + (rand() % 8)) * gameplay->appSettings->sfxVolume);
+		Mix_PlayChannel(-1, gameplay->hit, 0);
 	}
 	else if (checkCollision(gameplay->ball.circleCollider, gameplay->bottomWall.rectCollider)) {
 		gameplay->ball.velocity.y = -gameplay->ball.velocity.y;
 		gameplay->ball.circleCollider.center.y += gameplay->ball.velocity.y * gameplay->ball.speed * deltaTime; // Moving down
+		//Mix_Volume(-1, 63);
+		Mix_Volume(-1, (63 - 8) + (rand() % 8) * gameplay->appSettings->sfxVolume);
+		Mix_PlayChannel(-1, gameplay->hit, 0);
 	}
 
 	// Horizontal Walls
@@ -141,7 +147,7 @@ void update(float deltaTime, inputs* inputs, gameplay* gameplay) {
 			gameplay->ball.velocity.x = -gameplay->ball.velocity.x;
 			gameplay->ball.circleCollider.center.x += gameplay->ball.velocity.x * gameplay->ball.speed * deltaTime;
 		}
-
+		Mix_Volume(-1, (96 - 8) + (rand() % 8) * gameplay->appSettings->sfxVolume);
 		Mix_PlayChannel(-1, gameplay->hit, 0);
 	}
 
@@ -160,7 +166,8 @@ void update(float deltaTime, inputs* inputs, gameplay* gameplay) {
 			gameplay->ball.circleCollider.center.x += gameplay->ball.velocity.x * gameplay->ball.speed * deltaTime;
 		}
 
-		Mix_PlayChannel(-1, gameplay->hit, 0);	
+		Mix_Volume(-1, (96 - 8) + (rand() % 8) * gameplay->appSettings->sfxVolume);
+		Mix_PlayChannel(-1, gameplay->hit, 0);
 	}
 
 	if (gameplay->leftScore >= gameplay->scoreToWin) {

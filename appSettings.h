@@ -12,4 +12,6 @@ struct appSettings {
 	int screenHeight = 720;
 	Uint32 fps = 60;
 	Uint32 ticksPerFrame = 1000 / fps; // 1000 ms / X frames
+
+	float sfxVolume = 0.75f;
 };

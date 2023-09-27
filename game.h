@@ -8,6 +8,7 @@
 #include "optionsMenu.h"
 #include "controlsMenu.h"
 #include "videoMenu.h"
+#include "audioMenu.h"
 #include "winMenu.h"
 #include "gameplay.h"
 
@@ -22,6 +23,7 @@ struct game {
 	optionsMenu optionsMenu;
 	controlsMenu controlsMenu;
 	videoMenu videoMenu;
+	audioMenu audioMenu;
 	winMenu winMenu;
 	gameplay gameplay;
 	

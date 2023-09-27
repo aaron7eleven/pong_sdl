@@ -8,6 +8,7 @@
 #include "wall.h"
 #include "ball.h"
 #include "ui.h"
+#include "appSettings.h"
 
 struct gameplay {
 	bool win = false;
@@ -16,6 +17,8 @@ struct gameplay {
 	bool leftScoreChanged = false;
 	int rightScore = 0;
 	bool rightScoreChanged = false;
+
+	appSettings* appSettings = NULL;
 
 	float paddleWidth = 20; // screenWidth / 64
 	float paddleHeight = 90; // screenHeight / 8

@@ -6,8 +6,12 @@ void init(game* game) {
 	init(&game->optionsMenu);
 	init(&game->controlsMenu);
 	init(&game->videoMenu);
+	init(&game->audioMenu	);
 	init(&game->winMenu);
 	init(&game->gameplay);
+
+	game->gameplay.appSettings = game->appSettings;
+	setText(&game->audioMenu.sfxVolumeValue, std::to_string(game->appSettings->sfxVolume));
 
 	// Might put this in another function later after init and before main loop
 	//std::string windowModeButtonState = game->appSettings->fullscreen ? "Fullscreen" : "Windowed";
@@ -39,6 +43,10 @@ void processInput(inputs* inputs, game* game) {
 
 		case gameState::videoMenu: {
 			processInput(inputs, &game->videoMenu);
+		} break;
+
+		case gameState::audioMenu: {
+			processInput(inputs, &game->audioMenu);
 		} break;
 
 		case gameState::gameplay: {
@@ -112,6 +120,9 @@ void update(float deltaTime, inputs* inputs, game* game) {
 				else if (game->optionsMenu.uiNavigation.currentButton->text->text == "Video") {
 					game->gameState = gameState::videoMenu;
 				}
+				else if (game->optionsMenu.uiNavigation.currentButton->text->text == "Audio") {
+					game->gameState = gameState::audioMenu;
+				}
 			}
 			else if (inputs->uiBack) {
 				game->gameState = gameState::mainMenu;
@@ -133,6 +144,28 @@ void update(float deltaTime, inputs* inputs, game* game) {
 					setButtonText(game->videoMenu.uiNavigation.currentButton, game->appSettings->fullscreenState[toggledFullscreen]);
 					game->appSettings->fullscreen = toggledFullscreen;
 					game->changeAppSettings = true;
+				}
+			}
+			else if (inputs->uiBack) {
+				game->gameState = gameState::optionsMenu;
+			}
+		} break;
+
+		case gameState::audioMenu: {
+			if (inputs->uiSelected) {
+				if (game->audioMenu.uiNavigation.currentButton == &game->audioMenu.sfxVolumeUpButton) {
+					game->appSettings->sfxVolume += 0.05f;
+					if (game->appSettings->sfxVolume > 1.0f) {
+						game->appSettings->sfxVolume = 1.0f;
+					}
+					setText(&game->audioMenu.sfxVolumeValue, std::to_string(game->appSettings->sfxVolume));
+				}
+				else if (game->audioMenu.uiNavigation.currentButton == &game->audioMenu.sfxVolumeDownButton) {
+					game->appSettings->sfxVolume -= 0.05f;
+					if (game->appSettings->sfxVolume < 0.0f) {
+						game->appSettings->sfxVolume = 0.0f;
+					}
+					setText(&game->audioMenu.sfxVolumeValue, std::to_string(game->appSettings->sfxVolume));
 				}
 			}
 			else if (inputs->uiBack) {
@@ -241,6 +274,10 @@ void render(SDL_Renderer* renderer, game* game) {
 
 		case gameState::videoMenu: {
 			render(renderer, &game->videoMenu);
+		} break;
+
+		case gameState::audioMenu: {
+			render(renderer, &game->audioMenu);
 		} break;
 
 		case gameState::gameplay: {

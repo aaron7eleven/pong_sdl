@@ -150,6 +150,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="app.cpp" />
+    <ClCompile Include="audioMenu.cpp" />
     <ClCompile Include="ball.cpp" />
     <ClCompile Include="collisions.cpp" />
     <ClCompile Include="controlsMenu.cpp" />
@@ -175,6 +176,7 @@
     <ClInclude Include="appSettings.h" />
     <ClInclude Include="audioButton.h" />
     <ClInclude Include="audioButtonText.h" />
+    <ClInclude Include="audioMenu.h" />
     <ClInclude Include="controlsMenu.h" />
     <ClInclude Include="fpsCounter.h" />
     <ClInclude Include="gameplay.h" />

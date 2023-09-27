@@ -6,7 +6,8 @@ enum class gameState
 	optionsMenu,
 	controlsMenu,
 	videoMenu,
-	winMenu,
+	audioMenu,
+	winMenu,	
 	gameplay,
 	count
 };
