@@ -1,6 +1,8 @@
 #pragma once
 #include <iostream>
 #include <SDL.h>
+#include <SDL_mixer.h>
+
 #include "paddle.h"
 #include "paddleController.h"
 #include "wall.h"
@@ -181,6 +183,8 @@ struct gameplay {
 		NULL,
 		false
 	};
+
+	Mix_Chunk* hit = NULL;
 };
 
 void init(gameplay* gameplay);

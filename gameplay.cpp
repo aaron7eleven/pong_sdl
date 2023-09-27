@@ -23,6 +23,13 @@ void init(gameplay* gameplay) {
 
 	gameplay->rightPaddle.rectCollider.x = gameplay->rightPaddleInitX;
 	gameplay->rightPaddle.rectCollider.y = gameplay->rightPaddleInitY;
+
+	//Load sound effects
+	gameplay->hit = Mix_LoadWAV("assets/sfx/269718__michorvath__ping-pong-ball-hit.wav");
+	if (gameplay->hit == NULL)
+	{
+		printf("Failed to load hit sound effect! SDL_mixer Error: %s\n", Mix_GetError());
+	}
 }
 
 void processInput(inputs* inputs, gameplay* gameplay) {
@@ -134,6 +141,8 @@ void update(float deltaTime, inputs* inputs, gameplay* gameplay) {
 			gameplay->ball.velocity.x = -gameplay->ball.velocity.x;
 			gameplay->ball.circleCollider.center.x += gameplay->ball.velocity.x * gameplay->ball.speed * deltaTime;
 		}
+
+		Mix_PlayChannel(-1, gameplay->hit, 0);
 	}
 
 	// Right Paddle
@@ -150,6 +159,8 @@ void update(float deltaTime, inputs* inputs, gameplay* gameplay) {
 			gameplay->ball.velocity.x = -gameplay->ball.velocity.x;
 			gameplay->ball.circleCollider.center.x += gameplay->ball.velocity.x * gameplay->ball.speed * deltaTime;
 		}
+
+		Mix_PlayChannel(-1, gameplay->hit, 0);	
 	}
 
 	if (gameplay->leftScore >= gameplay->scoreToWin) {
