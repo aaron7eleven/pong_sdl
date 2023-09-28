@@ -3,8 +3,13 @@
 #include "color.h"
 #include "uiNavigation.h"
 #include "inputs.h"
+#include "appSettings.h"
+#include "audioManager.h"
 
 struct videoMenu {
+	audioManager* audioManager = NULL;
+	appSettings* appSettings = NULL;
+
 	//////////////////////////////
 	// Title: Video
 	//////////////////////////////

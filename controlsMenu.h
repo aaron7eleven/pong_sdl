@@ -4,6 +4,8 @@
 #include "SDL_wrappers.h"
 #include "uiNavigation.h"
 #include "inputs.h"
+#include "appSettings.h"
+#include "audioManager.h"
 
 struct controlsMenu {
 
@@ -12,6 +14,9 @@ struct controlsMenu {
 	uiButton* listeningButton = NULL;
 	SDL_Keycode listeningKeyCode = NULL;
 	SDL_Keycode* listeningKeyCodeToChange = NULL;
+
+	audioManager* audioManager = NULL;
+	appSettings* appSettings = NULL;
 
 	//////////////////////////////
 	// Title: Controls

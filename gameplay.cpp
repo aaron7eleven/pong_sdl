@@ -70,21 +70,12 @@ void update(float deltaTime, inputs* inputs, gameplay* gameplay) {
 	if (checkCollision(gameplay->ball.circleCollider, gameplay->topWall.rectCollider)) {
 		gameplay->ball.velocity.y = -gameplay->ball.velocity.y;
 		gameplay->ball.circleCollider.center.y += gameplay->ball.velocity.y * gameplay->ball.speed * deltaTime; // Moving down1
-		play(&gameplay->audioManager->wallHit);
-		//play(&gameplay->audioManager.wallHit);
-		
-		//Mix_Volume(-1, 63);
-		//Mix_Volume(-1, ((63 - 8) + (rand() % 8)) * gameplay->appSettings->sfxVolume);
-		//Mix_PlayChannel(-1, gameplay->hit, 0);
+		play(&gameplay->audioManager->wallHit, gameplay->appSettings->sfxVolume);
 	}
 	else if (checkCollision(gameplay->ball.circleCollider, gameplay->bottomWall.rectCollider)) {
 		gameplay->ball.velocity.y = -gameplay->ball.velocity.y;
 		gameplay->ball.circleCollider.center.y += gameplay->ball.velocity.y * gameplay->ball.speed * deltaTime; // Moving down
-		play(&gameplay->audioManager->wallHit);
-		//play(&gameplay->audioManager.wallHit);
-		//Mix_Volume(-1, 63);
-		//Mix_Volume(-1, ((63 - 8) + (rand() % 8)) * gameplay->appSettings->sfxVolume);
-		//Mix_PlayChannel(-1, gameplay->hit, 0);
+		play(&gameplay->audioManager->wallHit, gameplay->appSettings->sfxVolume);
 	}
 
 	// Horizontal Walls
@@ -143,9 +134,7 @@ void update(float deltaTime, inputs* inputs, gameplay* gameplay) {
 			gameplay->ball.circleCollider.center.x += gameplay->ball.velocity.x * gameplay->ball.speed * deltaTime;
 		}
 
-		play(&gameplay->audioManager->paddleHit);
-		//Mix_Volume(-1, ((96 - 8) + (rand() % 8)) * gameplay->appSettings->sfxVolume);
-		//Mix_PlayChannel(-1, gameplay->hit, 0);
+		play(&gameplay->audioManager->paddleHit, gameplay->appSettings->sfxVolume);
 	}
 
 	// Right Paddle
@@ -163,9 +152,7 @@ void update(float deltaTime, inputs* inputs, gameplay* gameplay) {
 			gameplay->ball.circleCollider.center.x += gameplay->ball.velocity.x * gameplay->ball.speed * deltaTime;
 		}
 
-		play(&gameplay->audioManager->paddleHit);
-		//Mix_Volume(-1, ((96 - 8) + (rand() % 8)) * gameplay->appSettings->sfxVolume);
-		//Mix_PlayChannel(-1, gameplay->hit, 0);
+		play(&gameplay->audioManager->paddleHit, gameplay->appSettings->sfxVolume);
 	}
 
 	if (gameplay->leftScore >= gameplay->scoreToWin) {

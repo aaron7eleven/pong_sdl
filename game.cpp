@@ -12,18 +12,25 @@ void init(game* game) {
 	init(&game->gameplay);
 	
 	game->gameplay.audioManager = &game->audioManager;
+	game->mainMenu.audioManager = &game->audioManager;
+	game->optionsMenu.audioManager = &game->audioManager;
+	game->controlsMenu.audioManager = &game->audioManager;
+	game->videoMenu.audioManager = &game->audioManager;
+	game->audioMenu.audioManager = &game->audioManager;
+	game->winMenu.audioManager = &game->audioManager;
 
 	game->gameplay.appSettings = game->appSettings;
+	game->mainMenu.appSettings = game->appSettings;
+	game->optionsMenu.appSettings = game->appSettings;
+	game->controlsMenu.appSettings = game->appSettings;
+	game->videoMenu.appSettings = game->appSettings;
+	game->audioMenu.appSettings = game->appSettings;
+	game->winMenu.appSettings = game->appSettings;
+
 	setText(&game->audioMenu.sfxVolumeValue, std::to_string(game->appSettings->sfxVolume));
 
 	// Might put this in another function later after init and before main loop
-	//std::string windowModeButtonState = game->appSettings->fullscreen ? "Fullscreen" : "Windowed";
-	//setButtonText(&game->videoMenu.windowModeButton, windowModeButtonState);
-
 	setButtonText(&game->videoMenu.windowModeButton, game->appSettings->fullscreenState[game->appSettings->fullscreen]);
-
-	//std::string vSyncButtonState = game->appSettings->vSync ? "Enabled" : "Disabled";
-	//setButtonText(&game->videoMenu.vSyncButton, vSyncButtonState);
 	setButtonText(&game->videoMenu.vSyncButton, game->appSettings->vSyncState[game->appSettings->vSync]);
 };
 

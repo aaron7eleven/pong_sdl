@@ -20,7 +20,6 @@ struct gameplay {
 	bool rightScoreChanged = false;
 
 	audioManager* audioManager = NULL;
-
 	appSettings* appSettings = NULL;
 
 	float paddleWidth = 20; // screenWidth / 64

@@ -6,8 +6,13 @@
 #include "color.h"
 #include "uiNavigation.h"
 #include "inputs.h"
+#include "appSettings.h"
+#include "audioManager.h"
 
 struct winMenu {
+	audioManager* audioManager = NULL;
+	appSettings* appSettings = NULL;
+
 	// Outline
 	// - Title
 	// - Sub Title

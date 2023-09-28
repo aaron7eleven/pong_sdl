@@ -16,15 +16,19 @@ void processInput(inputs* inputs, winMenu* winMenu) {
 		// Dynamic Input -> use if's
 		if (inputs->e.key.keysym.sym == inputs->uiPrimaryMoveUp) {
 			previous(&winMenu->uiNavigation);
+			play(&winMenu->audioManager->uiMove, winMenu->appSettings->sfxVolume);
 		}
 		else if (inputs->e.key.keysym.sym == inputs->uiPrimaryMoveDown) {
 			next(&winMenu->uiNavigation);
+			play(&winMenu->audioManager->uiMove, winMenu->appSettings->sfxVolume);
 		}
 		else if (inputs->e.key.keysym.sym == inputs->uiPrimarySelect) {
 			inputs->uiSelected = true;
+			play(&winMenu->audioManager->uiSelect, winMenu->appSettings->sfxVolume);
 		}
 		else if (inputs->e.key.keysym.sym == inputs->uiPrimaryBack) {
 			inputs->uiBack = true;
+			play(&winMenu->audioManager->uiSelect, winMenu->appSettings->sfxVolume);
 		}
 	}
 }

@@ -4,8 +4,13 @@
 #include "ui.h"
 #include "inputs.h"
 #include "SDL_wrappers.h"
+#include "appSettings.h"
+#include "audioManager.h"
 
 struct mainMenu {
+	audioManager* audioManager = NULL;
+	appSettings* appSettings = NULL;
+
 	//////////////////////////////
 	// Title: Pong
 	//////////////////////////////
