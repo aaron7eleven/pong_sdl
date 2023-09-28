@@ -2,13 +2,16 @@
 #include "game.h"
 
 void init(game* game) {
+	init(&game->audioManager);
 	init(&game->mainMenu);
 	init(&game->optionsMenu);
 	init(&game->controlsMenu);
 	init(&game->videoMenu);
-	init(&game->audioMenu	);
+	init(&game->audioMenu);
 	init(&game->winMenu);
 	init(&game->gameplay);
+	
+	game->gameplay.audioManager = &game->audioManager;
 
 	game->gameplay.appSettings = game->appSettings;
 	setText(&game->audioMenu.sfxVolumeValue, std::to_string(game->appSettings->sfxVolume));
@@ -99,6 +102,8 @@ void update(float deltaTime, inputs* inputs, game* game) {
 	{
 		case gameState::mainMenu: {
 			if (inputs->uiSelected) {
+				Mix_Volume(-1, ((63 - 8) + (rand() % 8)) * game->appSettings->sfxVolume);
+				Mix_PlayChannel(-1, game->uiSelectSfx, 0);
 				if (game->mainMenu.uiNavigation.currentButton->text->text == "Play") {
 					init(&game->gameplay);
 					game->gameState = gameState::gameplay;
@@ -114,6 +119,9 @@ void update(float deltaTime, inputs* inputs, game* game) {
 
 		case gameState::optionsMenu: {
 			if (inputs->uiSelected) {
+				Mix_Volume(-1, ((63 - 8) + (rand() % 8)) * game->appSettings->sfxVolume);
+				Mix_PlayChannel(-1, game->uiSelectSfx, 0);
+
 				if (game->optionsMenu.uiNavigation.currentButton->text->text == "Controls") {
 					game->gameState = gameState::controlsMenu;
 				}
@@ -125,12 +133,17 @@ void update(float deltaTime, inputs* inputs, game* game) {
 				}
 			}
 			else if (inputs->uiBack) {
+				Mix_Volume(-1, ((63 - 8) + (rand() % 8)) * game->appSettings->sfxVolume);
+				Mix_PlayChannel(-1, game->uiSelectSfx, 0);
 				game->gameState = gameState::mainMenu;
 			}
 		} break;
 
 		case gameState::videoMenu: {
 			if (inputs->uiSelected) {
+				Mix_Volume(-1, ((63 - 8) + (rand() % 8)) * game->appSettings->sfxVolume);
+				Mix_PlayChannel(-1, game->uiSelectSfx, 0);
+
 				if (game->videoMenu.uiNavigation.currentButton == &game->videoMenu.vSyncButton) {
 					bool vSync = game->videoMenu.uiNavigation.currentButton->text->text == "Enabled";
 					bool toggledVSync = !vSync;
@@ -147,12 +160,16 @@ void update(float deltaTime, inputs* inputs, game* game) {
 				}
 			}
 			else if (inputs->uiBack) {
+				Mix_Volume(-1, ((63 - 8) + (rand() % 8)) * game->appSettings->sfxVolume);
+				Mix_PlayChannel(-1, game->uiSelectSfx, 0);
 				game->gameState = gameState::optionsMenu;
 			}
 		} break;
 
 		case gameState::audioMenu: {
 			if (inputs->uiSelected) {
+				Mix_Volume(-1, ((63 - 8) + (rand() % 8)) * game->appSettings->sfxVolume);
+				Mix_PlayChannel(-1, game->uiSelectSfx, 0);
 				if (game->audioMenu.uiNavigation.currentButton == &game->audioMenu.sfxVolumeUpButton) {
 					game->appSettings->sfxVolume += 0.05f;
 					if (game->appSettings->sfxVolume > 1.0f) {
@@ -169,6 +186,8 @@ void update(float deltaTime, inputs* inputs, game* game) {
 				}
 			}
 			else if (inputs->uiBack) {
+				Mix_Volume(-1, ((63 - 8) + (rand() % 8)) * game->appSettings->sfxVolume);
+				Mix_PlayChannel(-1, game->uiSelectSfx, 0);
 				game->gameState = gameState::optionsMenu;
 			}
 		} break;
@@ -178,6 +197,9 @@ void update(float deltaTime, inputs* inputs, game* game) {
 			update(deltaTime, inputs, &game->controlsMenu);
 			if (game->controlsMenu.listening) {
 				if (game->controlsMenu.heard) {
+					Mix_Volume(-1, ((63 - 8) + (rand() % 8)) * game->appSettings->sfxVolume);
+					Mix_PlayChannel(-1, game->uiSelectSfx, 0);
+
 					*game->controlsMenu.listeningKeyCodeToChange = game->controlsMenu.listeningKeyCode;
 					game->controlsMenu.listening = false;
 					game->controlsMenu.heard = false;
@@ -186,6 +208,8 @@ void update(float deltaTime, inputs* inputs, game* game) {
 				}
 			}
 			else if (inputs->uiSelected) {
+				Mix_Volume(-1, ((63 - 8) + (rand() % 8))* game->appSettings->sfxVolume);
+				Mix_PlayChannel(-1, game->uiSelectSfx, 0);
 
 				if (!game->controlsMenu.listening) {
 					game->controlsMenu.listening = true;
@@ -214,6 +238,8 @@ void update(float deltaTime, inputs* inputs, game* game) {
 				}				
 			}
 			else if (inputs->uiBack) {
+				Mix_Volume(-1, ((63 - 8) + (rand() % 8)) * game->appSettings->sfxVolume);
+				Mix_PlayChannel(-1, game->uiSelectSfx, 0);
 				game->gameState = gameState::optionsMenu;
 			}
 		} break;
@@ -235,6 +261,8 @@ void update(float deltaTime, inputs* inputs, game* game) {
 
 		case gameState::winMenu: {
 			if (inputs->uiSelected) {
+				Mix_Volume(-1, ((63 - 8) + (rand() % 8))* game->appSettings->sfxVolume);
+				Mix_PlayChannel(-1, game->uiSelectSfx, 0);
 				if (game->winMenu.uiNavigation.currentButton->text->text == "Play Again") {
 					init(&game->gameplay);
 					game->gameState = gameState::gameplay;
@@ -247,6 +275,8 @@ void update(float deltaTime, inputs* inputs, game* game) {
 				}
 			}
 			else if (inputs->uiBack) {
+				Mix_Volume(-1, ((63 - 8) + (rand() % 8))* game->appSettings->sfxVolume);
+				Mix_PlayChannel(-1, game->uiSelectSfx, 0);
 				game->gameState = gameState::mainMenu;
 			}
 		} break;

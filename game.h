@@ -11,6 +11,7 @@
 #include "audioMenu.h"
 #include "winMenu.h"
 #include "gameplay.h"
+#include "audioManager.h"
 
 struct game {
 	//app* app;
@@ -26,6 +27,10 @@ struct game {
 	audioMenu audioMenu;
 	winMenu winMenu;
 	gameplay gameplay;
+	audioManager audioManager;
+
+	Mix_Chunk* uiMoveSfx = NULL;
+	Mix_Chunk* uiSelectSfx = NULL;
 	
 };
 

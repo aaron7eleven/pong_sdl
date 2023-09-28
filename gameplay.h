@@ -9,6 +9,7 @@
 #include "ball.h"
 #include "ui.h"
 #include "appSettings.h"
+#include "audioManager.h"
 
 struct gameplay {
 	bool win = false;
@@ -17,6 +18,8 @@ struct gameplay {
 	bool leftScoreChanged = false;
 	int rightScore = 0;
 	bool rightScoreChanged = false;
+
+	audioManager* audioManager = NULL;
 
 	appSettings* appSettings = NULL;
 
@@ -186,8 +189,6 @@ struct gameplay {
 		NULL,
 		false
 	};
-
-	Mix_Chunk* hit = NULL;
 };
 
 void init(gameplay* gameplay);

@@ -93,6 +93,7 @@
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>C:\SDL\include;C:\SDL_image\include;C:\SDL_ttf\include;C:\SDL_mixer\include</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -150,6 +151,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="app.cpp" />
+    <ClCompile Include="audioManager.cpp" />
     <ClCompile Include="audioMenu.cpp" />
     <ClCompile Include="ball.cpp" />
     <ClCompile Include="collisions.cpp" />
@@ -164,6 +166,7 @@
     <ClCompile Include="paddle.cpp" />
     <ClCompile Include="paddleController.cpp" />
     <ClCompile Include="SDL_wrappers.cpp" />
+    <ClCompile Include="sfx.cpp" />
     <ClCompile Include="uiButton.cpp" />
     <ClCompile Include="uiNavigation.cpp" />
     <ClCompile Include="uiText.cpp" />
@@ -176,6 +179,7 @@
     <ClInclude Include="appSettings.h" />
     <ClInclude Include="audioButton.h" />
     <ClInclude Include="audioButtonText.h" />
+    <ClInclude Include="audioManager.h" />
     <ClInclude Include="audioMenu.h" />
     <ClInclude Include="controlsMenu.h" />
     <ClInclude Include="fpsCounter.h" />
@@ -193,6 +197,7 @@
     <ClInclude Include="optionsMenu.h" />
     <ClInclude Include="playButton.h" />
     <ClInclude Include="playButtonText.h" />
+    <ClInclude Include="sfx.h" />
     <ClInclude Include="title.h" />
     <ClInclude Include="math.h" />
     <ClInclude Include="paddle.h" />

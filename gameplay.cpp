@@ -1,7 +1,8 @@
 #pragma once
+#include "SDL_mixer.h"
 #include "gameplay.h"
 #include "collisions.h"
-#include "SDL_mixer.h"
+#include "sfx.h"
 
 void init(gameplay* gameplay) {
 	init(&gameplay->leftPaddle);
@@ -23,22 +24,11 @@ void init(gameplay* gameplay) {
 
 	gameplay->rightPaddle.rectCollider.x = gameplay->rightPaddleInitX;
 	gameplay->rightPaddle.rectCollider.y = gameplay->rightPaddleInitY;
-
-	//Load sound effects
-	gameplay->hit = Mix_LoadWAV("assets/sfx/269718__michorvath__ping-pong-ball-hit.wav");
-	if (gameplay->hit == NULL)
-	{
-		printf("Failed to load hit sound effect! SDL_mixer Error: %s\n", Mix_GetError());
-	}
 }
 
 void processInput(inputs* inputs, gameplay* gameplay) {
 	processInput(inputs, &gameplay->leftPaddle);
 	processInput(inputs, &gameplay->rightPaddle);
-	//render(renderer, &gameplay->leftWall);
-	//render(renderer, &gameplay->rightWall);
-	//render(renderer, &gameplay->topWall);
-	//render(renderer, &gameplay->bottomWall);
 }
 
 void preUpdate(gameplay* gameplay) {
@@ -80,16 +70,21 @@ void update(float deltaTime, inputs* inputs, gameplay* gameplay) {
 	if (checkCollision(gameplay->ball.circleCollider, gameplay->topWall.rectCollider)) {
 		gameplay->ball.velocity.y = -gameplay->ball.velocity.y;
 		gameplay->ball.circleCollider.center.y += gameplay->ball.velocity.y * gameplay->ball.speed * deltaTime; // Moving down1
+		play(&gameplay->audioManager->wallHit);
+		//play(&gameplay->audioManager.wallHit);
+		
 		//Mix_Volume(-1, 63);
-		Mix_Volume(-1, ((63 - 8) + (rand() % 8)) * gameplay->appSettings->sfxVolume);
-		Mix_PlayChannel(-1, gameplay->hit, 0);
+		//Mix_Volume(-1, ((63 - 8) + (rand() % 8)) * gameplay->appSettings->sfxVolume);
+		//Mix_PlayChannel(-1, gameplay->hit, 0);
 	}
 	else if (checkCollision(gameplay->ball.circleCollider, gameplay->bottomWall.rectCollider)) {
 		gameplay->ball.velocity.y = -gameplay->ball.velocity.y;
 		gameplay->ball.circleCollider.center.y += gameplay->ball.velocity.y * gameplay->ball.speed * deltaTime; // Moving down
+		play(&gameplay->audioManager->wallHit);
+		//play(&gameplay->audioManager.wallHit);
 		//Mix_Volume(-1, 63);
-		Mix_Volume(-1, ((63 - 8) + (rand() % 8)) * gameplay->appSettings->sfxVolume);
-		Mix_PlayChannel(-1, gameplay->hit, 0);
+		//Mix_Volume(-1, ((63 - 8) + (rand() % 8)) * gameplay->appSettings->sfxVolume);
+		//Mix_PlayChannel(-1, gameplay->hit, 0);
 	}
 
 	// Horizontal Walls
@@ -147,8 +142,10 @@ void update(float deltaTime, inputs* inputs, gameplay* gameplay) {
 			gameplay->ball.velocity.x = -gameplay->ball.velocity.x;
 			gameplay->ball.circleCollider.center.x += gameplay->ball.velocity.x * gameplay->ball.speed * deltaTime;
 		}
-		Mix_Volume(-1, ((96 - 8) + (rand() % 8)) * gameplay->appSettings->sfxVolume);
-		Mix_PlayChannel(-1, gameplay->hit, 0);
+
+		play(&gameplay->audioManager->paddleHit);
+		//Mix_Volume(-1, ((96 - 8) + (rand() % 8)) * gameplay->appSettings->sfxVolume);
+		//Mix_PlayChannel(-1, gameplay->hit, 0);
 	}
 
 	// Right Paddle
@@ -166,8 +163,9 @@ void update(float deltaTime, inputs* inputs, gameplay* gameplay) {
 			gameplay->ball.circleCollider.center.x += gameplay->ball.velocity.x * gameplay->ball.speed * deltaTime;
 		}
 
-		Mix_Volume(-1, ((96 - 8) + (rand() % 8)) * gameplay->appSettings->sfxVolume);
-		Mix_PlayChannel(-1, gameplay->hit, 0);
+		play(&gameplay->audioManager->paddleHit);
+		//Mix_Volume(-1, ((96 - 8) + (rand() % 8)) * gameplay->appSettings->sfxVolume);
+		//Mix_PlayChannel(-1, gameplay->hit, 0);
 	}
 
 	if (gameplay->leftScore >= gameplay->scoreToWin) {
