@@ -58,7 +58,7 @@ struct audioMenu {
 	//////////////////////////////
 	// Button 1: SFX Volume Up
 	//////////////////////////////
-	float sfxVolumeUpButtonTextWidth = 90;
+	float sfxVolumeUpButtonTextWidth = 15;
 	float sfxVolumeUpButtonTextHeight = 30;
 	float sfxVolumeUpButtonTextX = 720 - sfxVolumeUpButtonTextWidth / 2;
 	float sfxVolumeUpButtonTextY = 240;
@@ -70,7 +70,7 @@ struct audioMenu {
 	};
 
 	uiText sfxVolumeUpButtonText = {
-		"Up",
+		"+",
 		NULL,
 		"assets/font/DotGothic16-Regular.ttf",
 		100,
@@ -107,7 +107,7 @@ struct audioMenu {
 	//////////////////////////////
 	// Button 2: SFX Volume Down
 	//////////////////////////////
-	float sfxVolumeDownButtonTextWidth = 90;
+	float sfxVolumeDownButtonTextWidth = 15;
 	float sfxVolumeDownButtonTextHeight = 30;
 	float sfxVolumeDownButtonTextX = 720 - sfxVolumeDownButtonTextWidth / 2;
 	float sfxVolumeDownButtonTextY = 270;
@@ -119,7 +119,7 @@ struct audioMenu {
 	};
 
 	uiText sfxVolumeDownButtonText = {
-		"Down",
+		"-",
 		NULL,
 		"assets/font/DotGothic16-Regular.ttf",
 		100,
