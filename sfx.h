@@ -10,7 +10,5 @@ struct sfx {
 };
 
 void init(sfx* sfx);
-void play(sfx* sfx);
-void play(sfx* sfx, float appVolume);
+void play(Mix_Chunk* sfx, int volume);
 void play(Mix_Chunk* sfx, int volume, int randomness);
-void play(Mix_Chunk* sfx, int volume, int randomness, float appVolume);

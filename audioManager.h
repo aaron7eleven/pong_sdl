@@ -5,6 +5,8 @@
 
 struct audioManager {
 
+	float* appVolume = NULL;
+	
 	sfx wallHit = {
 		//.path = "assets/sfx/269718__michorvath__ping-pong-ball-hit.wav",
 		.path = "assets/sfx/66877__mikemunkie__bleep1.wav",
@@ -22,8 +24,8 @@ struct audioManager {
 	sfx uiMove = {
 		//.path = "assets/sfx/66877__mikemunkie__bleep1.wav",
 		.path = "assets/sfx/396406__goncalo95__ping-pong-low.wav",		
-		.volume = 96,
-		.randomness = 8,
+		.volume = 112,
+		.randomness = 16,
 	};
 
 	sfx uiSelect = {
@@ -42,3 +44,4 @@ struct audioManager {
 };
 
 void init(audioManager* audioManager);
+void play(audioManager* audioManager, sfx* sfx);

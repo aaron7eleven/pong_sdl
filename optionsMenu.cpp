@@ -15,19 +15,19 @@ void processInput(inputs* inputs, optionsMenu* optionsMenu) {
 		// Dynamic Input -> use if's
 		if (inputs->e.key.keysym.sym == inputs->uiPrimaryMoveUp) {
 			previous(&optionsMenu->uiNavigation);
-			play(&optionsMenu->audioManager->uiMove, optionsMenu->appSettings->sfxVolume);
+			play(optionsMenu->audioManager, &optionsMenu->audioManager->uiMove);
 		}
 		else if (inputs->e.key.keysym.sym == inputs->uiPrimaryMoveDown) {
 			next(&optionsMenu->uiNavigation);
-			play(&optionsMenu->audioManager->uiMove, optionsMenu->appSettings->sfxVolume);
+			play(optionsMenu->audioManager, &optionsMenu->audioManager->uiMove);
 		}
 		else if (inputs->e.key.keysym.sym == inputs->uiPrimarySelect) {
 			inputs->uiSelected = true;
-			play(&optionsMenu->audioManager->uiSelect, optionsMenu->appSettings->sfxVolume);
+			play(optionsMenu->audioManager, &optionsMenu->audioManager->uiSelect);
 		}
 		else if (inputs->e.key.keysym.sym == inputs->uiPrimaryBack) {
 			inputs->uiBack = true;
-			play(&optionsMenu->audioManager->uiSelect, optionsMenu->appSettings->sfxVolume);
+			play(optionsMenu->audioManager, &optionsMenu->audioManager->uiSelect);
 		}
 	}
 }

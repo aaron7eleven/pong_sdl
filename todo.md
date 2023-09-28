@@ -7,6 +7,8 @@ Refactor into Entity and Components (basis for EC engine)
 Save/Load App Settings
 Save/Load Input Settings
 Render vertical walls with texture
+sfx on goal
+proper freeing of resources
 
 ## List of everything
 ### Gameplay Features
@@ -22,7 +24,7 @@ Proper ball paddle collision: Ball launch angle and speed affected by where hit 
 
 #### Audio
 Main Volume
-Sound FX Volume
+(Done)Sound FX Volume
 Music Volume
 
 #### Controls
@@ -39,7 +41,11 @@ Sensetivity
 - Right
 - Left
 
-
+##### Gameplay
+- Left Paddle
+  - Up/Down
+- Right Paddle
+  - Up/Down
 
 #### Gameplay Customization
 ##### Paddle
@@ -80,6 +86,7 @@ image/texture
 
 
 #Done
+sfx with UI and gameplay
 Win conditions in game
 Win Menu
 Menu Navigation

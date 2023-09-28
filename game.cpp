@@ -11,6 +11,8 @@ void init(game* game) {
 	init(&game->winMenu);
 	init(&game->gameplay);
 	
+	game->audioManager.appVolume = &game->appSettings->sfxVolume;
+
 	game->gameplay.audioManager = &game->audioManager;
 	game->mainMenu.audioManager = &game->audioManager;
 	game->optionsMenu.audioManager = &game->audioManager;
@@ -19,13 +21,13 @@ void init(game* game) {
 	game->audioMenu.audioManager = &game->audioManager;
 	game->winMenu.audioManager = &game->audioManager;
 
-	game->gameplay.appSettings = game->appSettings;
-	game->mainMenu.appSettings = game->appSettings;
-	game->optionsMenu.appSettings = game->appSettings;
-	game->controlsMenu.appSettings = game->appSettings;
-	game->videoMenu.appSettings = game->appSettings;
-	game->audioMenu.appSettings = game->appSettings;
-	game->winMenu.appSettings = game->appSettings;
+	//game->gameplay.appSettings = game->appSettings;
+	//game->mainMenu.appSettings = game->appSettings;
+	//game->optionsMenu.appSettings = game->appSettings;
+	//game->controlsMenu.appSettings = game->appSettings;
+	//game->videoMenu.appSettings = game->appSettings;
+	//game->audioMenu.appSettings = game->appSettings;
+	//game->winMenu.appSettings = game->appSettings;
 
 	setText(&game->audioMenu.sfxVolumeValue, std::to_string(game->appSettings->sfxVolume));
 

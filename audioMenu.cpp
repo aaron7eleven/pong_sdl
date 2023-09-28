@@ -15,21 +15,22 @@ void init(audioMenu* audioMenu) {
 
 void processInput(inputs* inputs, audioMenu* audioMenu) {
 	if (inputs->e.type == SDL_KEYDOWN) {
+		// Dynamic Input -> use if's
 		if (inputs->e.key.keysym.sym == inputs->uiPrimaryMoveUp) {
 			previous(&audioMenu->uiNavigation);
-			play(&audioMenu->audioManager->uiMove, audioMenu->appSettings->sfxVolume);
+			play(audioMenu->audioManager, &audioMenu->audioManager->uiMove);
 		}
 		else if (inputs->e.key.keysym.sym == inputs->uiPrimaryMoveDown) {
 			next(&audioMenu->uiNavigation);
-			play(&audioMenu->audioManager->uiMove, audioMenu->appSettings->sfxVolume);
+			play(audioMenu->audioManager, &audioMenu->audioManager->uiMove);
 		}
 		else if (inputs->e.key.keysym.sym == inputs->uiPrimarySelect) {
 			inputs->uiSelected = true;
-			play(&audioMenu->audioManager->uiSelect, audioMenu->appSettings->sfxVolume);
+			play(audioMenu->audioManager, &audioMenu->audioManager->uiSelect);
 		}
 		else if (inputs->e.key.keysym.sym == inputs->uiPrimaryBack) {
 			inputs->uiBack = true;
-			play(&audioMenu->audioManager->uiSelect, audioMenu->appSettings->sfxVolume);
+			play(audioMenu->audioManager, &audioMenu->audioManager->uiSelect);
 		}
 	}
 }

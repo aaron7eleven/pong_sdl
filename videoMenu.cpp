@@ -15,21 +15,22 @@ void init(videoMenu* videoMenu) {
 
 void processInput(inputs* inputs, videoMenu* videoMenu) {
 	if (inputs->e.type == SDL_KEYDOWN) {
+		// Dynamic Input -> use if's
 		if (inputs->e.key.keysym.sym == inputs->uiPrimaryMoveUp) {
 			previous(&videoMenu->uiNavigation);
-			play(&videoMenu->audioManager->uiMove, videoMenu->appSettings->sfxVolume);
+			play(videoMenu->audioManager, &videoMenu->audioManager->uiMove);
 		}
 		else if (inputs->e.key.keysym.sym == inputs->uiPrimaryMoveDown) {
 			next(&videoMenu->uiNavigation);
-			play(&videoMenu->audioManager->uiMove, videoMenu->appSettings->sfxVolume);
+			play(videoMenu->audioManager, &videoMenu->audioManager->uiMove);
 		}
 		else if (inputs->e.key.keysym.sym == inputs->uiPrimarySelect) {
 			inputs->uiSelected = true;
-			play(&videoMenu->audioManager->uiSelect, videoMenu->appSettings->sfxVolume);
+			play(videoMenu->audioManager, &videoMenu->audioManager->uiSelect);
 		}
 		else if (inputs->e.key.keysym.sym == inputs->uiPrimaryBack) {
 			inputs->uiBack = true;
-			play(&videoMenu->audioManager->uiSelect, videoMenu->appSettings->sfxVolume);
+			play(videoMenu->audioManager, &videoMenu->audioManager->uiSelect);
 		}
 	}
 }

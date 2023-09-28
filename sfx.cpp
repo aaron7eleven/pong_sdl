@@ -13,20 +13,28 @@ void init(sfx* sfx) {
 	}
 }
 
-void play(sfx* sfx, float appVolume) {
-	play(sfx->clip, sfx->volume, sfx->randomness, appVolume);
-}
+void play(Mix_Chunk* sfx, int volume) {
+	if (volume > 128) {
+		volume = 128;
+	}
+	else if (volume < 0) {
+		volume = 0;
+	}
 
-void play(sfx* sfx) {
-	play(sfx->clip, sfx->volume, sfx->randomness);
+	Mix_Volume(-1, volume);
+	Mix_PlayChannel(-1, sfx, 0);
 }
 
 void play(Mix_Chunk* sfx, int volume, int randomness) {
+	if (volume > 128) {
+		volume = 128;
+	}
+	else if (volume < 0) {
+		volume = 0;
+	}
+
 	Mix_Volume(-1, (volume - randomness) + (rand() % randomness));
 	Mix_PlayChannel(-1, sfx, 0);
 }
 
-void play(Mix_Chunk* sfx, int volume, int randomness, float appVolume) {
-	Mix_Volume(-1, ((volume - randomness) + (rand() % randomness)) * appVolume);
-	Mix_PlayChannel(-1, sfx, 0);
-}
+

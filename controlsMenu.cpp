@@ -28,23 +28,23 @@ void processInput(inputs* inputs, controlsMenu* controlsMenu) {
 			
 			controlsMenu->listeningKeyCode = inputs->e.key.keysym.sym;
 			controlsMenu->heard = true;
-			play(&controlsMenu->audioManager->uiMove, controlsMenu->appSettings->sfxVolume);
+			play(controlsMenu->audioManager, &controlsMenu->audioManager->uiMove);
 		}
 		else if (inputs->e.key.keysym.sym == inputs->uiPrimaryMoveUp) {
 			previous(&controlsMenu->uiNavigation);
-			play(&controlsMenu->audioManager->uiMove, controlsMenu->appSettings->sfxVolume);
+			play(controlsMenu->audioManager, &controlsMenu->audioManager->uiMove);
 		}
 		else if (inputs->e.key.keysym.sym == inputs->uiPrimaryMoveDown) {
 			next(&controlsMenu->uiNavigation);
-			play(&controlsMenu->audioManager->uiMove, controlsMenu->appSettings->sfxVolume);
+			play(controlsMenu->audioManager, &controlsMenu->audioManager->uiMove);
 		}
 		else if (inputs->e.key.keysym.sym == inputs->uiPrimarySelect) {
 			inputs->uiSelected = true;
-			play(&controlsMenu->audioManager->uiSelect, controlsMenu->appSettings->sfxVolume);
+			play(controlsMenu->audioManager, &controlsMenu->audioManager->uiSelect);
 		}
 		else if (inputs->e.key.keysym.sym == inputs->uiPrimaryBack) {
 			inputs->uiBack = true;
-			play(&controlsMenu->audioManager->uiSelect, controlsMenu->appSettings->sfxVolume);
+			play(controlsMenu->audioManager, &controlsMenu->audioManager->uiSelect);
 		}
 	}
 }
