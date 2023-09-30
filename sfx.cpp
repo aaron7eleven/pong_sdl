@@ -36,6 +36,7 @@ int volumeCheck(int volume) {
 int free(sfx* sfx) {
 	Mix_FreeChunk(sfx->clip);
 	sfx->clip = NULL;
+
 	return 0;
 }
 
