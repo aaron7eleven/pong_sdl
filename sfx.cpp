@@ -14,8 +14,8 @@ void init(sfx* sfx) {
 }
 
 void play(Mix_Chunk* sfx, int volume) {
-	if (volume > 128) {
-		volume = 128;
+	if (volume > MIX_MAX_VOLUME) {
+		volume = MIX_MAX_VOLUME;
 	}
 	else if (volume < 0) {
 		volume = 0;
