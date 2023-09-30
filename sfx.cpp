@@ -14,27 +14,27 @@ void init(sfx* sfx) {
 }
 
 void play(Mix_Chunk* sfx, int volume) {
+	Mix_Volume(-1, volumeCheck(volume));
+	Mix_PlayChannel(-1, sfx, 0);
+}
+
+void play(Mix_Chunk* sfx, int volume, int randomness) {
+	Mix_Volume(-1, (volumeCheck(volume) - randomness) + (rand() % randomness));
+	Mix_PlayChannel(-1, sfx, 0);
+}
+
+int volumeCheck(int volume) {
 	if (volume > MIX_MAX_VOLUME) {
 		volume = MIX_MAX_VOLUME;
 	}
 	else if (volume < 0) {
 		volume = 0;
 	}
-
-	Mix_Volume(-1, volume);
-	Mix_PlayChannel(-1, sfx, 0);
+	return volume;
 }
 
-void play(Mix_Chunk* sfx, int volume, int randomness) {
-	if (volume > 128) {
-		volume = 128;
-	}
-	else if (volume < 0) {
-		volume = 0;
-	}
-
-	Mix_Volume(-1, (volume - randomness) + (rand() % randomness));
-	Mix_PlayChannel(-1, sfx, 0);
+int free(sfx* sfx) {
+	Mix_FreeChunk(sfx->clip);
+	return 0;
 }
-
 

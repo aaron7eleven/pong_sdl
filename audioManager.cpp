@@ -19,11 +19,14 @@ void play(audioManager* audioManager, sfx* sfx) {
 
 void free(audioManager* audioManager) {
 
-	while (Mix_Playing(-1)) {
-		// do nothing until audio finishes
-	}
+	//while (Mix_Playing(-1)) {
+	//	// do nothing until audio finishes
+	//}
+
+	//std::cout << "Finished playing sfx and freeing audio manager" << std::endl;
 
 	for (int i = 0; i < audioManager->sfxsLength; i++) {
-		Mix_FreeChunk(audioManager->sfxs[i]->clip);
+		free(audioManager->sfxs[i]);
+		//Mix_FreeChunk(audioManager->sfxs[i]->clip);
 	}
 }

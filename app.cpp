@@ -23,13 +23,14 @@ int appMain(int argc, char* argv[]) {
 		}
 
 		run(&app);
-
 		free(&app);
 
 		if (app.restart) {
 			app.quit = false;
 		}
-	}	
+	}
+
+	
 	return 0;
 }
 
@@ -116,6 +117,7 @@ int free(app* app) {
 	app->window = NULL;
 
 	//Quit SDL subsystems
+	Mix_Quit()
 	TTF_Quit();
 	IMG_Quit();
 	SDL_Quit();
