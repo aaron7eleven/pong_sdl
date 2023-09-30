@@ -21,14 +21,6 @@ void init(game* game) {
 	game->audioMenu.audioManager = &game->audioManager;
 	game->winMenu.audioManager = &game->audioManager;
 
-	//game->gameplay.appSettings = game->appSettings;
-	//game->mainMenu.appSettings = game->appSettings;
-	//game->optionsMenu.appSettings = game->appSettings;
-	//game->controlsMenu.appSettings = game->appSettings;
-	//game->videoMenu.appSettings = game->appSettings;
-	//game->audioMenu.appSettings = game->appSettings;
-	//game->winMenu.appSettings = game->appSettings;
-
 	setText(&game->audioMenu.sfxVolumeValue, std::to_string(game->appSettings->sfxVolume));
 
 	// Might put this in another function later after init and before main loop
@@ -330,4 +322,9 @@ void render(SDL_Renderer* renderer, game* game) {
 	default:
 		break;
 	}
+}
+
+int free(game* game) {
+	free(&game->audioManager);
+	return 0;
 }

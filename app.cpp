@@ -104,6 +104,8 @@ int init(app* app) {
 }
 
 int free(app* app) {
+	free(app->game);
+
 	SDL_FreeSurface(app->windowSurface);
 	app->windowSurface = NULL;
 
@@ -166,137 +168,6 @@ void preUpdate(app* app) {
 	preUpdate(app->game);
 }
 
-void updateGame(app* app) {
-	// update left paddle
-	//update(app, &app->leftPaddle);
-	// update right paddle
-	//update(app, &app->rightPaddle);
-	// update ball
-	//update(app, &app->ball);
-
-//	/////////////////////////
-//// Paddles Collision
-///////////////////////////
-//
-//// Left
-//	if (checkCollision(leftPaddle.rectCollider, bottomWall.rectCollider)) {
-//		// Undo Move
-//		leftPaddle.rectCollider.y -= leftPaddle.velocity * leftPaddle.speed * deltaTime;
-//	}
-//
-//	if (checkCollision(leftPaddle.rectCollider, topWall.rectCollider)) {
-//		// Undo Move
-//		leftPaddle.rectCollider.y -= leftPaddle.velocity * leftPaddle.speed * deltaTime;
-//	}
-//
-//	// Right
-//	if (checkCollision(rightPaddle.rectCollider, bottomWall.rectCollider)) {
-//		// Undo Move
-//		rightPaddle.rectCollider.y -= rightPaddle.velocity * rightPaddle.speed * deltaTime;
-//	}
-//
-//	if (checkCollision(rightPaddle.rectCollider, topWall.rectCollider)) {
-//		// Undo Move
-//		rightPaddle.rectCollider.y -= rightPaddle.velocity * rightPaddle.speed * deltaTime;
-//	}
-
-	///////////////////////////
-	//// Ball Collision
-	///////////////////////////
-
-	//// Vertical Walls
-	//if (checkCollision(ball.circleCollider, topWall.rectCollider)) {
-	//	ball.velocity.y = -ball.velocity.y;
-	//	ball.circleCollider.center.y += ball.velocity.y * ball.speed * deltaTime; // Moving down
-	//}
-	//else if (checkCollision(ball.circleCollider, bottomWall.rectCollider)) {
-	//	ball.velocity.y = -ball.velocity.y;
-	//	ball.circleCollider.center.y += ball.velocity.y * ball.speed * deltaTime; // Moving down
-	//}
-
-	//// Horizontal Walls
-	//if (checkCollision(ball.circleCollider, leftWall.rectCollider)) {
-	//	ball.velocity.x = -ball.velocity.x;
-	//	ball.circleCollider.center.x += ball.velocity.x * ball.speed * deltaTime; // Moving down
-
-	//	// Resetting ball
-	//	ball.circleCollider.center = app.ballInitTransform;
-
-	//	if (rand() % 2) {
-	//		ball.velocity.x = -ball.velocity.x;
-	//	}
-
-	//	if (rand() % 2) {
-	//		ball.velocity.y = -ball.velocity.y;
-	//	}
-
-	//	resettingBall = true;
-	//	//rightScore++;
-	//	//rightScoreChanged = true;
-	//}
-	//else if (checkCollision(ball.circleCollider, rightWall.rectCollider)) {
-	//	ball.velocity.x = -ball.velocity.x;
-	//	ball.circleCollider.center.x += ball.velocity.x * ball.speed * deltaTime; // Moving down
-
-	//	// Resetting ball
-	//	ball.circleCollider.center = app.ballInitTransform;
-
-	//	if (rand() % 2) {
-	//		ball.velocity.x = -ball.velocity.x;
-	//	}
-
-	//	if (rand() % 2) {
-	//		ball.velocity.y = -ball.velocity.y;
-	//	}
-
-	//	resettingBall = true;
-	//	//leftScore++;
-	//	//leftScoreChanged = true;
-	//}
-
-
-	//// Left Paddles
-	//if (checkCollision(ball.circleCollider, leftPaddle.rectCollider)) {
-	//	bool ballAbovePaddle = ball.circleCollider.center.y <= leftPaddle.rectCollider.y;
-	//	bool ballBelowPaddle = ball.circleCollider.center.y >= leftPaddle.rectCollider.y + leftPaddle.height;
-
-	//	// Check ball hit vertical ends of paddle
-	//	if (ballAbovePaddle || ballBelowPaddle) {
-	//		ball.velocity.y = -ball.velocity.y;
-	//	}
-	//	else {
-	//		ball.velocity.x = -ball.velocity.x;
-	//		ball.circleCollider.center.x += ball.velocity.x * ball.speed * deltaTime;
-	//	}
-	//}
-
-	//// Right Paddle
-	//if (checkCollision(ball.circleCollider, rightPaddle.rectCollider)) {
-	//	bool ballAbovePaddle = ball.circleCollider.center.y <= rightPaddle.rectCollider.y;
-	//	bool ballBelowPaddle = ball.circleCollider.center.y >= rightPaddle.rectCollider.y + rightPaddle.height;
-
-	//	// Check ball hit vertical ends of paddle
-	//	if (ballAbovePaddle || ballBelowPaddle) {
-	//		ball.velocity.y = -ball.velocity.y;
-	//	}
-	//	else {
-	//		ball.velocity.x = -ball.velocity.x;
-	//		ball.circleCollider.center.x += ball.velocity.x * ball.speed * deltaTime;
-	//	}
-	//}
-
-	//if (leftScoreChanged) {
-	//	// Update texture
-	//	leftTextTexture = LoadTextTexture(renderer, font, std::to_string(leftScore), textColor);
-	//	leftScoreChanged = false;
-	//}
-
-	//if (rightScoreChanged) {
-	//	// Update texture
-	//	rightTextTexture = LoadTextTexture(renderer, font, std::to_string(rightScore), textColor);
-	//	rightScoreChanged = false;
-	//}
-}
 
 
 void update(app* app) {

@@ -45,3 +45,4 @@ struct audioManager {
 
 void init(audioManager* audioManager);
 void play(audioManager* audioManager, sfx* sfx);
+void free(audioManager* audioManager);
