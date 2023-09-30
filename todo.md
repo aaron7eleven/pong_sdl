@@ -10,10 +10,15 @@ Render vertical walls with texture
 sfx on goal
 proper freeing of resources
 
-## List of everything
-### Gameplay Features
-Proper ball paddle collision: Ball launch angle and speed affected by where hit on paddle
+## Bugs & Known issues
+Ball moving inside of paddle
+    Something wrong with ball/paddle collision
+Lose audio when changing video settings
 
+## List of everything
+### Gameplay 
+Proper ball paddle collision: Ball launch angle and speed affected by where hit on paddle
+Ball Launch Angle Detection: Make sure it doesn't exceed a maximum
 
 ### Menu Options
 #### Video
@@ -85,7 +90,7 @@ Size
 image/texture
 
 
-#Done
+# Done
 sfx with UI and gameplay
 Win conditions in game
 Win Menu

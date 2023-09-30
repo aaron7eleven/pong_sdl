@@ -84,10 +84,10 @@ int init(app* app) {
 	//	return 1;
 	//}
 	int mixerFlags = MIX_INIT_MP3 | MIX_INIT_OGG;
-	if (!Mix_Init(mixerFlags)) {
-		printf("SDL_mixer could not initialize! SDL_mixer Error: %s\n", Mix_GetError());
-		return 1;
-	}
+	//if (!Mix_Init(mixerFlags)) {
+	//	printf("SDL_mixer could not initialize! SDL_mixer Error: %s\n", Mix_GetError());
+	//	return 1;
+	//}
 
 	 //Initialize SDL_mixer
 	if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0)
@@ -117,7 +117,7 @@ int free(app* app) {
 	app->window = NULL;
 
 	//Quit SDL subsystems
-	Mix_Quit()
+	Mix_Quit();
 	TTF_Quit();
 	IMG_Quit();
 	SDL_Quit();
