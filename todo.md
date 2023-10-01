@@ -9,6 +9,8 @@ Save/Load Input Settings
 Render vertical walls with texture
 sfx on goal
 proper freeing of resources
+buildable release from git
+distributable build to play
 
 ## Bugs & Known issues
 Ball moving inside of paddle
