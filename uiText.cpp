@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include "uiText.h"
 #include "SDL_wrappers.h"
-#include "color.h"
+
 
 void init(uiText* uiText) {
 	loadFont(uiText);

@@ -7,7 +7,7 @@
 
 struct uiText {
 	//int id = 0;
-	std::string text = "Text";
+	std::string text = "";
 	TTF_Font* font = NULL;
 	std::string fontFilePath = "";
 	int fontPointSize = 24;

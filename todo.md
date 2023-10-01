@@ -3,7 +3,6 @@
 ## Must do's
 sfx on goal
 proper freeing of resources
-    Fix issue with audio and video settings?
 buildable release from git
 distributable build to play
 
@@ -11,7 +10,6 @@ distributable build to play
 Ball moving inside of paddle
     Something wrong with ball/paddle collision
         Handle ball moving into paddle but not paddle into ball
-Lose audio when changing video settings
 
 ## List of everything
 ### Gameplay 
@@ -104,3 +102,5 @@ Refactor into sub components to reuse (basis for engine)
 Refactor into Entity and Components (basis for EC engine)
 Save/Load App Settings
 Save/Load Input Settings
+Lose audio when changing video settings
+    Can't reload SDL_Init() twice

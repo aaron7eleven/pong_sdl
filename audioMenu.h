@@ -1,6 +1,6 @@
 ﻿#pragma once
 #include <SDL.h>
-#include "color.h"
+#include "SDL_wrappers.h"
 #include "uiNavigation.h"
 #include "inputs.h"
 #include "appSettings.h"

@@ -12,7 +12,7 @@
 #include "app.h"
 
 #include "collisions.h"
-#include "color.h"
+#include "SDL_wrappers.h"
 #include "primitives.h"
 #include "ui.h"
 #include "vectors.h"

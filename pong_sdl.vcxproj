@@ -197,7 +197,6 @@
     <ClInclude Include="ball.h" />
     <ClInclude Include="circleCollider.h" />
     <ClInclude Include="collisions.h" />
-    <ClInclude Include="color.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="inputs.h" />
     <ClInclude Include="line.h" />

@@ -101,9 +101,6 @@
     <ClInclude Include="SDL_Management.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="color.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="rectCollider.h">
       <Filter>Header Files</Filter>
     </ClInclude>

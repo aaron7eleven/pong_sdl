@@ -1,4 +1,6 @@
 #pragma once
+#include <iostream>
+#include <string>
 #include "audioManager.h"
 
 void init(audioManager* audioManager)
@@ -19,14 +21,20 @@ void play(audioManager* audioManager, sfx* sfx) {
 
 void free(audioManager* audioManager) {
 
+
+	// Pause them all
+	Mix_Pause(-1);
+
 	//while (Mix_Playing(-1)) {
 	//	// do nothing until audio finishes
+	//	std::cout << "Waiting for finish playing sfx on channel " << Mix_Playing(-1) << std::endl;
 	//}
 
-	//std::cout << "Finished playing sfx and freeing audio manager" << std::endl;
+	
+
+	//std::cout << "Finished playing sfx and freeing sfx in audio manager" << std::endl;
 
 	for (int i = 0; i < audioManager->sfxsLength; i++) {
 		free(audioManager->sfxs[i]);
-		//Mix_FreeChunk(audioManager->sfxs[i]->clip);
 	}
 }

@@ -83,7 +83,7 @@ struct controlsUIMenu {
 	};
 
 	uiText uiMoveUpButtonText = {
-		"uiMoveUpKey",
+		"W",
 		NULL,
 		"assets/font/DotGothic16-Regular.ttf",
 		100,
@@ -156,7 +156,7 @@ struct controlsUIMenu {
 	};
 
 	uiText uiMoveDownButtonText = {
-		"uiMoveDownKey",
+		"S",
 		NULL,
 		"assets/font/DotGothic16-Regular.ttf",
 		100,
@@ -375,7 +375,7 @@ struct controlsUIMenu {
 	};
 
 	uiText uiSelectButtonText = {
-		"uiSelectKey",
+		"Return",
 		NULL,
 		"assets/font/DotGothic16-Regular.ttf",
 		100,
@@ -448,7 +448,7 @@ struct controlsUIMenu {
 	};
 
 	uiText uiBackButtonText = {
-		"uiBackKey",
+		"Escape",
 		NULL,
 		"assets/font/DotGothic16-Regular.ttf",
 		100,

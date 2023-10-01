@@ -85,7 +85,7 @@ struct controlsGameplayMenu {
 	};
 
 	uiText leftPaddleUpButtonText = {
-		"leftPaddleUpKey",
+		"W",
 		NULL,
 		"assets/font/DotGothic16-Regular.ttf",
 		100,
@@ -158,7 +158,7 @@ struct controlsGameplayMenu {
 	};
 
 	uiText leftPaddleDownButtonText = {
-		"leftPaddleDownKey",
+		"S",
 		NULL,
 		"assets/font/DotGothic16-Regular.ttf",
 		100,
@@ -231,7 +231,7 @@ struct controlsGameplayMenu {
 	};
 
 	uiText rightPaddleUpButtonText = {
-		"rightPaddleUpKey",
+		"Up",
 		NULL,
 		"assets/font/DotGothic16-Regular.ttf",
 		100,
@@ -304,7 +304,7 @@ struct controlsGameplayMenu {
 	};
 
 	uiText rightPaddleDownButtonText = {
-		"rightPaddleDownKey",
+		"Down",
 		NULL,
 		"assets/font/DotGothic16-Regular.ttf",
 		100,
@@ -336,7 +336,6 @@ struct controlsGameplayMenu {
 		black,
 		&rightPaddleDownButtonText
 	};
-
 
 	//////////////////////////////
 	// Menu Navigation

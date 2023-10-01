@@ -2,7 +2,7 @@
 #include <SDL.h>
 
 #include "circleCollider.h"
-#include "color.h"
+#include "SDL_wrappers.h"
 #include "inputs.h"
 
 struct ball {
