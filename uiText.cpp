@@ -105,6 +105,19 @@ void render(SDL_Renderer* renderer, uiText* uiText) {
 
 void setText(uiText* uiText, std::string text) {
 	uiText->text = text;
-	//uiText->rect.w = text.length() * uiText->widthPerChar;
-
 }
+
+void setTextAutoAdjustWidth(uiText* uiText, std::string text) {
+	uiText->text = text;
+	// single/few characters -> looks streched horzontially
+	if ((uiText->rect.w / text.length()) > uiText->maxWidthPerChar) {
+		// Fix scale text width down
+		uiText->rect.w = text.length() * uiText->maxWidthPerChar;
+	}
+	// too many characters -> look crunched horzontially
+	else if ((uiText->rect.w / text.length()) < uiText->minWidthPerChar) {
+		// Fix scale text width up
+		uiText->rect.w = text.length() * uiText->minWidthPerChar;
+	}
+}
+

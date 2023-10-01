@@ -6,6 +6,8 @@ void init(game* game) {
 	init(&game->mainMenu);
 	init(&game->optionsMenu);
 	init(&game->controlsMenu);
+	init(&game->controlsUIMenu);
+	init(&game->controlsGameplayMenu);
 	init(&game->videoMenu);
 	init(&game->audioMenu);
 	init(&game->winMenu);
@@ -17,6 +19,8 @@ void init(game* game) {
 	game->mainMenu.audioManager = &game->audioManager;
 	game->optionsMenu.audioManager = &game->audioManager;
 	game->controlsMenu.audioManager = &game->audioManager;
+	game->controlsUIMenu.audioManager = &game->audioManager;
+	game->controlsGameplayMenu.audioManager = &game->audioManager;
 	game->videoMenu.audioManager = &game->audioManager;
 	game->audioMenu.audioManager = &game->audioManager;
 	game->winMenu.audioManager = &game->audioManager;
@@ -42,7 +46,14 @@ void processInput(inputs* inputs, game* game) {
 
 		case gameState::controlsMenu: {
 			processInput(inputs, &game->controlsMenu);
+		} break;
 
+		case gameState::controlsUIMenu: {
+			processInput(inputs, &game->controlsUIMenu);
+		} break;
+
+		case gameState::controlsGameplayMenu: {
+			processInput(inputs, &game->controlsGameplayMenu);
 		} break;
 
 		case gameState::videoMenu: {
@@ -103,16 +114,14 @@ void update(float deltaTime, inputs* inputs, game* game) {
 	{
 		case gameState::mainMenu: {
 			if (inputs->uiSelected) {
-				Mix_Volume(-1, ((63 - 8) + (rand() % 8)) * game->appSettings->sfxVolume);
-				Mix_PlayChannel(-1, game->uiSelectSfx, 0);
-				if (game->mainMenu.uiNavigation.currentButton->text->text == "Play") {
+				if (game->mainMenu.uiNavigation.currentButton == &game->mainMenu.playButton) {
 					init(&game->gameplay);
 					game->gameState = gameState::gameplay;
 				}
-				else if (game->mainMenu.uiNavigation.currentButton->text->text == "Options") {
+				else if (game->mainMenu.uiNavigation.currentButton == &game->mainMenu.optionsButton) {
 					game->gameState = gameState::optionsMenu;
 				}
-				else if (game->mainMenu.uiNavigation.currentButton->text->text == "Quit") {
+				else if (game->mainMenu.uiNavigation.currentButton == &game->mainMenu.quitButton) {
 					game->quit = true;
 				}
 			}
@@ -120,31 +129,23 @@ void update(float deltaTime, inputs* inputs, game* game) {
 
 		case gameState::optionsMenu: {
 			if (inputs->uiSelected) {
-				Mix_Volume(-1, ((63 - 8) + (rand() % 8)) * game->appSettings->sfxVolume);
-				Mix_PlayChannel(-1, game->uiSelectSfx, 0);
-
-				if (game->optionsMenu.uiNavigation.currentButton->text->text == "Controls") {
+				if (game->optionsMenu.uiNavigation.currentButton == &game->optionsMenu.controlsButton) {
 					game->gameState = gameState::controlsMenu;
 				}
-				else if (game->optionsMenu.uiNavigation.currentButton->text->text == "Video") {
+				else if (game->optionsMenu.uiNavigation.currentButton == &game->optionsMenu.videoButton) {
 					game->gameState = gameState::videoMenu;
 				}
-				else if (game->optionsMenu.uiNavigation.currentButton->text->text == "Audio") {
+				else if (game->optionsMenu.uiNavigation.currentButton == &game->optionsMenu.audioButton) {
 					game->gameState = gameState::audioMenu;
 				}
 			}
 			else if (inputs->uiBack) {
-				Mix_Volume(-1, ((63 - 8) + (rand() % 8)) * game->appSettings->sfxVolume);
-				Mix_PlayChannel(-1, game->uiSelectSfx, 0);
 				game->gameState = gameState::mainMenu;
 			}
 		} break;
 
 		case gameState::videoMenu: {
 			if (inputs->uiSelected) {
-				Mix_Volume(-1, ((63 - 8) + (rand() % 8)) * game->appSettings->sfxVolume);
-				Mix_PlayChannel(-1, game->uiSelectSfx, 0);
-
 				if (game->videoMenu.uiNavigation.currentButton == &game->videoMenu.vSyncButton) {
 					bool vSync = game->videoMenu.uiNavigation.currentButton->text->text == "Enabled";
 					bool toggledVSync = !vSync;
@@ -161,16 +162,12 @@ void update(float deltaTime, inputs* inputs, game* game) {
 				}
 			}
 			else if (inputs->uiBack) {
-				Mix_Volume(-1, ((63 - 8) + (rand() % 8)) * game->appSettings->sfxVolume);
-				Mix_PlayChannel(-1, game->uiSelectSfx, 0);
 				game->gameState = gameState::optionsMenu;
 			}
 		} break;
 
 		case gameState::audioMenu: {
 			if (inputs->uiSelected) {
-				Mix_Volume(-1, ((63 - 8) + (rand() % 8)) * game->appSettings->sfxVolume);
-				Mix_PlayChannel(-1, game->uiSelectSfx, 0);
 				if (game->audioMenu.uiNavigation.currentButton == &game->audioMenu.sfxVolumeUpButton) {
 					game->appSettings->sfxVolume += 0.05f;
 					if (game->appSettings->sfxVolume > 1.0f) {
@@ -187,61 +184,118 @@ void update(float deltaTime, inputs* inputs, game* game) {
 				}
 			}
 			else if (inputs->uiBack) {
-				Mix_Volume(-1, ((63 - 8) + (rand() % 8)) * game->appSettings->sfxVolume);
-				Mix_PlayChannel(-1, game->uiSelectSfx, 0);
 				game->gameState = gameState::optionsMenu;
 			}
 		} break;
 
 		case gameState::controlsMenu: {
+			if (inputs->uiSelected) {
+				if (game->controlsMenu.uiNavigation.currentButton == &game->controlsMenu.gameplayControlsButton) {
+					game->gameState = gameState::controlsGameplayMenu;
+				}
+				else if (game->controlsMenu.uiNavigation.currentButton == &game->controlsMenu.uiControlsButton) {
+					game->gameState = gameState::controlsUIMenu;
+				}
+			}
+			else if (inputs->uiBack) {
+				game->gameState = gameState::optionsMenu;
+			}
+		} break;
 
-			update(deltaTime, inputs, &game->controlsMenu);
-			if (game->controlsMenu.listening) {
-				if (game->controlsMenu.heard) {
-					Mix_Volume(-1, ((63 - 8) + (rand() % 8)) * game->appSettings->sfxVolume);
-					Mix_PlayChannel(-1, game->uiSelectSfx, 0);
+		case gameState::controlsGameplayMenu: {
 
-					*game->controlsMenu.listeningKeyCodeToChange = game->controlsMenu.listeningKeyCode;
-					game->controlsMenu.listening = false;
-					game->controlsMenu.heard = false;
-					game->controlsMenu.listeningButton = NULL;
-					game->controlsMenu.listeningKeyCode = NULL;
+			update(deltaTime, inputs, &game->controlsGameplayMenu);
+			if (game->controlsGameplayMenu.listening) {
+				if (game->controlsGameplayMenu.heard) {
+					*game->controlsGameplayMenu.listeningKeyCodeToChange = game->controlsGameplayMenu.listeningKeyCode;
+
+					// Assign change to paddle controller
+					if (game->controlsGameplayMenu.listeningButton == &game->controlsGameplayMenu.leftPaddleUpButton) {
+						game->gameplay.leftPaddle.paddleController.up = game->controlsGameplayMenu.listeningScanCode;
+					}
+					else if (game->controlsGameplayMenu.listeningButton == &game->controlsGameplayMenu.leftPaddleDownButton) {
+						game->gameplay.leftPaddle.paddleController.down = game->controlsGameplayMenu.listeningScanCode;
+					}
+					else if (game->controlsGameplayMenu.listeningButton == &game->controlsGameplayMenu.rightPaddleUpButton) {
+						game->gameplay.rightPaddle.paddleController.up = game->controlsGameplayMenu.listeningScanCode;
+					}
+					else if (game->controlsGameplayMenu.listeningButton == &game->controlsGameplayMenu.rightPaddleDownButton) {
+						game->gameplay.rightPaddle.paddleController.down = game->controlsGameplayMenu.listeningScanCode;
+					}
+
+					game->controlsGameplayMenu.listening = false;
+					game->controlsGameplayMenu.heard = false;
+					game->controlsGameplayMenu.listeningButton = NULL;
+					game->controlsGameplayMenu.listeningKeyCode = NULL;
 				}
 			}
 			else if (inputs->uiSelected) {
-				Mix_Volume(-1, ((63 - 8) + (rand() % 8))* game->appSettings->sfxVolume);
-				Mix_PlayChannel(-1, game->uiSelectSfx, 0);
-
-				if (!game->controlsMenu.listening) {
-					game->controlsMenu.listening = true;
-					game->controlsMenu.listeningButton = game->controlsMenu.uiNavigation.currentButton;
-					setButtonText(game->controlsMenu.listeningButton, "Listen");
+				if (!game->controlsGameplayMenu.listening) {
+					game->controlsGameplayMenu.listening = true;
+					game->controlsGameplayMenu.listeningButton = game->controlsGameplayMenu.uiNavigation.currentButton;
+					setButtonText(game->controlsGameplayMenu.listeningButton, "Listen...");
 
 					// Link button to action to change
-					if (game->controlsMenu.listeningButton == &game->controlsMenu.uiBackButton) {
-						game->controlsMenu.listeningKeyCodeToChange = &inputs->uiPrimaryBack;
+					if (game->controlsGameplayMenu.listeningButton == &game->controlsGameplayMenu.leftPaddleUpButton) {
+						game->controlsGameplayMenu.listeningKeyCodeToChange = &inputs->leftPaddlePrimaryUp;
 					}
-					else if (game->controlsMenu.listeningButton == &game->controlsMenu.uiSelectButton) {
-						game->controlsMenu.listeningKeyCodeToChange = &inputs->uiPrimarySelect;
+					else if (game->controlsGameplayMenu.listeningButton == &game->controlsGameplayMenu.leftPaddleDownButton) {
+						game->controlsGameplayMenu.listeningKeyCodeToChange = &inputs->leftPaddlePrimaryDown;
 					}
-					else if (game->controlsMenu.listeningButton == &game->controlsMenu.uiMoveUpButton) {
-						game->controlsMenu.listeningKeyCodeToChange = &inputs->uiPrimaryMoveUp;
+					else if (game->controlsGameplayMenu.listeningButton == &game->controlsGameplayMenu.rightPaddleUpButton) {
+						game->controlsGameplayMenu.listeningKeyCodeToChange = &inputs->rightPaddlePrimaryUp;
 					}
-					else if (game->controlsMenu.listeningButton == &game->controlsMenu.uiMoveDownButton) {
-						game->controlsMenu.listeningKeyCodeToChange = &inputs->uiPrimaryMoveDown;
-					}
-					else if (game->controlsMenu.listeningButton == &game->controlsMenu.uiMoveLeftButton) {
-						game->controlsMenu.listeningKeyCodeToChange = &inputs->uiPrimaryMoveLeft;
-					}
-					else if (game->controlsMenu.listeningButton == &game->controlsMenu.uiMoveRightButton) {
-						game->controlsMenu.listeningKeyCodeToChange = &inputs->uiPrimaryMoveRight;
+					else if (game->controlsGameplayMenu.listeningButton == &game->controlsGameplayMenu.rightPaddleDownButton) {
+						game->controlsGameplayMenu.listeningKeyCodeToChange = &inputs->rightPaddlePrimaryDown;
 					}
 				}				
 			}
 			else if (inputs->uiBack) {
-				Mix_Volume(-1, ((63 - 8) + (rand() % 8)) * game->appSettings->sfxVolume);
-				Mix_PlayChannel(-1, game->uiSelectSfx, 0);
-				game->gameState = gameState::optionsMenu;
+				game->gameState = gameState::controlsMenu;
+			}
+		} break;
+
+		case gameState::controlsUIMenu: {
+
+			update(deltaTime, inputs, &game->controlsUIMenu);
+			if (game->controlsUIMenu.listening) {
+				if (game->controlsUIMenu.heard) {
+					*game->controlsUIMenu.listeningKeyCodeToChange = game->controlsUIMenu.listeningKeyCode;
+					game->controlsUIMenu.listening = false;
+					game->controlsUIMenu.heard = false;
+					game->controlsUIMenu.listeningButton = NULL;
+					game->controlsUIMenu.listeningKeyCode = NULL;
+				}
+			}
+			else if (inputs->uiSelected) {
+				if (!game->controlsUIMenu.listening) {
+					game->controlsUIMenu.listening = true;
+					game->controlsUIMenu.listeningButton = game->controlsUIMenu.uiNavigation.currentButton;
+					setButtonText(game->controlsUIMenu.listeningButton, "Listen...");
+
+					// Link button to action to change
+					if (game->controlsUIMenu.listeningButton == &game->controlsUIMenu.uiBackButton) {
+						game->controlsUIMenu.listeningKeyCodeToChange = &inputs->uiPrimaryBack;
+					}
+					else if (game->controlsUIMenu.listeningButton == &game->controlsUIMenu.uiSelectButton) {
+						game->controlsUIMenu.listeningKeyCodeToChange = &inputs->uiPrimarySelect;
+					}
+					else if (game->controlsUIMenu.listeningButton == &game->controlsUIMenu.uiMoveUpButton) {
+						game->controlsUIMenu.listeningKeyCodeToChange = &inputs->uiPrimaryMoveUp;
+					}
+					else if (game->controlsUIMenu.listeningButton == &game->controlsUIMenu.uiMoveDownButton) {
+						game->controlsUIMenu.listeningKeyCodeToChange = &inputs->uiPrimaryMoveDown;
+					}
+					//else if (game->controlsUIMenu.listeningButton == &game->controlsUIMenu.uiMoveLeftButton) {
+					//	game->controlsUIMenu.listeningKeyCodeToChange = &inputs->uiPrimaryMoveLeft;
+					//}
+					//else if (game->controlsUIMenu.listeningButton == &game->controlsUIMenu.uiMoveRightButton) {
+					//	game->controlsUIMenu.listeningKeyCodeToChange = &inputs->uiPrimaryMoveRight;
+					//}
+				}
+			}
+			else if (inputs->uiBack) {
+				game->gameState = gameState::controlsMenu;
 			}
 		} break;
 
@@ -262,8 +316,6 @@ void update(float deltaTime, inputs* inputs, game* game) {
 
 		case gameState::winMenu: {
 			if (inputs->uiSelected) {
-				Mix_Volume(-1, ((63 - 8) + (rand() % 8))* game->appSettings->sfxVolume);
-				Mix_PlayChannel(-1, game->uiSelectSfx, 0);
 				if (game->winMenu.uiNavigation.currentButton->text->text == "Play Again") {
 					init(&game->gameplay);
 					game->gameState = gameState::gameplay;
@@ -276,8 +328,6 @@ void update(float deltaTime, inputs* inputs, game* game) {
 				}
 			}
 			else if (inputs->uiBack) {
-				Mix_Volume(-1, ((63 - 8) + (rand() % 8))* game->appSettings->sfxVolume);
-				Mix_PlayChannel(-1, game->uiSelectSfx, 0);
 				game->gameState = gameState::mainMenu;
 			}
 		} break;
@@ -301,6 +351,14 @@ void render(SDL_Renderer* renderer, game* game) {
 
 		case gameState::controlsMenu: {
 			render(renderer, &game->controlsMenu);
+		} break;
+
+		case gameState::controlsUIMenu: {
+			render(renderer, &game->controlsUIMenu);
+		} break;
+
+		case gameState::controlsGameplayMenu: {
+			render(renderer, &game->controlsGameplayMenu);
 		} break;
 
 		case gameState::videoMenu: {

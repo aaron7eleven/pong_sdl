@@ -16,7 +16,8 @@ struct uiText {
 	
 	SDL_Texture* texture = NULL;
 	bool changed = false;
-	float widthPerChar = 37.5f; // Looks decent for text of all sizes
+	float maxWidthPerChar = 37.5f; // Looks decent for text of all sizes
+	float minWidthPerChar = 25.0f; // Looks decent for text of all sizes
 };
 
 
@@ -27,3 +28,4 @@ void render(SDL_Renderer* renderer, uiText* uiText);
 SDL_Texture* loadTexture(SDL_Renderer* renderer, uiText* uiText);
 
 void setText(uiText* uiText, std::string text);
+void setTextAutoAdjustWidth(uiText* uiText, std::string text);

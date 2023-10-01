@@ -1,20 +1,16 @@
 #Todo
 
 ## Must do's
-Pause Menu
-Refactor into sub components to reuse (basis for engine)
-Refactor into Entity and Components (basis for EC engine)
-Save/Load App Settings
-Save/Load Input Settings
-Render vertical walls with texture
 sfx on goal
 proper freeing of resources
+    Fix issue with audio and video settings?
 buildable release from git
 distributable build to play
 
 ## Bugs & Known issues
 Ball moving inside of paddle
     Something wrong with ball/paddle collision
+        Handle ball moving into paddle but not paddle into ball
 Lose audio when changing video settings
 
 ## List of everything
@@ -22,22 +18,30 @@ Lose audio when changing video settings
 Proper ball paddle collision: Ball launch angle and speed affected by where hit on paddle
 Ball Launch Angle Detection: Make sure it doesn't exceed a maximum
 
-### Menu Options
-#### Video
+# Done
+sfx with UI and gameplay
+Win conditions in game
+Win Menu
+Menu Navigation
+
+Finished Menu Options
+
+### Menu Options (Done)
+#### Video (Done)
 (Done) V-Sync
 (Done) Windowed/Full Screen
 (Skip) Resolution
 (Skip) Frame Rate Cap
 
-#### Audio
-Main Volume
-(Done)Sound FX Volume
-Music Volume
+#### Audio (Done)
+(Skip) Main Volume
+(Done) Sound FX Volume
+(Skip) Music Volume
 
-#### Controls
-(WIP) Input Rebinding
+#### Controls (Done)
+(Done) Input Rebinding
 
-##### Mouse
+##### Mouse (Skip)
 Sensetivity
 
 ##### UI (Done)
@@ -48,11 +52,15 @@ Sensetivity
 - Right
 - Left
 
-##### Gameplay
+##### Gameplay (Done)
 - Left Paddle
   - Up/Down
 - Right Paddle
   - Up/Down
+
+# Skip
+Render vertical walls with texture
+Skipping gameplay customization
 
 #### Gameplay Customization
 ##### Paddle
@@ -91,9 +99,8 @@ Initial Position
 Size
 image/texture
 
-
-# Done
-sfx with UI and gameplay
-Win conditions in game
-Win Menu
-Menu Navigation
+Pause Menu
+Refactor into sub components to reuse (basis for engine)
+Refactor into Entity and Components (basis for EC engine)
+Save/Load App Settings
+Save/Load Input Settings

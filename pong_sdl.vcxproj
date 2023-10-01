@@ -157,10 +157,14 @@
     <ClCompile Include="audioMenu.cpp" />
     <ClCompile Include="ball.cpp" />
     <ClCompile Include="collisions.cpp" />
+    <ClCompile Include="component.cpp" />
+    <ClCompile Include="controlsGameplayMenu.cpp" />
     <ClCompile Include="controlsMenu.cpp" />
+    <ClCompile Include="controlsUIMenu.cpp" />
+    <ClCompile Include="controlsUIMenu.h" />
+    <ClCompile Include="entity.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="gameplay.cpp" />
-    <ClCompile Include="gameUI.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="mainMenu.cpp" />
     <ClCompile Include="math.cpp" />
@@ -183,7 +187,10 @@
     <ClInclude Include="audioButtonText.h" />
     <ClInclude Include="audioManager.h" />
     <ClInclude Include="audioMenu.h" />
+    <ClInclude Include="component.h" />
+    <ClInclude Include="controlsGameplayMenu.h" />
     <ClInclude Include="controlsMenu.h" />
+    <ClInclude Include="entity.h" />
     <ClInclude Include="fpsCounter.h" />
     <ClInclude Include="gameplay.h" />
     <ClInclude Include="gameState.h" />
@@ -192,7 +199,6 @@
     <ClInclude Include="collisions.h" />
     <ClInclude Include="color.h" />
     <ClInclude Include="game.h" />
-    <ClInclude Include="gameUI.h" />
     <ClInclude Include="inputs.h" />
     <ClInclude Include="line.h" />
     <ClInclude Include="mainMenu.h" />

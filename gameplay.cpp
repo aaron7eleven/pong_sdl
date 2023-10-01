@@ -70,12 +70,12 @@ void update(float deltaTime, inputs* inputs, gameplay* gameplay) {
 	if (checkCollision(gameplay->ball.circleCollider, gameplay->topWall.rectCollider)) {
 		gameplay->ball.velocity.y = -gameplay->ball.velocity.y;
 		gameplay->ball.circleCollider.center.y += gameplay->ball.velocity.y * gameplay->ball.speed * deltaTime; // Moving down1
-		play(gameplay->audioManager, &gameplay->audioManager->wallHit);
+		play(gameplay->audioManager, &gameplay->audioManager->ballHit);
 	}
 	else if (checkCollision(gameplay->ball.circleCollider, gameplay->bottomWall.rectCollider)) {
 		gameplay->ball.velocity.y = -gameplay->ball.velocity.y;
 		gameplay->ball.circleCollider.center.y += gameplay->ball.velocity.y * gameplay->ball.speed * deltaTime; // Moving down
-		play(gameplay->audioManager, &gameplay->audioManager->wallHit);
+		play(gameplay->audioManager, &gameplay->audioManager->ballHit);
 	}
 
 	// Horizontal Walls
@@ -134,7 +134,7 @@ void update(float deltaTime, inputs* inputs, gameplay* gameplay) {
 			gameplay->ball.circleCollider.center.x += gameplay->ball.velocity.x * gameplay->ball.speed * deltaTime;
 		}
 
-		play(gameplay->audioManager, &gameplay->audioManager->paddleHit);
+		play(gameplay->audioManager, &gameplay->audioManager->ballHit);
 	}
 
 	// Right Paddle
@@ -152,7 +152,7 @@ void update(float deltaTime, inputs* inputs, gameplay* gameplay) {
 			gameplay->ball.circleCollider.center.x += gameplay->ball.velocity.x * gameplay->ball.speed * deltaTime;
 		}
 
-		play(gameplay->audioManager, &gameplay->audioManager->paddleHit);
+		play(gameplay->audioManager, &gameplay->audioManager->ballHit);
 	}
 
 	if (gameplay->leftScore >= gameplay->scoreToWin) {

@@ -37,7 +37,7 @@ void centerAlignText(uiButton* button) {
 }
 
 void setButtonText(uiButton* uiButton, std::string text) {
-	setText(uiButton->text, text);
+	setTextAutoAdjustWidth(uiButton->text, text);
 	centerAlignText(uiButton);
 }
 

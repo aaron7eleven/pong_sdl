@@ -17,7 +17,6 @@
 #include "ui.h"
 #include "vectors.h"
 #include "paddle.h"
-#include "gameUI.h"
 #include "gameState.h"
 
 

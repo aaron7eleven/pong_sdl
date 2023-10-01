@@ -60,6 +60,9 @@ int init(app* app) {
 		return 1;
 	}
 
+	//Get window surface
+	app->windowSurface = SDL_GetWindowSurface(app->window);
+
 	//Initialize PNG loading
 	int imgFlags = IMG_INIT_PNG;
 	if (!(IMG_Init(imgFlags) & imgFlags))
@@ -67,9 +70,6 @@ int init(app* app) {
 		printf("SDL_image could not initialize! SDL_image Error: %s\n", IMG_GetError());
 		return 1;
 	}
-
-	//Get window surface
-	app->windowSurface = SDL_GetWindowSurface(app->window);
 
 	// Load text library
 	if (TTF_Init() == -1) {
@@ -83,11 +83,14 @@ int init(app* app) {
 	//	printf("Failed to load font! SDL_ttf Error: %s\n", TTF_GetError());
 	//	return 1;
 	//}
+	// https://stackoverflow.com/questions/24825274/no-sound-when-using-sdl-mixer
+	//SDL_AudioInit("dsound");
+
 	int mixerFlags = MIX_INIT_MP3 | MIX_INIT_OGG;
-	//if (!Mix_Init(mixerFlags)) {
-	//	printf("SDL_mixer could not initialize! SDL_mixer Error: %s\n", Mix_GetError());
-	//	return 1;
-	//}
+	if (!Mix_Init(mixerFlags)) {
+		printf("SDL_mixer could not initialize! SDL_mixer Error: %s\n", Mix_GetError());
+		return 1;
+	}
 
 	 //Initialize SDL_mixer
 	if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0)
@@ -107,6 +110,11 @@ int init(app* app) {
 int free(app* app) {
 	free(app->game);
 
+	// Quit additional SDL subsystems
+	Mix_Quit();
+	TTF_Quit();
+	IMG_Quit();
+
 	SDL_FreeSurface(app->windowSurface);
 	app->windowSurface = NULL;
 
@@ -117,9 +125,6 @@ int free(app* app) {
 	app->window = NULL;
 
 	//Quit SDL subsystems
-	Mix_Quit();
-	TTF_Quit();
-	IMG_Quit();
 	SDL_Quit();
 	return 0;
 }

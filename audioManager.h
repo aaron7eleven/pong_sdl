@@ -7,24 +7,17 @@ struct audioManager {
 
 	float* appVolume = NULL;
 	
-	sfx wallHit = {
+	sfx ballHit = {
 		//.path = "assets/sfx/269718__michorvath__ping-pong-ball-hit.wav",
 		.path = "assets/sfx/66877__mikemunkie__bleep1.wav",
 		.volume = 16,
-		.randomness = 8,		
-	};
-
-	sfx paddleHit = {
-		//.path = "assets/sfx/269718__michorvath__ping-pong-ball-hit.wav",
-		.path = "assets/sfx/66877__mikemunkie__bleep1.wav",
-		.volume = 24,
-		.randomness = 8,
+		.randomness = 8,	
 	};
 	
 	sfx uiMove = {
 		//.path = "assets/sfx/66877__mikemunkie__bleep1.wav",
 		.path = "assets/sfx/396406__goncalo95__ping-pong-low.wav",		
-		.volume = 112,
+		.volume = 128,
 		.randomness = 16,
 	};
 
@@ -34,10 +27,9 @@ struct audioManager {
 		.randomness = 8,
 	};
 
-	const int sfxsLength = 4;
-	sfx* sfxs[4] = {
-		&wallHit,
-		&paddleHit,
+	const int sfxsLength = 3;
+	sfx* sfxs[3] = {
+		&ballHit,
 		&uiMove,
 		&uiSelect
 	};

@@ -15,5 +15,8 @@ struct inputs {
 	SDL_Keycode uiPrimarySelect = SDLK_RETURN;
 	SDL_Keycode uiPrimaryBack = SDLK_ESCAPE;
 
-
+	SDL_Keycode leftPaddlePrimaryUp = SDLK_w;
+	SDL_Keycode leftPaddlePrimaryDown = SDLK_s;
+	SDL_Keycode rightPaddlePrimaryUp = SDLK_UP;
+	SDL_Keycode rightPaddlePrimaryDown = SDLK_DOWN;
 };
