@@ -35,11 +35,15 @@ int appMain(int argc, char* argv[]) {
 }
 
 int init(app* app) {
-	if (SDL_Init(SDL_INIT_EVERYTHING))
-	{
-		printf("SDL could not initialize! SDL_Error: %s\n", SDL_GetError());
-		return 1;
+	if (!app->initialize) {
+		// https://www.gamedev.net/forums/topic/336190-possible-to-call-sdl_init-more-than-once/3187085/
+		if (SDL_Init(SDL_INIT_EVERYTHING))
+		{
+			printf("SDL could not initialize! SDL_Error: %s\n", SDL_GetError());
+			return 1;
+		}
 	}
+	
 
 	//Create window
 	Uint32 windowFlags = SDL_WINDOW_SHOWN;
@@ -83,26 +87,27 @@ int init(app* app) {
 	//	printf("Failed to load font! SDL_ttf Error: %s\n", TTF_GetError());
 	//	return 1;
 	//}
-	// https://stackoverflow.com/questions/24825274/no-sound-when-using-sdl-mixer
-	//SDL_AudioInit("dsound");
+	
+	if (!app->initialize) {
+		int mixerFlags = MIX_INIT_MP3 | MIX_INIT_OGG;
+		if (!Mix_Init(mixerFlags)) {
+			printf("SDL_mixer could not initialize! SDL_mixer Error: %s\n", Mix_GetError());
+			return 1;
+		}
 
-	int mixerFlags = MIX_INIT_MP3 | MIX_INIT_OGG;
-	if (!Mix_Init(mixerFlags)) {
-		printf("SDL_mixer could not initialize! SDL_mixer Error: %s\n", Mix_GetError());
-		return 1;
-	}
-
-	 //Initialize SDL_mixer
-	if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0)
-	{
-		printf("SDL_Mixer Open Audio could not initialize! SDL_mixer Error: %s\n", Mix_GetError());
-		return 1;
+		//Initialize SDL_mixer
+		if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0)
+		{
+			printf("SDL_Mixer Open Audio could not initialize! SDL_mixer Error: %s\n", Mix_GetError());
+			return 1;
+		}
 	}
 
 	srand((unsigned)time(NULL));
 
 	init(&app->fpsCounter.uiText);
 	app->restart = false;
+	app->initialize = true;
 
 	return 0;
 }
@@ -111,7 +116,11 @@ int free(app* app) {
 	free(app->game);
 
 	// Quit additional SDL subsystems
-	Mix_Quit();
+
+	if (app->quit && !app->restart) {
+		Mix_Quit();
+	}
+	//Mix_Quit();
 	TTF_Quit();
 	IMG_Quit();
 
@@ -125,7 +134,10 @@ int free(app* app) {
 	app->window = NULL;
 
 	//Quit SDL subsystems
-	SDL_Quit();
+	//SDL_Quit();
+	if (app->quit && !app->restart) {
+		SDL_Quit();
+	}
 	return 0;
 }
 
@@ -192,10 +204,10 @@ void update(app* app) {
 		app->deltaTimeIndex = 0;
 	}
 	float avgDeltaTime = 0.0f;
-	for (int i = 0; i < 5; i++) {
+	for (int i = 0; i < 10; i++) {
 		avgDeltaTime += app->deltaTimes[i];
 	}
-	avgDeltaTime /= 5.0f;
+	avgDeltaTime /= 10.0f;
 
 	out << std::fixed << 1.0f / avgDeltaTime;
 	app->fpsCounter.uiText.text = "Avg. FPS = " + std::move(out).str();

@@ -25,13 +25,16 @@ struct app {
 	 
 	inputs inputs;
 	
+	bool initialize = false;
 	bool quit = false;
 	bool restart = true;
 
 	fpsCounter fpsCounter;
 	Uint32 frameCount = 0;
-	float deltaTimes[5] = {0.0f,0.0f, 0.0f, 0.0f, 0.0f};
+	float deltaTimes[10] = {0.0f,0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f };
 	int deltaTimeIndex = 0;
+
+	
 
 	game* game;
 };
