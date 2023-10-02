@@ -22,7 +22,7 @@ struct winMenu {
 	//////////////////////////////
 	// Title: Winning Player
 	//////////////////////////////
-	float titleWidth = 480;
+	float titleWidth = 640;
 	float titleHeight = 120;
 	float titleX = 640 - titleWidth / 2;
 	float titleY = 45;
