@@ -1,20 +1,11 @@
 #Todo
 
 ## Must do's
-sfx on goal
-proper freeing of resources
 buildable release from git
 distributable build to play
 
 ## Bugs & Known issues
-Ball moving inside of paddle
-    Something wrong with ball/paddle collision
-        Handle ball moving into paddle but not paddle into ball
-
-## List of everything
-### Gameplay 
-Proper ball paddle collision: Ball launch angle and speed affected by where hit on paddle
-Ball Launch Angle Detection: Make sure it doesn't exceed a maximum
+- Ball/Collision may have issues
 
 # Done
 sfx with UI and gameplay
@@ -55,6 +46,12 @@ Sensetivity
   - Up/Down
 - Right Paddle
   - Up/Down
+
+Ball moving inside of paddle
+    Something wrong with ball/paddle collision
+        Handle ball moving into paddle but not paddle into ball
+    Might still be there but its less
+Proper ball paddle collision: Ball launch angle and speed affected by where hit on paddle
 
 # Skip
 Render vertical walls with texture
@@ -104,3 +101,6 @@ Save/Load App Settings
 Save/Load Input Settings
 Lose audio when changing video settings
     Can't reload SDL_Init() twice
+sfx on goal
+proper freeing of resources
+Ball Launch Angle Detection: Make sure it doesn't exceed a maximum
