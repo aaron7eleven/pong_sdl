@@ -23,7 +23,7 @@ struct audioManager {
 
 	sfx uiSelect = {
 		.path = "assets/sfx/350871__cabled_mess__coin_c_04.wav",
-		.volume = 96,
+		.volume = 64,
 		.randomness = 8,
 	};
 
