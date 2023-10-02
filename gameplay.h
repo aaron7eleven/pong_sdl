@@ -13,7 +13,7 @@
 
 struct gameplay {
 	bool win = false;
-	int scoreToWin = 1;
+	int scoreToWin = 5;
 	int leftScore = 0;
 	bool leftScoreChanged = false;
 	int rightScore = 0;

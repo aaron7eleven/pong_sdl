@@ -200,7 +200,7 @@ void update(app* app) {
 
 	app->deltaTimes[app->deltaTimeIndex] = app->deltaTime;
 	app->deltaTimeIndex++;
-	if (app->deltaTimeIndex > 5) {
+	if (app->deltaTimeIndex > 10) {
 		app->deltaTimeIndex = 0;
 	}
 	float avgDeltaTime = 0.0f;

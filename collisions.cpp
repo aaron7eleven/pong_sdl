@@ -85,7 +85,7 @@ bool checkCollision(circleCollider circleCollider, SDL_FRect rect)
 		circleY = circle.y;
 	}
 
-	if (DistanceSquared(circle.x, circle.y, circleX, circleY) < (circleCollider.radius * circleCollider.radius)) {
+	if (distanceSquared(circle.x, circle.y, circleX, circleY) < (circleCollider.radius * circleCollider.radius)) {
 		// Colliding
 		return true;
 	}

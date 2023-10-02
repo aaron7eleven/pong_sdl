@@ -3,6 +3,7 @@
 #include "gameplay.h"
 #include "collisions.h"
 #include "sfx.h"
+#include "math.h"
 
 void init(gameplay* gameplay) {
 	init(&gameplay->leftPaddle);
@@ -81,10 +82,12 @@ void update(float deltaTime, inputs* inputs, gameplay* gameplay) {
 	// Horizontal Walls
 	if (checkCollision(gameplay->ball.circleCollider, gameplay->leftWall.rectCollider)) {
 		gameplay->ball.velocity.x = -gameplay->ball.velocity.x;
-		gameplay->ball.circleCollider.center.x += gameplay->ball.velocity.x * gameplay->ball.speed * deltaTime; // Moving down
+		//gameplay->ball.circleCollider.center.x += gameplay->ball.velocity.x * gameplay->ball.speed * deltaTime; // Moving down
 
 		// Resetting ball
 		gameplay->ball.circleCollider.center = gameplay->ballInitTransform;
+		gameplay->ball.velocity.x = 0.5f;
+		gameplay->ball.velocity.y = 0.5f;
 
 		if (rand() % 2) {
 			gameplay->ball.velocity.x = -gameplay->ball.velocity.x;
@@ -94,16 +97,21 @@ void update(float deltaTime, inputs* inputs, gameplay* gameplay) {
 			gameplay->ball.velocity.y = -gameplay->ball.velocity.y;
 		}
 
+		gameplay->ball.velocity = normalize(gameplay->ball.velocity);
+		gameplay->ball.velocity.x *= 0.5f;
+		gameplay->ball.velocity.y *= 0.5f;
 		gameplay->ball.reset = true;
 		gameplay->rightScore++;
 		setText(&gameplay->rightScoreText, std::to_string(gameplay->rightScore));
 	}
 	else if (checkCollision(gameplay->ball.circleCollider, gameplay->rightWall.rectCollider)) {
 		gameplay->ball.velocity.x = -gameplay->ball.velocity.x;
-		gameplay->ball.circleCollider.center.x += gameplay->ball.velocity.x * gameplay->ball.speed * deltaTime; // Moving down
+		//gameplay->ball.circleCollider.center.x += gameplay->ball.velocity.x * gameplay->ball.speed * deltaTime; // Moving down
 
 		// Resetting ball
 		gameplay->ball.circleCollider.center = gameplay->ballInitTransform;
+		gameplay->ball.velocity.x = 0.5f;
+		gameplay->ball.velocity.y = 0.5f;
 
 		if (rand() % 2) {
 			gameplay->ball.velocity.x = -gameplay->ball.velocity.x;
@@ -113,6 +121,9 @@ void update(float deltaTime, inputs* inputs, gameplay* gameplay) {
 			gameplay->ball.velocity.y = -gameplay->ball.velocity.y;
 		}
 
+		gameplay->ball.velocity = normalize(gameplay->ball.velocity);
+		gameplay->ball.velocity.x *= 0.5f;
+		gameplay->ball.velocity.y *= 0.5f;
 		gameplay->ball.reset = true;
 		gameplay->leftScore++;
 		setText(&gameplay->leftScoreText, std::to_string(gameplay->leftScore));
@@ -121,16 +132,43 @@ void update(float deltaTime, inputs* inputs, gameplay* gameplay) {
 
 	// Left Paddles
 	if (checkCollision(gameplay->ball.circleCollider, gameplay->leftPaddle.rectCollider)) {
-		bool ballAbovePaddle = gameplay->ball.circleCollider.center.y <= gameplay->leftPaddle.rectCollider.y;
-		bool ballBelowPaddle = gameplay->ball.circleCollider.center.y >= gameplay->leftPaddle.rectCollider.y + gameplay->leftPaddle.height;
+		// ball is moving left and approaching paddle from right
+		bool ballAbovePaddle = gameplay->ball.circleCollider.center.y < gameplay->leftPaddle.rectCollider.y;
+		bool ballBelowPaddle = gameplay->ball.circleCollider.center.y > gameplay->leftPaddle.rectCollider.y + gameplay->leftPaddle.height;
+
+		bool ballLeftOfPaddle = gameplay->ball.circleCollider.center.x < gameplay->leftPaddle.rectCollider.x;
+		bool ballRightOfPaddle = gameplay->ball.circleCollider.center.x > gameplay->leftPaddle.rectCollider.x + gameplay->leftPaddle.width;
+
+		float halfPaddleHeight = (gameplay->leftPaddle.height / 2.0f);
+		// + -> Ball above paddle center, - -> Ball below paddle center
+		float yBallToPaddleCenterDiff = (gameplay->leftPaddle.rectCollider.y + halfPaddleHeight) - gameplay->ball.circleCollider.center.y;
 
 		// Check ball hit vertical ends of paddle
 		if (ballAbovePaddle || ballBelowPaddle) {
-			gameplay->ball.velocity.y = -gameplay->ball.velocity.y;
-			gameplay->ball.circleCollider.center.y += gameplay->ball.velocity.y * gameplay->ball.speed * deltaTime;
+			if (ballRightOfPaddle) {
+				//hit corner
+				gameplay->ball.velocity.y = yBallToPaddleCenterDiff >= 0.0f ? -0.5f : 0.5f;
+				gameplay->ball.velocity.x = 0.5f;
+				gameplay->ball.velocity = normalize(gameplay->ball.velocity);
+				gameplay->ball.circleCollider.center.y += gameplay->ball.velocity.y * gameplay->ball.speed * deltaTime;
+				gameplay->ball.circleCollider.center.x += gameplay->ball.velocity.x * gameplay->ball.speed * deltaTime;
+			}
+			else {
+				// hit top -> flip y
+				gameplay->ball.velocity.y = -gameplay->ball.velocity.y;
+				gameplay->ball.velocity = normalize(gameplay->ball.velocity);
+				gameplay->ball.circleCollider.center.y += gameplay->ball.velocity.y * gameplay->ball.speed * deltaTime;
+			}
 		}
 		else {
-			gameplay->ball.velocity.x = -gameplay->ball.velocity.x;
+			// Hit side -> Angle dependent on where ball hit paddle on y
+			// greater diff -> higher the angle			
+			gameplay->ball.velocity.y = -0.5f * (yBallToPaddleCenterDiff / halfPaddleHeight);
+			gameplay->ball.velocity.x = 0.5f + 0.5f * (1.0f - abs((yBallToPaddleCenterDiff / halfPaddleHeight)));
+			//gameplay->ball.velocity.x = -gameplay->ball.velocity.x;
+			gameplay->ball.velocity = normalize(gameplay->ball.velocity);
+
+			gameplay->ball.circleCollider.center.y += gameplay->ball.velocity.y * gameplay->ball.speed * deltaTime;
 			gameplay->ball.circleCollider.center.x += gameplay->ball.velocity.x * gameplay->ball.speed * deltaTime;
 		}
 
@@ -139,19 +177,45 @@ void update(float deltaTime, inputs* inputs, gameplay* gameplay) {
 
 	// Right Paddle
 	if (checkCollision(gameplay->ball.circleCollider, gameplay->rightPaddle.rectCollider)) {
-		bool ballAbovePaddle = gameplay->ball.circleCollider.center.y <= gameplay->rightPaddle.rectCollider.y;
-		bool ballBelowPaddle = gameplay->ball.circleCollider.center.y >= gameplay->rightPaddle.rectCollider.y + gameplay->rightPaddle.height;
+		// ball is moving right and approaching paddle from left
+		bool ballAbovePaddle = gameplay->ball.circleCollider.center.y < gameplay->rightPaddle.rectCollider.y;
+		bool ballBelowPaddle = gameplay->ball.circleCollider.center.y > gameplay->rightPaddle.rectCollider.y + gameplay->rightPaddle.height;
+
+		bool ballLeftOfPaddle = gameplay->ball.circleCollider.center.x < gameplay->rightPaddle.rectCollider.x;
+		bool ballRightOfPaddle = gameplay->ball.circleCollider.center.x > gameplay->rightPaddle.rectCollider.x + gameplay->rightPaddle.width;
+
+		float halfPaddleHeight = (gameplay->rightPaddle.height / 2.0f);
+		// + -> Ball above paddle center, - -> Ball below paddle center
+		float yBallToPaddleCenterDiff = (gameplay->rightPaddle.rectCollider.y + halfPaddleHeight) - gameplay->ball.circleCollider.center.y;
 
 		// Check ball hit vertical ends of paddle
 		if (ballAbovePaddle || ballBelowPaddle) {
-			gameplay->ball.velocity.y = -gameplay->ball.velocity.y;
-			gameplay->ball.circleCollider.center.y += gameplay->ball.velocity.y * gameplay->ball.speed * deltaTime;
+			if (ballLeftOfPaddle) {
+				//hit corner
+				gameplay->ball.velocity.y = yBallToPaddleCenterDiff >= 0.0f ? -0.5f : 0.5f;
+				gameplay->ball.velocity.x = -0.5f;
+				gameplay->ball.velocity = normalize(gameplay->ball.velocity);
+				gameplay->ball.circleCollider.center.y += gameplay->ball.velocity.y * gameplay->ball.speed * deltaTime;
+				gameplay->ball.circleCollider.center.x += gameplay->ball.velocity.x * gameplay->ball.speed * deltaTime;
+			}
+			else {
+				// hit top -> flip y
+				gameplay->ball.velocity.y = -gameplay->ball.velocity.y;
+				gameplay->ball.velocity = normalize(gameplay->ball.velocity);
+				gameplay->ball.circleCollider.center.y += gameplay->ball.velocity.y * gameplay->ball.speed * deltaTime;
+			}
 		}
 		else {
+			// Hit side -> Angle dependent on where ball hit paddle on y
+			// greater diff -> higher the angle			
+			gameplay->ball.velocity.y = -0.5f * (yBallToPaddleCenterDiff / halfPaddleHeight);
+			gameplay->ball.velocity.x = 0.5f + 0.5f * (1.0f - abs((yBallToPaddleCenterDiff / halfPaddleHeight)));
 			gameplay->ball.velocity.x = -gameplay->ball.velocity.x;
+			gameplay->ball.velocity = normalize(gameplay->ball.velocity);
+
+			gameplay->ball.circleCollider.center.y += gameplay->ball.velocity.y * gameplay->ball.speed * deltaTime;
 			gameplay->ball.circleCollider.center.x += gameplay->ball.velocity.x * gameplay->ball.speed * deltaTime;
 		}
-
 		play(gameplay->audioManager, &gameplay->audioManager->ballHit);
 	}
 
