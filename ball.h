@@ -17,6 +17,7 @@ struct ball {
 	float timeToReset = 1.0f;
 };
 
+void init(ball* ball);
 void update(float deltaTime, inputs* inputs, ball* ball);
 void renderCircle(SDL_Renderer* renderer, SDL_FPoint center, float radius);
 void render(SDL_Renderer* renderer, ball* ball);

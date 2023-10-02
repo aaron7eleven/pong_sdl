@@ -302,7 +302,10 @@ void update(float deltaTime, inputs* inputs, game* game) {
 		case gameState::gameplay: {
 			update(deltaTime, inputs, &game->gameplay);
 			
-			if (game->gameplay.win) {
+			if (game->gameplay.quit) {
+				game->gameState = gameState::mainMenu;
+			}
+			else if (game->gameplay.win) {
 				if (game->gameplay.leftScore >= game->gameplay.scoreToWin) {
 					setText(&game->winMenu.title, "Left Player Won!!!");
 				}

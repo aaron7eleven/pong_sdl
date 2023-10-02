@@ -6,13 +6,14 @@
 #include "math.h"
 
 void init(gameplay* gameplay) {
+	init(&gameplay->ball);
 	init(&gameplay->leftPaddle);
 	init(&gameplay->rightPaddle);
 	init(&gameplay->leftScoreText);
 	init(&gameplay->rightScoreText);
 
 	gameplay->win = false;
-	gameplay->ball.reset = true;
+	gameplay->quit = false;
 	gameplay->leftScore = 0;
 	gameplay->leftScoreChanged = false;
 	gameplay->rightScore = 0;
@@ -25,11 +26,33 @@ void init(gameplay* gameplay) {
 
 	gameplay->rightPaddle.rectCollider.x = gameplay->rightPaddleInitX;
 	gameplay->rightPaddle.rectCollider.y = gameplay->rightPaddleInitY;
+
+	gameplay->ball.circleCollider.center.x = gameplay->ballInitX;
+	gameplay->ball.circleCollider.center.y = gameplay->ballInitY;
+	
+	gameplay->ball.velocity = gameplay->ballInitVelocity;
+
+	if (rand() % 2) {
+		gameplay->ball.velocity.x = -gameplay->ball.velocity.x;
+	}
+
+	if (rand() % 2) {
+		gameplay->ball.velocity.y = -gameplay->ball.velocity.y;
+	}
+
+	gameplay->ball.velocity = normalize(gameplay->ball.velocity);
+	gameplay->ball.velocity.x *= 0.5f;
+	gameplay->ball.velocity.y *= 0.5f;
 }
 
 void processInput(inputs* inputs, gameplay* gameplay) {
 	processInput(inputs, &gameplay->leftPaddle);
 	processInput(inputs, &gameplay->rightPaddle);
+
+	if (inputs->e.key.keysym.sym == SDLK_ESCAPE) {
+		gameplay->quit = true;
+		play(gameplay->audioManager, &gameplay->audioManager->uiSelect);
+	}
 }
 
 void preUpdate(gameplay* gameplay) {
@@ -86,8 +109,9 @@ void update(float deltaTime, inputs* inputs, gameplay* gameplay) {
 
 		// Resetting ball
 		gameplay->ball.circleCollider.center = gameplay->ballInitTransform;
-		gameplay->ball.velocity.x = 0.5f;
-		gameplay->ball.velocity.y = 0.5f;
+		//gameplay->ball.velocity.x = 0.5f;
+		//gameplay->ball.velocity.y = 0.5f;
+		gameplay->ball.velocity = gameplay->ballInitVelocity;
 
 		if (rand() % 2) {
 			gameplay->ball.velocity.x = -gameplay->ball.velocity.x;
@@ -110,8 +134,9 @@ void update(float deltaTime, inputs* inputs, gameplay* gameplay) {
 
 		// Resetting ball
 		gameplay->ball.circleCollider.center = gameplay->ballInitTransform;
-		gameplay->ball.velocity.x = 0.5f;
-		gameplay->ball.velocity.y = 0.5f;
+		//gameplay->ball.velocity.x = 0.5f;
+		//gameplay->ball.velocity.y = 0.5f;
+		gameplay->ball.velocity = gameplay->ballInitVelocity;
 
 		if (rand() % 2) {
 			gameplay->ball.velocity.x = -gameplay->ball.velocity.x;

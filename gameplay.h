@@ -13,6 +13,7 @@
 
 struct gameplay {
 	bool win = false;
+	bool quit = false;
 	int scoreToWin = 5;
 	int leftScore = 0;
 	bool leftScoreChanged = false;
@@ -139,7 +140,7 @@ struct gameplay {
 	float ballInitY = 720 / 2; // screenHeight / 2
 	float ballSpeed = 600;
 	SDL_FPoint ballInitTransform = { ballInitX, ballInitY };
-	SDL_FPoint ballInitVelocity = { 0.5f, 0.5f };
+	SDL_FPoint ballInitVelocity = { 0.6f, 0.6f };
 	circleCollider ballCollider = {
 		ballInitTransform,
 		ballRadius

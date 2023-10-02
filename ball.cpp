@@ -5,6 +5,11 @@
 #include "collisions.h"
 #include "app.h"
 
+void init(ball* ball) {
+	ball->reset = true;
+	ball->resetTimer = 0.0f;
+}
+
 void update(float deltaTime, inputs* inputs, ball* ball) {
 	if (ball->reset) {
 		if (ball->resetTimer >= ball->timeToReset) {
