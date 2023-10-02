@@ -99,8 +99,8 @@ void render(SDL_Renderer* renderer, uiText* uiText) {
 	SDL_RenderCopyExF(renderer, uiText->texture, NULL, &uiText->rect, 0, NULL, SDL_FLIP_NONE);
 
 	// Debug
-	SDL_SetRenderDrawColor(renderer, magenta);
-	SDL_RenderDrawRectF(renderer, &uiText->rect);
+	//SDL_SetRenderDrawColor(renderer, magenta);
+	//SDL_RenderDrawRectF(renderer, &uiText->rect);
 }
 
 void setText(uiText* uiText, std::string text) {

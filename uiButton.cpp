@@ -26,8 +26,8 @@ void render(SDL_Renderer* renderer, uiButton* uiButton) {
 	render(renderer, uiButton->text);
 
 	// Debug
-	SDL_SetRenderDrawColor(renderer, cyan);
-	SDL_RenderDrawRectF(renderer, &uiButton->rect);
+	//SDL_SetRenderDrawColor(renderer, cyan);
+	//SDL_RenderDrawRectF(renderer, &uiButton->rect);
 
 }
 
