@@ -103,6 +103,18 @@ void render(SDL_Renderer* renderer, uiText* uiText) {
 	//SDL_RenderDrawRectF(renderer, &uiText->rect);
 }
 
+void free(uiText* uiText) {
+	if (uiText->texture != NULL) {
+		SDL_DestroyTexture(uiText->texture);
+		uiText->texture = NULL;
+	}
+
+	if (uiText->font != NULL) {
+		TTF_CloseFont(uiText->font);
+		uiText->font = NULL;
+	}
+}
+
 void setText(uiText* uiText, std::string text) {
 	uiText->text = text;
 }

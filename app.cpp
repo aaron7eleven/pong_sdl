@@ -42,8 +42,7 @@ int init(app* app) {
 			printf("SDL could not initialize! SDL_Error: %s\n", SDL_GetError());
 			return 1;
 		}
-	}
-	
+	}	
 
 	//Create window
 	Uint32 windowFlags = SDL_WINDOW_SHOWN;
@@ -187,8 +186,6 @@ void preUpdate(app* app) {
 	preUpdate(app->game);
 }
 
-
-
 void update(app* app) {
 
 	// https://stackoverflow.com/questions/16605967/set-precision-of-stdto-string-when-converting-floating-point-values
@@ -213,117 +210,8 @@ void update(app* app) {
 	app->fpsCounter.uiText.text = "Avg. FPS = " + std::move(out).str();
 
 	update(app->deltaTime, &app->inputs, app->game);
-	
-	//// Update
-	//switch (app->gameState)
-	//{
-	//case appState::MAIN_MENU: {
-	//	//if (uiNavigation.previousButton->id != uiNavigation.currentButton->id) {
-	//	//	uiNavigation.previousButton->text->texture = LoadTextTexture(renderer, font, uiNavigation.previousButton->text->text, uiNavigation.previousButton->text->color);
-	//	//	uiNavigation.currentButton->text->texture = LoadTextTexture(renderer, font, uiNavigation.currentButton->text->text, uiNavigation.currentButton->text->color);
-	//	//}
-	//} break;
-
-	//case appState::GAME: {
-	//	updateGame(app);
-	//} break;
-
-	//default:
-	//	break;
-	//}
 }
 
-void renderGame(app* app) {
-	/////////////////////////
-	// Render Entities
-	/////////////////////////
-
-	// Draw Paddles
-	//render(app, &app->leftPaddle);
-	
-	//SDL_SetRenderDrawColor(app.renderer, leftPaddle.color.r, leftPaddle.color.g, leftPaddle.color.b, leftPaddle.color.a);
-	//SDL_RenderFillRectF(app.renderer, &leftPaddle.rectCollider);
-
-	//render(app, &app->rightPaddle);
-	//SDL_SetRenderDrawColor(app.renderer, rightPaddle.color.r, rightPaddle.color.g, rightPaddle.color.b, rightPaddle.color.a);
-	//SDL_RenderFillRectF(app.renderer, &rightPaddle.rectCollider);
-
-	// Draw Walls
-	//render(app, &app->leftWall);
-	//SDL_SetRenderDrawColor(app.renderer, leftWall.color.r, leftWall.color.g, leftWall.color.b, leftWall.color.a);
-	//SDL_RenderFillRectF(app.renderer, &leftWall.rectCollider);
-
-	//render(app, &app->rightWall);
-	//SDL_SetRenderDrawColor(app.renderer, rightWall.color.r, rightWall.color.g, rightWall.color.b, rightWall.color.a);
-	//SDL_RenderFillRectF(app.renderer, &rightWall.rectCollider);
-
-	//render(app, &app->topWall);
-	//SDL_SetRenderDrawColor(app.renderer, topWall.color.r, topWall.color.g, topWall.color.b, topWall.color.a);
-	//SDL_RenderFillRectF(app.renderer, &topWall.rectCollider);
-
-	//render(app, &app->bottomWall);
-	//SDL_SetRenderDrawColor(app.renderer, bottomWall.color.r, bottomWall.color.g, bottomWall.color.b, bottomWall.color.a);
-	//SDL_RenderFillRectF(app.renderer, &bottomWall.rectCollider);
-
-	// Draw Midline
-	//SDL_SetRenderDrawColor(app.renderer, 0xFF, 0xFF, 0xFF, 0xFF);
-	//SDL_RenderDrawPoints(app.renderer, MIDLINE_POINTS, MIDLINE_POINTS_COUNT);
-	//SDL_RenderDrawLines(app.renderer, MIDLINE_POINTS, MIDLINE_POINTS_COUNT);
-	//for (int i = 0; i < MIDLINE_LINES_TOTAL_COUNT; i++)
-	//{
-	//	line line = midlines[i];
-	//	//if ((i % MIDLINE_LINES_COUNT) == (MIDLINE_LINE_THICKNESS / 2)) {
-	//	//	SDL_SetRenderDrawColor(app.renderer, 0xFF, 0x00, 0x00, 0xFF);
-	//	//}
-	//	SDL_RenderDrawLine(app.renderer, line.start.x, line.start.y, line.end.x, line.end.y);
-
-	//}
-
-	// Draw Ball
-	//SDL_SetRenderDrawColor(app.renderer, ball.color.r, ball.color.g, ball.color.b, ball.color.a);
-	//SDL_RenderFillRectF(app.renderer, &ballCollider);
-	//SDL_RenderFillCircle(app.renderer, ball.circleCollider.center.x, ball.circleCollider.center.y, ball.circleCollider.radius);
-
-	/////////////////////////
-	// Render Entities Debug
-	/////////////////////////
-
-	// Paddle Position (Top Left)
-	//SDL_SetRenderDrawColor(app.renderer, 0, 255, 0, 255); // Green
-	//SDL_RenderDrawPointF(app.renderer, leftPaddle.rectCollider.x, leftPaddle.rectCollider.y);
-	//SDL_RenderDrawPointF(app.renderer, rightPaddle.rectCollider.x, rightPaddle.rectCollider.y);
-
-	// Ball Position (Center)
-	//SDL_RenderDrawPointF(app.renderer, ball.circleCollider.center.x, ball.circleCollider.center.y);
-
-	//// Ball Collider
-	//SDL_SetRenderDrawColor(app.renderer, 255, 255, 0, 255); // Yellow
-	//SDL_FRect ballCollider = { ball.circleCollider.center.x - ball.circleCollider.radius, ball.circleCollider.center.y - ball.circleCollider.radius, 2.0f * ball.circleCollider.radius, 2.0f * ball.circleCollider.radius };
-	//SDL_RenderDrawRectF(app.renderer, &ballCollider);
-
-	/////////////////////////
-	// Render Text
-	/////////////////////////
-
-	//Render text texture to screen
-	//SDL_RenderCopy(app.renderer, textTexture, NULL, NULL);
-	//const SDL_Rect leftTextDestRect = {
-	//	LEFT_SCORE_TEXT_X,
-	//	LEFT_SCORE_TEXT_Y,
-	//	SCORE_TEXT_WIDTH,
-	//	SCORE_TEXT_HEIGHT
-	//};
-	//SDL_RenderCopyEx(app.renderer, leftTextTexture, NULL, &leftTextDestRect, 0, NULL, SDL_FLIP_NONE);
-
-	//const SDL_Rect rightTextDestRect = {
-	//	RIGHT_SCORE_TEXT_X,
-	//	RIGHT_SCORE_TEXT_Y,
-	//	SCORE_TEXT_WIDTH,
-	//	SCORE_TEXT_HEIGHT
-	//};
-	//SDL_RenderCopyEx(app.renderer, rightTextTexture, NULL, &rightTextDestRect, 0, NULL, SDL_FLIP_NONE);
-
-}
 
 void render(app* app) {
 	//Clear screen to Black

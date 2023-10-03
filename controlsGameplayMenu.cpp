@@ -67,3 +67,20 @@ void render(SDL_Renderer* renderer, controlsGameplayMenu* controlsGameplayMenu) 
 	render(renderer, &controlsGameplayMenu->rightPaddleDown);
 	render(renderer, &controlsGameplayMenu->rightPaddleDownButton);
 }
+
+void free(controlsGameplayMenu* controlsGameplayMenu) {
+	controlsGameplayMenu->audioManager = NULL;
+	controlsGameplayMenu->appSettings = NULL;
+	free(&controlsGameplayMenu->title);
+
+	free(&controlsGameplayMenu->leftPaddleUp);
+	free(&controlsGameplayMenu->leftPaddleUpButton);
+	free(&controlsGameplayMenu->leftPaddleDown);
+	free(&controlsGameplayMenu->leftPaddleDownButton);
+
+	free(&controlsGameplayMenu->rightPaddleUp);
+	free(&controlsGameplayMenu->rightPaddleUpButton);
+	free(&controlsGameplayMenu->rightPaddleDown);
+	free(&controlsGameplayMenu->rightPaddleDownButton);
+	free(&controlsGameplayMenu->uiNavigation);
+}

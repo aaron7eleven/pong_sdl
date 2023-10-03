@@ -203,3 +203,4 @@ void init(audioMenu* audioMenu);
 void processInput(inputs* inputs, audioMenu* audioMenu);
 void update(float deltaTime, inputs* inputs, audioMenu* audioMenu);
 void render(SDL_Renderer* renderer, audioMenu* audioMenu);
+void free(audioMenu* audioMenu);

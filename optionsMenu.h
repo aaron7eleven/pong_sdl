@@ -201,3 +201,4 @@ void init(optionsMenu* optionsMenu);
 void processInput(inputs* inputs, optionsMenu* optionsMenu);
 void update(float deltaTime, inputs* inputs, optionsMenu* optionsMenu);
 void render(SDL_Renderer* renderer, optionsMenu* optionsMenu);
+void free(optionsMenu* optionsMenu);

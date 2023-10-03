@@ -264,3 +264,15 @@ void render(SDL_Renderer* renderer, gameplay* gameplay) {
 	render(renderer, &gameplay->rightScoreText);
 	render(renderer, &gameplay->ball);
 }
+
+void free(gameplay* gameplay) {
+	//free(&gameplay->leftPaddle);
+	//free(&gameplay->rightPaddle);
+	//free(&gameplay->leftWall);
+	//free(&gameplay->rightWall);
+	//free(&gameplay->topWall);
+	//free(&gameplay->bottomWall);
+	free(&gameplay->leftScoreText);
+	free(&gameplay->rightScoreText);
+	//free(&gameplay->ball);
+}

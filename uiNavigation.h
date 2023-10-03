@@ -13,3 +13,4 @@ struct uiNavigation {
 void init(uiNavigation* uiNavigation);
 void next(uiNavigation* uiNavigation);
 void previous(uiNavigation* uiNavigation);
+void free(uiNavigation* uiNavigation);

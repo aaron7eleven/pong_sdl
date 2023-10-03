@@ -506,3 +506,4 @@ void init(controlsUIMenu* controlsUIMenu);
 void processInput(inputs* inputs, controlsUIMenu* controlsUIMenu);
 void update(float deltaTime, inputs* inputs, controlsUIMenu* controlsUIMenu);
 void render(SDL_Renderer* renderer, controlsUIMenu* controlsUIMenu);
+void free(controlsUIMenu* controlsUIMenu);

@@ -26,6 +26,7 @@ void loadFont(uiText* uiText);
 
 void render(SDL_Renderer* renderer, uiText* uiText);
 SDL_Texture* loadTexture(SDL_Renderer* renderer, uiText* uiText);
+void free(uiText* uiText);
 
 void setText(uiText* uiText, std::string text);
 void setTextAutoAdjustWidth(uiText* uiText, std::string text);

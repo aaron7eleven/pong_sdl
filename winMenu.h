@@ -232,3 +232,4 @@ void init(winMenu* winMenu);
 void processInput(inputs* inputs, winMenu* winMenu);
 void update(float deltaTime, inputs* inputs, winMenu* winMenu);
 void render(SDL_Renderer* renderer, winMenu* winMenu);
+void free(winMenu* winMenu);

@@ -150,3 +150,4 @@ void init(controlsMenu* controlsMenu);
 void processInput(inputs* inputs, controlsMenu* controlsMenu);
 void update(float deltaTime, inputs* inputs, controlsMenu* controlsMenu);
 void render(SDL_Renderer* renderer, controlsMenu* controlsMenu);
+void free(controlsMenu* controlsMenu);

@@ -113,6 +113,7 @@
       <AdditionalIncludeDirectories>C:\SDL\include;C:\SDL_image\include;C:\SDL_ttf\include;C:\SDL_mixer\include</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpplatest</LanguageStandard>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <WholeProgramOptimization>false</WholeProgramOptimization>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

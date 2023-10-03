@@ -387,5 +387,14 @@ void render(SDL_Renderer* renderer, game* game) {
 
 int free(game* game) {
 	free(&game->audioManager);
+	free(&game->mainMenu);
+	free(&game->optionsMenu);
+	free(&game->controlsMenu);
+	free(&game->controlsUIMenu);
+	free(&game->controlsGameplayMenu);
+	free(&game->videoMenu);
+	free(&game->audioMenu);
+	free(&game->winMenu);
+	free(&game->gameplay);
 	return 0;
 }

@@ -360,3 +360,4 @@ void init(controlsGameplayMenu* controlsGameplayMenu);
 void processInput(inputs* inputs, controlsGameplayMenu* controlsGameplayMenu);
 void update(float deltaTime, inputs* inputs, controlsGameplayMenu* controlsGameplayMenu);
 void render(SDL_Renderer* renderer, controlsGameplayMenu* controlsGameplayMenu);
+void free(controlsGameplayMenu* controlsGameplayMenu);

@@ -54,3 +54,14 @@ void render(SDL_Renderer* renderer, audioMenu* audioMenu) {
 	render(renderer, &audioMenu->sfxVolumeDownButton);
 	render(renderer, &audioMenu->sfxVolumeValue);
 }
+
+void free(audioMenu* audioMenu) {
+	audioMenu->audioManager = NULL;
+	audioMenu->appSettings = NULL;
+	free(&audioMenu->title);
+	free(&audioMenu->sfxVolume);
+	free(&audioMenu->sfxVolumeUpButton);
+	free(&audioMenu->sfxVolumeDownButton);
+	free(&audioMenu->sfxVolumeValue);
+	free(&audioMenu->uiNavigation);
+}

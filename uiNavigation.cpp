@@ -36,3 +36,9 @@ void previous(uiNavigation* uiNavigation) {
 	unhighlight(uiNavigation->previousButton);
 	highlight(uiNavigation->currentButton);
 }
+
+void free(uiNavigation* uiNavigation) {
+	free(uiNavigation->currentButton);
+	free(uiNavigation->previousButton);
+	uiNavigation->nav = NULL;
+}
