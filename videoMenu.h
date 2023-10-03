@@ -202,3 +202,4 @@ void init(videoMenu* videoMenu);
 void processInput(inputs* inputs, videoMenu* videoMenu);
 void update(float deltaTime, inputs* inputs, videoMenu* videoMenu);
 void render(SDL_Renderer* renderer, videoMenu* videoMenu);
+void free(videoMenu* videoMenu);

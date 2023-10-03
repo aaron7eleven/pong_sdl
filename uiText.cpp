@@ -62,13 +62,13 @@ SDL_Texture* loadTexture(SDL_Renderer* renderer, uiText* uiText) {
 	SDL_Surface* textSurface = TTF_RenderText_Solid(uiText->font, uiText->text.c_str(), uiText->color);
 	if (textSurface == NULL)
 	{
-		printf("Unable to render text surface (%s)! SDL_TTF Error: %s\n", uiText->text, TTF_GetError());
+		printf("Unable to render text surface (%s)! SDL_TTF Error: %s\n", uiText->text.c_str(), TTF_GetError());
 	}
 	else {
 		outputTexture = SDL_CreateTextureFromSurface(renderer, textSurface);
 		if (outputTexture == NULL)
 		{
-			printf("Unable to create texture from %s! SDL Error: %s\n", SDL_GetError());
+			printf("Unable to create texture from %s! SDL Error: %s\n", uiText->text.c_str(), SDL_GetError());
 		}
 	}
 
@@ -104,10 +104,10 @@ void render(SDL_Renderer* renderer, uiText* uiText) {
 }
 
 void free(uiText* uiText) {
-	if (uiText->texture != NULL) {
-		SDL_DestroyTexture(uiText->texture);
-		uiText->texture = NULL;
-	}
+	//if (uiText->texture != NULL) {
+	//	SDL_DestroyTexture(uiText->texture);
+	//	uiText->texture = NULL;
+	//}
 
 	if (uiText->font != NULL) {
 		TTF_CloseFont(uiText->font);
