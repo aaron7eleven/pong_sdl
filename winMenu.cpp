@@ -42,3 +42,14 @@ void render(SDL_Renderer* renderer, winMenu* winMenu) {
 	//render(renderer, &mainMenu->optionsButton.uiButton);
 	//render(renderer, &mainMenu->quitButton.uiButton);
 }
+
+void free(winMenu* winMenu) {
+	winMenu->audioManager = NULL;
+	winMenu->appSettings = NULL;
+	free(&winMenu->title);
+	free(&winMenu->subtitle);
+	free(&winMenu->playAgainButton);
+	free(&winMenu->mainMenuButton);
+	free(&winMenu->quitButton);
+	free(&winMenu->uiNavigation);
+}

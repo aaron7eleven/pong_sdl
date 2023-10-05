@@ -38,3 +38,13 @@ void render(SDL_Renderer* renderer, mainMenu* mainMenu) {
 	render(renderer, &mainMenu->optionsButton);
 	render(renderer, &mainMenu->quitButton);
 }
+
+void free(mainMenu* mainMenu) {
+	mainMenu->audioManager = NULL;
+	mainMenu->appSettings = NULL;
+	free(&mainMenu->title);
+	free(&mainMenu->playButton);
+	free(&mainMenu->optionsButton);
+	free(&mainMenu->quitButton);
+	free(&mainMenu->uiNavigation);
+}

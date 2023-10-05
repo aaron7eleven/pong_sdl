@@ -41,3 +41,14 @@ void setButtonText(uiButton* uiButton, std::string text) {
 	centerAlignText(uiButton);
 }
 
+void free(uiButton* uiButton) {
+	if (uiButton->text != NULL) {
+		free(uiButton->text);
+		uiButton->text = NULL;
+	}
+	
+	if (uiButton->texture != NULL) {
+		SDL_DestroyTexture(uiButton->texture);
+		uiButton->texture = NULL;
+	}
+}

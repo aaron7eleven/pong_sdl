@@ -75,3 +75,18 @@ void render(SDL_Renderer* renderer, controlsUIMenu* controlsUIMenu) {
 	render(renderer, &controlsUIMenu->uiBack);
 	render(renderer, &controlsUIMenu->uiBackButton);
 }
+
+void free(controlsUIMenu* controlsUIMenu) {
+	controlsUIMenu->audioManager = NULL;
+	controlsUIMenu->appSettings = NULL;
+	free(&controlsUIMenu->title);
+	free(&controlsUIMenu->uiMoveUp);
+	free(&controlsUIMenu->uiMoveUpButton);
+	free(&controlsUIMenu->uiMoveDown);
+	free(&controlsUIMenu->uiMoveDownButton);
+	free(&controlsUIMenu->uiSelect);
+	free(&controlsUIMenu->uiSelectButton);
+	free(&controlsUIMenu->uiBack);
+	free(&controlsUIMenu->uiBackButton);
+	free(&controlsUIMenu->uiNavigation);
+}

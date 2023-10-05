@@ -3,3 +3,5 @@ Debug/*
 .vs
 Release
 Release/*
+builds
+builds/*

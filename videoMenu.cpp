@@ -46,3 +46,14 @@ void render(SDL_Renderer* renderer, videoMenu* videoMenu) {
 	render(renderer, &videoMenu->windowMode);
 	render(renderer, &videoMenu->windowModeButton);
 }
+
+void free(videoMenu* videoMenu) {
+	videoMenu->audioManager = NULL;
+	videoMenu->appSettings = NULL;
+	free(&videoMenu->title);
+	free(&videoMenu->vSync);
+	free(&videoMenu->vSyncButton);
+	free(&videoMenu->windowMode);
+	free(&videoMenu->windowModeButton);
+	free(&videoMenu->uiNavigation);
+}

@@ -20,6 +20,7 @@ struct uiButton {
 
 void init(uiButton* uiButton);
 void render(SDL_Renderer* renderer, uiButton* uiButton);
+void free(uiButton* uiButton);
 void highlight(uiButton* button);
 void unhighlight(uiButton* button);
 

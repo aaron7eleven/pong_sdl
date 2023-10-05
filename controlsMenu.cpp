@@ -42,3 +42,12 @@ void render(SDL_Renderer* renderer, controlsMenu* controlsMenu) {
 	render(renderer, &controlsMenu->uiControlsButton);
 	render(renderer, &controlsMenu->gameplayControlsButton);
 }
+
+void free(controlsMenu* controlsMenu) {
+	controlsMenu->audioManager = NULL;
+	controlsMenu->appSettings = NULL;
+	free(&controlsMenu->title);
+	free(&controlsMenu->uiControlsButton);
+	free(&controlsMenu->gameplayControlsButton);
+	free(&controlsMenu->uiNavigation);
+}

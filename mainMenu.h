@@ -186,7 +186,6 @@ struct mainMenu {
 		&quitButtonText
 	};
 
-
 	uiButton* nav[3] = { 
 		&playButton, 
 		&optionsButton,
@@ -206,3 +205,4 @@ void init(mainMenu* mainMenu);
 void processInput(inputs* inputs, mainMenu* mainMenu);
 void update(float deltaTime, inputs* inputs, mainMenu* mainMenu);
 void render(SDL_Renderer* renderer, mainMenu* mainMenu);
+void free(mainMenu* mainMenu);

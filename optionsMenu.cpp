@@ -40,3 +40,13 @@ void render(SDL_Renderer* renderer, optionsMenu* optionsMenu) {
 	//render(renderer, &mainMenu->optionsButton.uiButton);
 	//render(renderer, &mainMenu->quitButton.uiButton);
 }
+
+void free(optionsMenu* optionsMenu) {
+	optionsMenu->audioManager = NULL;
+	optionsMenu->appSettings = NULL;
+	free(&optionsMenu->title);
+	free(&optionsMenu->videoButton);
+	free(&optionsMenu->audioButton);
+	free(&optionsMenu->controlsButton);
+	free(&optionsMenu->uiNavigation);
+}
