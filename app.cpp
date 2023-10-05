@@ -112,7 +112,7 @@ int init(app* app) {
 }
 
 int free(app* app) {
-	free(app->game);
+	//free(app->game);
 
 	// Quit additional SDL subsystems
 
