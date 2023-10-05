@@ -1,7 +1,7 @@
 # pong_sdl
 Built using SDL and C++
 
-Ready to play builds on [aaron7eleven's itch.io](https://aaron7eleven.itch.io/pong-sdl)
+Ready to play builds in [Releases](https://github.com/aaron7eleven/pong_sdl/releases) and on [aaron7eleven's itch.io](https://aaron7eleven.itch.io/pong-sdl)
 
 # Installation
 1. Clone Repo
